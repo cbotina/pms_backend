@@ -131,7 +131,7 @@ create table if not exists time_slot(
     subject_group_time_slot_id int, 
     permission_id int default null,
     student_id int,
-    absence_date date,
+    absence_date datetime default now(),
     teacher_note text,
     
     primary key(id),
@@ -157,19 +157,20 @@ INSERT INTO period (name) VALUES ('2024-A'), ('2024-B'), ('2025-A');
 
 INSERT INTO time_slot (period_id, start_time, end_time, is_academic) VALUES 
 (1, '07:00:00', '07:55:00', true),
-(1, '07:55:00', '8:50:00', true),
-(1, '8:50:00', '9:45:00', true),
-(1, '9:45:00', '10:40:00', true),
-(1, '10:40:00', '11:10:00',false),
+(1, '07:55:00', '08:50:00', true),
+(1, '08:50:00', '09:45:00', true),
+(1, '09:45:00', '10:40:00', true),
+(1, '10:40:00', '11:10:00', false),
 (1, '11:10:00', '12:05:00', true),
 (1, '12:05:00', '12:55:00', true),
-(1, '12:55:00', '1:00:00', false),
-(1, '1:00:00', '1:55:00', true),
-(1, '1:55:00', '2:50:00', true),
-(1, '2:50:00', '3:45:00', true),
-(1, '3:45:00', '4:40:00', true),
-(1, '4:40:00', '5:35:00', true),
-(1, '5:35:00', '6:30:00', true);
+(1, '12:55:00', '13:00:00', false),
+(1, '13:00:00', '13:55:00', true),
+(1, '13:55:00', '14:50:00', true),
+(1, '14:50:00', '15:45:00', true),
+(1, '15:45:00', '16:40:00', true),
+(1, '16:40:00', '17:35:00', true),
+(1, '17:35:00', '18:30:00', true);
+
 
 INSERT INTO subject (name, absences_limit) VALUES 
 ('Psicología del Desarrollo I', 5),
@@ -262,7 +263,7 @@ INSERT INTO `group` (period_id, tutor_id, `name`, semester, modality) VALUES
 select * from subject;
 
 select 
-sg.id as `SubjectGroupId`,
+sg.id as `subject_group`,
 concat(t.first_name,' ',t.last_name) as `Teacher`,
 s.name as `Subject`,
 g.name as `Group`
@@ -344,7 +345,7 @@ INSERT INTO student (cc, group_id, first_name, last_name, gender) VALUES
 (2010, 1, 'Natalia Andrea', 'Mendoza Salazar', 'F'),
 
 -- Group 12-2
-(2011, 2, 'Jose Antonio', 'Gutierrez Ramirez', 'M'),
+(2011, 2, 'Brayan Esneider', 'Murillo Ramirez', 'M'),
 (2012, 2, 'Andrea Paola', 'Martinez Jimenez', 'F'),
 (2013, 2, 'Daniel Felipe', 'Salazar Morales', 'M'),
 (2014, 2, 'Sofia Isabella', 'Castillo Vargas', 'F'),
@@ -411,13 +412,13 @@ INSERT INTO subject_group_time_slot (time_slot_id, subject_group_id, day) VALUES
 (13, 4, 'WED'),
 (14, 4, 'WED'),
 (1, 9, 'THU'),
-(2, 9, 'WED'),
-(3, 9, 'WED'),
-(4, 6, 'WED'),
-(6, 6, 'WED'),
-(7, 6, 'WED'),
-(11, 7, 'WED'),
-(12, 7, 'WED'),
+(2, 9, 'THU'),
+(3, 9, 'THU'),
+(4, 6, 'THU'),
+(6, 6, 'THU'),
+(7, 6, 'THU'),
+(11, 7, 'THU'),
+(12, 7, 'THU'),
 (2, 8, 'FRI'),
 (3, 5, 'FRI'),
 (4, 5, 'FRI'),
@@ -445,6 +446,7 @@ order by sgts.day, ts.start_time;
 
 -- horario 12-1
 select
+sgts.id as 'subject_group_time_slot',
 g.name as 'Grupo',
 sgts.day as 'Dia',
 ts.start_time  'Hora Inicio',
@@ -532,13 +534,14 @@ from enrollment en
 inner join student st on st.id = en.student_id
 inner join subject_group sg on sg.id = en.subject_group_id
 inner join subject su on su.id = sg.subject_id
-inner join `group` g on g.id = sg.group_id
-where en.subject_group_id = 3;
+inner join `group` g on g.id = st.group_id 
+where en.subject_group_id = 2;
 
 select * from subject_group;
-
+select * from student;
 --  ASIGNACION DE DOCENTES
 select 
+	sg.id subject_group_id,
 	concat(t.first_name, ' ', t.last_name) as Docente,
     s.name as Materia,
     g.name as Grupo
@@ -562,6 +565,7 @@ where sg.teacher_id = 1;
 
 --  MATERIAS MATRICULADAS POR ESTUDIANTE
 select
+	en.id enrollment,
 	concat(st.first_name,' ',st.last_name) as 'Estudiante',
     su.name as 'Materias Matriculadas',
     g.name as 'Grupo'
@@ -571,6 +575,8 @@ inner join subject_group sg on sg.id = en.subject_group_id
 inner join subject su on su.id = sg.subject_id
 inner join `group` g on g.id = sg.group_id
 where en.student_id = 11;
+
+
 
     
 -- select f.hora_inicio as Inicio,
@@ -605,9 +611,21 @@ where en.student_id = 11;
 -- cuando se solicita en secretaria, se mandan los correos.
 
 
+-- materias perdidas por estudiante
+update enrollment set subject_group_id = 1 where id = 137;
+update enrollment set subject_group_id = 2 where id = 147;
+-- 2 14
 
 
+select * from absence;
+insert into absence(subject_group_time_slot_id, student_id, teacher_note) values
+(17, 11, 'Se evadio');
 
+select * from absence;
+
+-- sgtsid, student_id, date, teacher_note
+-- insert into absence(subject_group_time_slot_id, student_id, teacher_note) values
+-- ();
 
  
 
