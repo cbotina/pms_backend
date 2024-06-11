@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Period } from 'src/periods/entities/period.entity';
+import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
 
 export const dbConfig = (
   configService: ConfigService,
@@ -12,7 +13,7 @@ export const dbConfig = (
     username: configService.get('database.username'),
     password: configService.get('database.password'),
     database: configService.get('database.database'),
-    entities: [Period],
+    entities: [Period, TimeSlot],
     synchronize: configService.get('database.synchronize'),
   };
 };

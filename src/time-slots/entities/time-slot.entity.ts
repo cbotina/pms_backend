@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Period } from 'src/periods/entities/period.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class TimeSlot {
@@ -16,4 +17,7 @@ export class TimeSlot {
 
   @Column()
   isAcademic: boolean;
+
+  @ManyToOne(() => Period, (period) => period.timeSlots)
+  period: Period;
 }

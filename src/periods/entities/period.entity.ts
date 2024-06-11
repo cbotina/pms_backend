@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Period {
@@ -13,4 +14,7 @@ export class Period {
 
   @Column()
   endDate: Date;
+
+  @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.period)
+  timeSlots: TimeSlot[];
 }
