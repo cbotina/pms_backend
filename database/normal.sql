@@ -2,9 +2,10 @@ drop database if exists escuelanormalsuperior;
 create database if not exists escuelanormalsuperior;
 use escuelanormalsuperior;
 
-
 create table if not exists period(
 	id int auto_increment,
+    start_date date,
+    end_date date,
     name varchar(10),
     primary key(id)
 );
@@ -12,6 +13,7 @@ create table if not exists period(
 
 create table if not exists time_slot(
 	id int auto_increment,
+    tag varchar(20),
     period_id int,
     start_time time,
     end_time time,
@@ -153,7 +155,9 @@ create table if not exists time_slot(
  
 --  INSERCION DE DATOS
 
-INSERT INTO period (name) VALUES ('2024-A'), ('2024-B'), ('2025-A');
+INSERT INTO period (name, start_date, end_date) VALUES
+('2024-A', '2024-01-01', '2024-05-30'),
+('2024-B', '2024-06-01','2024-11-30');
 
 INSERT INTO time_slot (period_id, start_time, end_time, is_academic) VALUES 
 (1, '07:00:00', '07:55:00', true),
@@ -628,7 +632,7 @@ select * from absence;
 -- ();
 
  
-
+select * from period;
  
  
 
