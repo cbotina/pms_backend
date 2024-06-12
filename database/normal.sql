@@ -2,8 +2,6 @@ drop database if exists escuelanormalsuperior;
 create database if not exists escuelanormalsuperior;
 use escuelanormalsuperior;
 
-
-describe period;
 create table if not exists period(
 	id int auto_increment,
     start_date date,

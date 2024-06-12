@@ -18,6 +18,8 @@ export class TimeSlot {
   @Column()
   isAcademic: boolean;
 
-  @ManyToOne(() => Period, (period) => period.timeSlots)
+  @ManyToOne(() => Period, (period) => period.timeSlots, {
+    onDelete: 'CASCADE',
+  })
   period: Period;
 }

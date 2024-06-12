@@ -15,8 +15,6 @@ export class Period {
   @Column()
   endDate: Date;
 
-  @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.period, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.period)
   timeSlots: TimeSlot[];
 }

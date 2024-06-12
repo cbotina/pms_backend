@@ -1,6 +1,7 @@
 drop database if exists pms_de;
 create database if not exists pms_dev;
 
+select * from time_slot;
 use pms_dev;
 
 select * from period;
@@ -82,10 +83,11 @@ INSERT INTO time_slot (periodid, starttime, endtime, isacademic, label) VALUES
 (1, '15:45:00', '16:40:00', true, '12.'),
 (1, '16:40:00', '17:35:00', true, '13.'),
 (1, '17:35:00', '18:30:00', true, '14.');
-show tables;
+
+use escuelanormalsuperior;
 
 describe period;
-select * from period;
+select count(*) from period;
 
 
 select count(*) from period;
