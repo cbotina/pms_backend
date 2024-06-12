@@ -4,6 +4,11 @@ import { UpdatePeriodDto } from './dto/update-period.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Period } from './entities/period.entity';
 import { Repository } from 'typeorm';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class PeriodsService {
@@ -35,5 +40,16 @@ export class PeriodsService {
 
   async remove(id: number): Promise<void> {
     await this.periodsRepository.delete({ id });
+  }
+
+  // Pagination
+
+  async getPaginatedPeriods(
+    options: IPaginationOptions,
+  ): Promise<Pagination<Period>> {
+    const queryBuilder = this.periodsRepository.createQueryBuilder('period');
+    queryBuilder.orderBy('period.id', 'DESC');
+
+    return paginate<Period>(queryBuilder, options);
   }
 }

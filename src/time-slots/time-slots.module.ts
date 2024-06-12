@@ -6,7 +6,7 @@ import { TimeSlot } from './entities/time-slot.entity';
 import { Period } from 'src/periods/entities/period.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TimeSlot, Period])],
+  imports: [TypeOrmModule.forFeature([TimeSlot])],
   controllers: [TimeSlotsController],
   providers: [TimeSlotsService],
 })
