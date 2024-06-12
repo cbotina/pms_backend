@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   IPaginationOptions,
@@ -31,7 +31,7 @@ export class PeriodTimeSlotsService {
     return paginate<TimeSlot>(queryBuilder, options);
   }
 
-  async addTimeSlotToPeriod(
+  async addTimeSlotToPeriodOld(
     createTimeSlotDto: CreateTimeSlotDto,
     periodId: number,
   ) {
@@ -43,6 +43,47 @@ export class PeriodTimeSlotsService {
       ...createTimeSlotDto,
       period: period,
     });
+  }
+
+  async addTimeSlotToPeriod(
+    createTimeSlotDto: CreateTimeSlotDto,
+    periodId: number,
+  ) {
+    const period = await this.periodsRepository.findOneByOrFail({
+      id: periodId,
+    });
+
+    const periodTimeSlots = await this.timeSlotsRepository.find({
+      where: { period },
+    });
+
+    console.log(periodTimeSlots);
+
+    let newTimeSlotIsValid = true;
+    let conflicTimeSlot: TimeSlot = null;
+
+    const newTimeSlot = this.timeSlotsRepository.create(createTimeSlotDto);
+
+    periodTimeSlots.forEach((existingTimeSlot) => {
+      if (
+        !(
+          existingTimeSlot.endTime <= newTimeSlot.startTime ||
+          existingTimeSlot.startTime >= newTimeSlot.endTime
+        )
+      ) {
+        conflicTimeSlot = existingTimeSlot;
+        newTimeSlotIsValid = false;
+      }
+    });
+
+    if (newTimeSlotIsValid && conflicTimeSlot == null) {
+      return this.timeSlotsRepository.save({
+        ...createTimeSlotDto,
+        period: period,
+      });
+    } else {
+      throw new UnprocessableEntityException({ conflict: conflicTimeSlot });
+    }
   }
 
   async importTimeSlotsFromPeriod(
@@ -65,6 +106,8 @@ export class PeriodTimeSlotsService {
       const targetPeriod = await this.periodsRepository.findOneByOrFail({
         id: targetPeriodId,
       });
+
+      // TODO: Delete previous timeSlots if they exist
 
       sourceTimeSlots.forEach(async (timeSlot) => {
         const { startTime, endTime, label, isAcademic } = timeSlot;
