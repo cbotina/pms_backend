@@ -24,9 +24,18 @@ export class PeriodTimeSlotsService {
   async getPeriodTimeSlots(
     periodId: number,
     options: IPaginationOptions,
+    search?: string,
   ): Promise<Pagination<TimeSlot>> {
     const queryBuilder = this.timeSlotsRepository.createQueryBuilder('ts');
     queryBuilder.where('ts.periodId = :periodId', { periodId });
+    queryBuilder.orderBy('ts.startTime', 'ASC');
+
+    if (search) {
+      queryBuilder
+        .where('ts.label LIKE :search', { search: `%${search}%` })
+        .orWhere('ts.startTime LIKE :search', { search: `%${search}%` })
+        .orWhere('ts.endTime LIKE :search', { search: `%${search}%` });
+    }
 
     return paginate<TimeSlot>(queryBuilder, options);
   }

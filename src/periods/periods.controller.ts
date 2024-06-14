@@ -57,12 +57,13 @@ export class PeriodsController {
   async getPaginatedPeriods(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('search') search?: string,
   ) {
     const options: IPaginationOptions = {
       limit,
       page,
     };
 
-    return await this.periodsService.getPaginatedPeriods(options);
+    return await this.periodsService.getPaginatedPeriods(options, search);
   }
 }
