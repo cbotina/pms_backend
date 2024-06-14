@@ -66,8 +66,6 @@ export class PeriodTimeSlotsService {
       where: { period },
     });
 
-    console.log(periodTimeSlots);
-
     let newTimeSlotIsValid = true;
     let conflicTimeSlot: TimeSlot = null;
 

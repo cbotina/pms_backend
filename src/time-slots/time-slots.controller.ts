@@ -6,11 +6,14 @@ import {
   Param,
   Delete,
   UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TimeSlotsService } from './time-slots.service';
 import { UpdateTimeSlotDto } from './dto/update-time-slot.dto';
 import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
+@UseInterceptors(LoggingInterceptor)
 @UseFilters(TypeORMExceptionFilter)
 @Controller('time-slots')
 export class TimeSlotsController {

@@ -11,6 +11,7 @@ import {
   HttpCode,
   Query,
   DefaultValuePipe,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { PeriodsService } from './periods.service';
@@ -18,7 +19,9 @@ import { CreatePeriodDto } from './dto/create-period.dto';
 import { UpdatePeriodDto } from './dto/update-period.dto';
 import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
+@UseInterceptors(LoggingInterceptor)
 @UseFilters(TypeORMExceptionFilter)
 @Controller('periods')
 export class PeriodsController {
@@ -52,7 +55,6 @@ export class PeriodsController {
     return this.periodsService.remove(id);
   }
 
-  // Pagination
   @Get()
   async getPaginatedPeriods(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
