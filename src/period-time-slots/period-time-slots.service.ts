@@ -32,9 +32,9 @@ export class PeriodTimeSlotsService {
 
     if (search) {
       queryBuilder
-        .where('ts.label LIKE :search', { search: `%${search}%` })
+        .andWhere('ts.label LIKE :search', { search: `%${search}%` })
         .orWhere('ts.startTime LIKE :search', { search: `%${search}%` })
-        .orWhere('ts.endTime LIKE :search', { search: `%${search}%` });
+        .andWhere('ts.periodId = :periodId', { periodId });
     }
 
     return paginate<TimeSlot>(queryBuilder, options);
