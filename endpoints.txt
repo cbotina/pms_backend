@@ -1,0 +1,151 @@
+1. ===PERIODS=== ✅
+
+- ✅ GET: => /periods (Gets all periods) (Paginated)
+- ✅ GET: => /periods/:periodId (Gets a period) 
+- ✅ POST: => /periods (Creates a period) 
+- ✅ PATCH: => /periods/:periodId (Updates a period) 
+- ✅ DELETE: => /periods/:periodId (Deletes a period) 
+
+2. ===TIMESLOTS=== ✅
+
+- ✅ GET: => /time-slots (Gets all timeslots) (Paginated)
+- ✅ GET: => /time-slots/:timeSlotId (Gets a timeslot) 
+- ✅ PATCH: => /time-slots/:timeSlotId (Updates a timeslot)
+- ✅ DELETE: => /time-slots/:timeSlotId (Deletes a timeslot)
+
+3. ===PERIOD-TIMESLOTS=== ✅
+
+- ✅ GET: => /periods/:periodId/time-slots (Gets all period's timeslots) (Paginated)
+- ✅ POST: => /periods/:periodId/time-slots (Adds timeslot to period)
+- ✅ POST: => /periods/:periodId/time-slots/import (Imports timeslots from period)
+
+4. ===SUBJECTS===
+
+- GET: => /subjects (Gets all subjects) (Paginated)
+- POST: => /subjects (Creates a subject)
+- PATCH: => /subjects/:id (Updates a subject)
+- DELETE: => /subjects/:id (Deletes a subject)
+
+5. ===TEACHERS===
+
+- GET: => /teachers (Gets all teachers) (Paginated)
+- POST: => /teachers (Creates a teacher)
+- GET: => /teachers/:id (Gets a teacher)
+- PATCH: => /teachers/:id (Updates a teacher)
+- DELETE: => /teachers/:id (Deletes a teacher)
+
+
+6. ===GROUPS===
+
+- GET: => /groups/:groupId (Gets a group)
+- DELETE: => groups/:groupId (Deletes a group)
+- PATCH: => periods/:periodId/groups/:groupId (Update a group)
+
+
+7. ===PERIOD-GROUPS===
+
+- GET: => /periods/:periodId/groups (Gets all groups of a period)
+- POST: => /periods/:periodId/groups (Adds a group to a period)
+
+
+8. ===SUBJECT-GROUPS=== (GROUP MENU)
+
+- POST: => /groups/:groupId/subjects (Adds subject to group)
+- GET: => /groups/:groupId/subjects (Gets all subjects of a group)
+- PATCH: => /groups/:groupId/subjects/:subjectId/teacher (Change group subject teacher)
+- DELETE: => /groups/:groupId/subjects/:subjectId (Removes subject from group)
+
+
+9. ===SUBJECT-GROUPS-TIME-SLOTS===
+
+- GET: => groups/:groupId/time-slots (Gets all timeslots of a group)
+- POST: => /groups/:groupId/subjects/:subjectId/time-slots (Add timeslots to group subject)
+- DELETE: => /groups/:groupId/subjects/:subjectId/time-slots/:timeSlotId (Remove timeslot from group subject)
+
+
+10. ===STUDENTS=== (Takes group as a parameter in DTO)
+
+- GET: => /students (Gets all students)
+- POST: => /students (Creates a student)
+- GET: => /students/:id (Gets a student)
+- PATCH: => /students/:id (Updates a student)
+- DELETE: => /students/:id (Deletes a student)
+
+
+11. ===GROUP-STUDENTS===
+
+- POST: => groups/:groupId/promote (Changes all the student's groupId from a group)
+- GET: => groups/:groupId/students (Gets all students of a group)
+
+12. ===ENROLLMENTS===
+
+- POST: => period/:periodId/groups/:groupId/enrollments (Enrolls all group students to a list of subjects)
+
+
+13. ===STUDENT-SUBJECTS===
+
+- POST: => /students/:studentId/subjects (Add subject to student's subjects)
+- DELETE: => /students/:studentId/subjects/:subjectId (Remove subject from student's subjects)
+- GET: => students/:studentId/subjects (Gets all student's enrolled subjects)
+
+13. ===ABSENCES===
+
+- GET: => /period/:periodId/absences (Get all absencees of a period)
+- POST: => /period/:periodId/absences (Create a absence in a period)
+- GET: => /period/:periodId/absences/:absenceId (Get absence details)
+- PATCH: => /period/:periodId/absences/:absenceId (Update absence)
+- DELETE: => /period/:periodId/absences/:absenceId (Delete absences)
+
+
+14. ===TEACHER-GROUPS===
+
+- GET: => period/:periodId/teacher/:teacherId/groups (Get all teachers' groups)
+- GET: => period/:periodId/teacher/:teacherId/groups/:groupId/students (Get student list of a teacher's subject)
+- GET: => period/:periodId/teacher/:teacherId/groups/:groupId/absence-report o absences (Get absence list of a teacher's subject)
+- POST: => period/:periodId/teacher/:teacherId/groups/:groupId/absences (Create an absence for a student in a teacher's group)
+- GET: => period/:periodId/teacher/:teacherId/time-slots (Teacher's schedule)
+
+
+15. ===STUDENT-ABSENCES===
+
+- GET: => period/:periodId/students/:studentId/absences (Gets all absences of a student)
+- GET: => period/:periodId/students/:studentId/absences/:absenceId (Gets a student's absence)
+- GET: => period/:periodId/students/:studentId/absences/unjustified (Gets all unjustified absences of the student)
+- GET: => period/:periodId/students/:studentId/subjects/:subjectId/absences (Get absences of a student's enrolled subject)
+
+
+16. ===STUDENT-PERMISSIONS===
+
+- POST: => period/:periodId/students/:studentId/permissions (Creates a permission request of a student)
+- POST: => period/:periodId/students/:studentId/permissions (Gets all permissions of a student)
+
+
+17. ===STATS===
+
+- GET: => period/:periodId/stats/approved-permissions (Approved vs not approved)
+- GET: => period/:periodId/stats/absences-per-group (Absences per group)
+- GET: => period/:periodId/stats/absences-per-reason (Absences per reason)
+- GET: => period/:periodId/stats/absences-per-status (Absences per status)
+- GET: => period/:periodId/stats/absences-per-subject (Absences per subject)
+- GET: => period/:periodId/stats/absences-per-student (Absences per student)
+- GET: => period/:periodId/stats/top-absences-subject (Most absences subject)
+
+
+18. ===AUTHENTICATION===
+
+- POST: => auth/login (Login)
+- POST: => auth/change-password (Change password)
+
+
+
+
+
+
+
+19. ===STUDENT-SUBJECTS-TIMESLOTS===
+
+- GET: => /period/:periodId/students/:studentId/range-time-slots/
+
+
+
+
