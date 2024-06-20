@@ -3,6 +3,9 @@
 /node_modules
 /build
 
+insertions.sql
+normal_raw.sql
+
 # Logs
 logs
 *.log

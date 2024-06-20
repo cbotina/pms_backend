@@ -1,7 +1,7 @@
 drop database if exists pms_de;
 create database if not exists pms_dev;
 
-select * from time_slot;
+select * from time_slot where periodId = 4;
 use pms_dev;
 
 select * from period;
