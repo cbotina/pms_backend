@@ -16,6 +16,7 @@ import { PeriodGroupsModule } from './period-groups/period-groups.module';
 import { SubjectGroupsModule } from './subject-groups/subject-groups.module';
 import { SubjectGroupTimeSlotsModule } from './subject-group-time-slots/subject-group-time-slots.module';
 import { StudentsModule } from './students/students.module';
+import { GroupStudentsModule } from './group-students/group-students.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import configValidation from './config/validation/config.validation';
     SubjectGroupsModule,
     SubjectGroupTimeSlotsModule,
     StudentsModule,
+    GroupStudentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

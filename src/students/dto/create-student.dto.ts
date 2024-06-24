@@ -1,10 +1,13 @@
 import {
+  IsEmail,
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsNumberString,
   IsString,
   MaxLength,
 } from 'class-validator';
+import { Gender } from '../entities/student.entity';
 
 export class CreateStudentDto {
   @IsNumberString()
@@ -25,4 +28,10 @@ export class CreateStudentDto {
   @IsInt()
   @IsNotEmpty()
   groupId: number;
+
+  @IsEnum(Gender)
+  gender: Gender;
+
+  @IsEmail()
+  email: string;
 }

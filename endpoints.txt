@@ -66,13 +66,13 @@
 - ✅ GET: => subject-group-time-slots/:subjetcGroupTimeSlotId (Gets sgts details)
 
 
-10. ===STUDENTS=== (Takes group as a parameter in DTO)
+10. ===STUDENTS=== (Takes groupId as a parameter in DTO) ✅
 
-- GET: => /students (Gets all students)
-- POST: => /students (Creates a student)
-- GET: => /students/:id (Gets a student)
-- PATCH: => /students/:id (Updates a student, including group)
-- DELETE: => /students/:id (Deletes a student)
+- ✅ GET: => /students (Gets all students)
+- ✅ POST: => /students (Creates a student)
+- ✅ GET: => /students/:id (Gets a student)
+- ✅ PATCH: => /students/:id (Updates a student, including group)
+- ✅ DELETE: => /students/:id (Deletes a student)
 
 
 11. ===GROUP-STUDENTS===

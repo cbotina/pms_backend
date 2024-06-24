@@ -55,7 +55,6 @@ export class SubjectGroupsService {
   async getGroupSubjects(
     groupId: number,
     options: IPaginationOptions,
-    search?: string,
   ): Promise<Pagination<SubjectGroup>> {
     const queryBuilder = this.subjectGroupsRepository.createQueryBuilder('sg');
 

@@ -41,14 +41,13 @@ export class SubjectGroupsController {
     @Param('groupId', ParseIntPipe) groupId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
-    @Query('search') search?: string,
   ) {
     const options: IPaginationOptions = {
       limit,
       page,
     };
 
-    return this.subjectGroupsService.getGroupSubjects(groupId, options, search);
+    return this.subjectGroupsService.getGroupSubjects(groupId, options);
   }
 
   @Get('subject-groups/:subjectGroupId')

@@ -50,7 +50,8 @@ export class StudentsService {
   async update(id: number, updateStudentDto: UpdateStudentDto) {
     const existingStudent = await this.findOne(id);
 
-    const { cc, firstName, groupId, lastName } = updateStudentDto;
+    const { cc, firstName, groupId, lastName, email, gender } =
+      updateStudentDto;
 
     let group: Group = undefined;
 
@@ -63,6 +64,8 @@ export class StudentsService {
       firstName,
       lastName,
       group,
+      email,
+      gender,
     });
 
     return await this.studentsRepository.save(studentData);

@@ -43,17 +43,12 @@ export class SubjectGroupTimeSlotsController {
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
-    @Query('search') search?: string,
   ) {
     const options: IPaginationOptions = {
       limit,
       page,
     };
-    return this.subjectGroupTimeSlotsService.findAll(
-      options,
-      subjectGroupId,
-      search,
-    );
+    return this.subjectGroupTimeSlotsService.findAll(options, subjectGroupId);
   }
 
   @Get('subject-group-time-slots/:subjetcGroupTimeSlotId')
