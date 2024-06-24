@@ -24,6 +24,7 @@ export class PeriodsService {
   findAll(): Promise<Period[]> {
     return this.periodsRepository.find();
   }
+
   findOne(id: number): Promise<Period | null> {
     return this.periodsRepository.findOneByOrFail({ id });
   }

@@ -19,20 +19,20 @@
 - ✅ POST: => /periods/:periodId/time-slots (Adds timeslot to period)
 - ✅ POST: => /periods/:periodId/time-slots/import (Imports timeslots from period)
 
-4. ===SUBJECTS===
+4. ===SUBJECTS=== ✅
 
-- GET: => /subjects (Gets all subjects) (Paginated)
-- POST: => /subjects (Creates a subject)
-- PATCH: => /subjects/:id (Updates a subject)
-- DELETE: => /subjects/:id (Deletes a subject)
+- ✅ GET: => /subjects (Gets all subjects) (Paginated)
+- ✅ POST: => /subjects (Creates a subject)
+- ✅ PATCH: => /subjects/:id (Updates a subject)
+- ✅ DELETE: => /subjects/:id (Deletes a subject)
 
-5. ===TEACHERS===
+5. ===TEACHERS=== ✅
 
-- GET: => /teachers (Gets all teachers) (Paginated)
-- POST: => /teachers (Creates a teacher)
-- GET: => /teachers/:id (Gets a teacher)
-- PATCH: => /teachers/:id (Updates a teacher)
-- DELETE: => /teachers/:id (Deletes a teacher)
+- ✅ GET: => /teachers (Gets all teachers) (Paginated)
+- ✅ POST: => /teachers (Creates a teacher)
+- ✅ GET: => /teachers/:id (Gets a teacher)
+- ✅ PATCH: => /teachers/:id (Updates a teacher)
+- ✅ DELETE: => /teachers/:id (Deletes a teacher)
 
 
 6. ===GROUPS===
@@ -48,9 +48,9 @@
 - POST: => /periods/:periodId/groups (Adds a group to a period)
 
 
-8. ===SUBJECT-GROUPS=== (GROUP MENU)
+8. ===SUBJECT-GROUPS=== (GROUP MENU) 
 
-- POST: => /groups/:groupId/subjects (Adds subject to group)
+- POST: => /groups/:groupId/subjects (Adds subject to group) (Creates a subject) (Optional adds teacher)
 - GET: => /groups/:groupId/subjects (Gets all subjects of a group)
 - PATCH: => /groups/:groupId/subjects/:subjectId/teacher (Change group subject teacher)
 - DELETE: => /groups/:groupId/subjects/:subjectId (Removes subject from group)
@@ -135,12 +135,6 @@
 
 - POST: => auth/login (Login)
 - POST: => auth/change-password (Change password)
-
-
-
-
-
-
 
 19. ===STUDENT-SUBJECTS-TIMESLOTS===
 

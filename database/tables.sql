@@ -104,7 +104,7 @@ create table if not exists timeSlot(
  create table if not exists permission (
 	id int auto_increment,
     studentId int,
-    statusId set('A','B','C'),
+    status set('P','S','A', 'N') default 'P',
     requestDate date,
     approvalDate date,
     reason varchar(250),
@@ -115,21 +115,33 @@ create table if not exists timeSlot(
     primary key(id),
     foreign key(studentId) references student(id)
  );
+ 
+ create table if not exists dailyReport(
+	id int auto_increment,
+    subjectGroupTimeSlotId int,
+    reportDate date,
+	isSubmitted bool default false,
+    primary key (id),
+    foreign key (subjectGroupTimeSlotId) references subjectGroupTimeSlot(id)
+ );
 
  
  create table if not exists absence(
 	id int auto_increment,
-    subjectGroupTimeSlotId int, 
+    -- subjectGroupTimeSlotId int, 
     permissionId int default null,
+    dailyReportId int default null,
     studentId int,
-    absenceDate datetime default now(),
+    -- absenceDate datetime default now(),
     teacherNote text,
     
     primary key(id),
     
     foreign key (studentId) references student(id),
-    foreign key(subjectGroupTimeSlotId) references subjectGroupTimeSlot(id),
-    foreign key(permissionId) references permission(id)
+    -- foreign key(subjectGroupTimeSlotId) references subjectGroupTimeSlot(id),
+    foreign key(permissionId) references permission(id),
+    foreign key(dailyReportId) references dailyReport(id)
  );
  
+
  
