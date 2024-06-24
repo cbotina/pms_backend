@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Group } from 'src/groups/entities/group.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Teacher {
@@ -16,4 +17,7 @@ export class Teacher {
 
   @Column()
   lastName: string;
+
+  @OneToMany(() => Group, (group) => group.tutor)
+  tutoredGroups: Group[];
 }

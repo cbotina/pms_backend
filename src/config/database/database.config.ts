@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
 import { Subject } from 'src/subjects/entities/subject.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
@@ -15,7 +16,7 @@ export const dbConfig = (
     username: configService.get('database.username'),
     password: configService.get('database.password'),
     database: configService.get('database.database'),
-    entities: [Period, TimeSlot, Subject, Teacher],
+    entities: [Period, TimeSlot, Subject, Teacher, Group],
     synchronize: configService.get('database.synchronize'),
   };
 };

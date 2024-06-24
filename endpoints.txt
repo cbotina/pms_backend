@@ -44,8 +44,8 @@
 
 7. ===PERIOD-GROUPS===
 
-- GET: => /periods/:periodId/groups (Gets all groups of a period)
-- POST: => /periods/:periodId/groups (Adds a group to a period)
+- ✅ GET: => /periods/:periodId/groups (Gets all groups of a period)
+- ✅ POST: => /periods/:periodId/groups (Adds a group to a period)
 
 
 8. ===SUBJECT-GROUPS=== (GROUP MENU) 

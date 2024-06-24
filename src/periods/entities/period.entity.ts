@@ -1,3 +1,4 @@
+import { Group } from 'src/groups/entities/group.entity';
 import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -17,4 +18,7 @@ export class Period {
 
   @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.period)
   timeSlots: TimeSlot[];
+
+  @OneToMany(() => Group, (group) => group.period)
+  groups: Group[];
 }

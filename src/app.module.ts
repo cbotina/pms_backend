@@ -11,6 +11,8 @@ import { TimeSlotsModule } from './time-slots/time-slots.module';
 import { PeriodTimeSlotsModule } from './period-time-slots/period-time-slots.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TeachersModule } from './teachers/teachers.module';
+import { GroupsModule } from './groups/groups.module';
+import { PeriodGroupsModule } from './period-groups/period-groups.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import configValidation from './config/validation/config.validation';
     PeriodTimeSlotsModule,
     SubjectsModule,
     TeachersModule,
+    GroupsModule,
+    PeriodGroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
