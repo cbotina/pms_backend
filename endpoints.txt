@@ -35,32 +35,35 @@
 - ✅ DELETE: => /teachers/:id (Deletes a teacher)
 
 
-6. ===GROUPS===
+6. ===GROUPS=== ✅
 
-- GET: => /groups/:groupId (Gets a group)
-- DELETE: => groups/:groupId (Deletes a group)
+- ✅ GET: => /groups/:groupId (Gets a group)
+-  DELETE: => groups/:groupId (Deletes a group)
 - PATCH: => periods/:periodId/groups/:groupId (Update a group)
 
 
-7. ===PERIOD-GROUPS===
+7. ===PERIOD-GROUPS=== ✅
 
 - ✅ GET: => /periods/:periodId/groups (Gets all groups of a period)
 - ✅ POST: => /periods/:periodId/groups (Adds a group to a period)
 
 
-8. ===SUBJECT-GROUPS=== (GROUP MENU) 
+8. ===SUBJECT-GROUPS=== (GROUP MENU) ✅
 
-- POST: => /groups/:groupId/subjects (Adds subject to group) (Creates a subject) (Optional adds teacher)
-- GET: => /groups/:groupId/subjects (Gets all subjects of a group)
-- PATCH: => /groups/:groupId/subjects/:subjectId/teacher (Change group subject teacher)
-- DELETE: => /groups/:groupId/subjects/:subjectId (Removes subject from group)
+- ✅ POST: => /groups/:groupId/subjects (Adds subject to group) (Creates a subject) (Optional adds teacher)
+- ✅ GET: => /groups/:groupId/subjects (Gets all subjects of a group)
+- ✅ PATCH: => /subject-groups/:subjectGroupId (Change group subject teacher)
+- ✅ GET: => /subject-groups/:subjectGroupId (Gets a subject group)
+- ✅ DELETE: => /subject-groups/:subjectGroupId (Removes subject from group)
 
 
-9. ===SUBJECT-GROUPS-TIME-SLOTS===
+9. ===SUBJECT-GROUPS-TIME-SLOTS=== ✅
 
-- GET: => groups/:groupId/time-slots (Gets all timeslots of a group)
-- POST: => /groups/:groupId/subjects/:subjectId/time-slots (Add timeslots to group subject)
-- DELETE: => /groups/:groupId/subjects/:subjectId/time-slots/:timeSlotId (Remove timeslot from group subject)
+- ✅ GET: => subject-groups/:subjectGroupId/time-slots (Gets all timeslots of a group)
+- ✅ POST: => subject-groups/:subjectGroupId/time-slots (Add timeslots to group subject)
+- ✅ DELETE: => subject-group-time-slots/:subjetcGroupTimeSlotId (Remove timeslot from group subject)
+- ✅ PATCH: => subject-group-time-slots/:subjetcGroupTimeSlotId (Updates sgts)
+- ✅ GET: => subject-group-time-slots/:subjetcGroupTimeSlotId (Gets sgts details)
 
 
 10. ===STUDENTS=== (Takes group as a parameter in DTO)
@@ -68,13 +71,13 @@
 - GET: => /students (Gets all students)
 - POST: => /students (Creates a student)
 - GET: => /students/:id (Gets a student)
-- PATCH: => /students/:id (Updates a student)
+- PATCH: => /students/:id (Updates a student, including group)
 - DELETE: => /students/:id (Deletes a student)
 
 
 11. ===GROUP-STUDENTS===
 
-- POST: => groups/:groupId/promote (Changes all the student's groupId from a group)
+- POST: => groups/:groupId/students/promote (Changes all the student's groupId from a group)
 - GET: => groups/:groupId/students (Gets all students of a group)
 
 12. ===ENROLLMENTS===

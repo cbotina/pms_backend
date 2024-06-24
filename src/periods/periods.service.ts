@@ -31,6 +31,7 @@ export class PeriodsService {
 
   async update(id: number, updatePeriodDto: UpdatePeriodDto): Promise<Period> {
     const existingPeriod = await this.findOne(id);
+
     const periodData = this.periodsRepository.merge(
       existingPeriod,
       updatePeriodDto,

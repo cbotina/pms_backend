@@ -1,5 +1,12 @@
 import { Period } from 'src/periods/entities/period.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class TimeSlot {
@@ -22,4 +29,7 @@ export class TimeSlot {
     onDelete: 'CASCADE',
   })
   period: Period;
+
+  @OneToMany(() => SubjectGroupTimeSlot, (sgts) => sgts.timeSlot)
+  subjectGroupTimeSlots: SubjectGroupTimeSlot[];
 }

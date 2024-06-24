@@ -2,6 +2,8 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
+import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { Subject } from 'src/subjects/entities/subject.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
@@ -16,7 +18,15 @@ export const dbConfig = (
     username: configService.get('database.username'),
     password: configService.get('database.password'),
     database: configService.get('database.database'),
-    entities: [Period, TimeSlot, Subject, Teacher, Group],
+    entities: [
+      Period,
+      TimeSlot,
+      Subject,
+      Teacher,
+      Group,
+      SubjectGroup,
+      SubjectGroupTimeSlot,
+    ],
     synchronize: configService.get('database.synchronize'),
   };
 };

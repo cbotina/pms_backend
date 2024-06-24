@@ -14,4 +14,6 @@ export class CreateGroupDto {
 
   @IsEnum(Modality)
   modality: Modality;
+
+  teacherId?: number;
 }

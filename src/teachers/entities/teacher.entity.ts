@@ -1,5 +1,12 @@
 import { Group } from 'src/groups/entities/group.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Teacher {
@@ -9,7 +16,7 @@ export class Teacher {
   @Column({ unique: true })
   cc: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   email: string;
 
   @Column()
@@ -18,6 +25,9 @@ export class Teacher {
   @Column()
   lastName: string;
 
-  @OneToMany(() => Group, (group) => group.tutor)
-  tutoredGroups: Group[];
+  @OneToOne(() => Group)
+  tutoredGroup: Group;
+
+  @OneToMany(() => SubjectGroup, (subjectGroup) => subjectGroup.teacher)
+  subjectGroups: SubjectGroup[];
 }

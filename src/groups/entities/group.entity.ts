@@ -1,6 +1,15 @@
 import { Period } from 'src/periods/entities/period.entity';
+import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum Modality {
   ACADEMIC = 'ACADEMIC',
@@ -27,6 +36,10 @@ export class Group {
   @ManyToOne(() => Period, (period) => period.groups)
   period: Period;
 
-  @ManyToOne(() => Teacher, (teacher) => teacher.tutoredGroups)
+  @OneToOne(() => Teacher)
+  @JoinColumn()
   tutor: Teacher;
+
+  @OneToMany(() => SubjectGroup, (subjectGroup) => subjectGroup.group)
+  subjectGroups: SubjectGroup[];
 }

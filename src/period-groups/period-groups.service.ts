@@ -8,6 +8,7 @@ import {
 import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
+import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -17,6 +18,8 @@ export class PeriodGroupsService {
     private readonly periodsRepository: Repository<Period>,
     @InjectRepository(Group)
     private readonly groupsRepository: Repository<Group>,
+    @InjectRepository(Teacher)
+    private readonly teachersRepository: Repository<Teacher>,
   ) {}
 
   async getPeriodGroups(
@@ -39,9 +42,18 @@ export class PeriodGroupsService {
       id: periodId,
     });
 
+    let teacher: Teacher = undefined;
+
+    if (createGroupDto.teacherId) {
+      teacher = await this.teachersRepository.findOneByOrFail({
+        id: createGroupDto.teacherId,
+      });
+    }
+
     return this.groupsRepository.save({
       ...createGroupDto,
       period: period,
+      teacher: teacher,
     });
   }
 }
