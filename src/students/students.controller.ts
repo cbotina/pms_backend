@@ -1,8 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UseFilters,
+  DefaultValuePipe,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
+@UseInterceptors(LoggingInterceptor)
+@UseFilters(TypeORMExceptionFilter)
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
@@ -13,8 +31,17 @@ export class StudentsController {
   }
 
   @Get()
-  findAll() {
-    return this.studentsService.findAll();
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('search') search?: string,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.studentsService.findAll(options, search);
   }
 
   @Get(':id')

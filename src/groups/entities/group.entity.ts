@@ -1,4 +1,5 @@
 import { Period } from 'src/periods/entities/period.entity';
+import { Student } from 'src/students/entities/student.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import {
@@ -42,4 +43,7 @@ export class Group {
 
   @OneToMany(() => SubjectGroup, (subjectGroup) => subjectGroup.group)
   subjectGroups: SubjectGroup[];
+
+  @OneToMany(() => Student, (student) => student.group)
+  students: Student[];
 }

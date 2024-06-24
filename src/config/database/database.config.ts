@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
+import { Student } from 'src/students/entities/student.entity';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { Subject } from 'src/subjects/entities/subject.entity';
@@ -26,6 +27,7 @@ export const dbConfig = (
       Group,
       SubjectGroup,
       SubjectGroupTimeSlot,
+      Student,
     ],
     synchronize: configService.get('database.synchronize'),
   };
