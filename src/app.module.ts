@@ -19,6 +19,8 @@ import { StudentsModule } from './students/students.module';
 import { GroupStudentsModule } from './group-students/group-students.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { StudentEnrollmentsModule } from './student-enrollments/student-enrollments.module';
+import { AbsencesModule } from './absences/absences.module';
+import { SchdulesModule } from './schdules/schdules.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import configValidation from './config/validation/config.validation';
     GroupStudentsModule,
     EnrollmentsModule,
     StudentEnrollmentsModule,
+    AbsencesModule,
+    SchdulesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

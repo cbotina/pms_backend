@@ -3,6 +3,8 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
+import { StudentScheduleView } from 'src/schdules/entities/student-schedule.view';
+import { TeacherScheduleView } from 'src/schdules/entities/teacher-schedule.view';
 import { Student } from 'src/students/entities/student.entity';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
@@ -30,6 +32,8 @@ export const dbConfig = (
       SubjectGroupTimeSlot,
       Student,
       Enrollment,
+      StudentScheduleView,
+      TeacherScheduleView,
     ],
     synchronize: configService.get('database.synchronize'),
   };

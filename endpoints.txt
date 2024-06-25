@@ -86,41 +86,67 @@
 - ✅ DELETE: => enrollments/:enrollmentId (Remove subject from student's subjects)
 
 
-13. ===STUDENT-SUBJECTS===
+13. ===STUDENT-ENROLLMENTS===
 
 - ✅ POST: => /students/:studentId/enrollments (Add subject to student's subjects)
 - ✅ GET: => students/:studentId/enrollments (Gets all student's enrolled subjects)
 
-13. ===ABSENCES===
+19. ===STUDENT-TIMESLOTS===
+
+- GET: => period/:periodId/student/:studentId/subject-group-time-slots (student's schedule)
+
+16. ===TEACHER-SUBJECT-GROUPS===
+
+- GET: => period/:periodId/teacher/:teacherId/subject-groups
+
+18. ===TEACHER-TIMESLOTS=== (Subject group Time slots)
+
+- GET: => period/:periodId/teachers/:teacherId/subject-group-time-slots (Teacher's schedule)
+
+15. ===DAILY-REPORTS===
+
+- POST: => daily-reports/
+- GET: => daily-reports/:dailyReportId
+- DELETE: => daily-reports/:dailyReportId
+- PATCH: => daily-reports/:dailyReportId
+
+14. ===ABSENCES===
+
+- GET: => absences/:absenceId (Get absence details)
+- PATCH: => absences/:absenceId (Update absence)
+- DELETE: => absences/:absenceId (Delete absences)
+
+- POST: => daily-reports/:dailyReportId/absences
+- GET: => daily-reports/:dailyReportId/absences
+
+15. ===PERIOD-ABSENCES===
 
 - GET: => /period/:periodId/absences (Get all absencees of a period)
 - POST: => /period/:periodId/absences (Create a absence in a period)
-- GET: => /period/:periodId/absences/:absenceId (Get absence details)
-- PATCH: => /period/:periodId/absences/:absenceId (Update absence)
-- DELETE: => /period/:periodId/absences/:absenceId (Delete absences)
 
 
-14. ===TEACHER-GROUPS===
 
-- GET: => period/:periodId/teacher/:teacherId/groups (Get all teachers' groups)
-- GET: => period/:periodId/teacher/:teacherId/groups/:groupId/students (Get student list of a teacher's subject)
-- GET: => period/:periodId/teacher/:teacherId/groups/:groupId/absence-report o absences (Get absence list of a teacher's subject)
-- POST: => period/:periodId/teacher/:teacherId/groups/:groupId/absences (Create an absence for a student in a teacher's group)
-- GET: => period/:periodId/teacher/:teacherId/time-slots (Teacher's schedule)
+17. ===SUBJECT-GROUPS===
+
+- GET: => subject-groups/:subjectGroupId/students (Get student list of a teacher's subject)
+- GET: => subject-groups/:subjectGroupId/absence-report o absences (Get absence list of a teacher's subject)
+- POST: => subject-groups/:subjectGroupId/absences (Create an absence for a student in a teacher's group)
+- GET: => period/:periodId/teachers/:teacherId/daily-reports
 
 
-15. ===STUDENT-ABSENCES===
+
+
+20. ===STUDENT-ABSENCES===
 
 - GET: => period/:periodId/students/:studentId/absences (Gets all absences of a student)
-- GET: => period/:periodId/students/:studentId/absences/:absenceId (Gets a student's absence)
 - GET: => period/:periodId/students/:studentId/absences/unjustified (Gets all unjustified absences of the student)
 - GET: => period/:periodId/students/:studentId/subjects/:subjectId/absences (Get absences of a student's enrolled subject)
 
 
-16. ===STUDENT-PERMISSIONS===
+21. ===STUDENT-PERMISSIONS===
 
-- POST: => period/:periodId/students/:studentId/permissions (Creates a permission request of a student)
-- POST: => period/:periodId/students/:studentId/permissions (Gets all permissions of a student)
+- POST: => students/:studentId/permissions (Creates a permission request of a student)
+- GET: => period/:periodId/students/:studentId/permissions (Gets all permissions of a student)
 
 
 17. ===STATS===

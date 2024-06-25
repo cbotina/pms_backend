@@ -47,7 +47,6 @@ export class SubjectGroupTimeSlotsService {
   async findAll(
     options: IPaginationOptions,
     subjectGroupId: number,
-    search?: string,
   ): Promise<Pagination<SubjectGroupTimeSlot>> {
     const queryBuilder = this.sgtsRepository.createQueryBuilder('sgts');
 
@@ -57,10 +56,6 @@ export class SubjectGroupTimeSlotsService {
       })
       .leftJoin('sgts.timeSlot', 'ts')
       .addSelect(['ts.id', 'ts.startTime', 'ts.endTime']);
-    // queryBuilder.leftJoin('sg.teacher', 't');
-    // queryBuilder.addSelect(['t.id', 't.firstName', 't.lastName']);
-    // queryBuilder.leftJoin('sg.subject', 's');
-    // queryBuilder.addSelect(['s.id', 's.name']);
 
     return paginate<SubjectGroupTimeSlot>(queryBuilder, options);
   }
