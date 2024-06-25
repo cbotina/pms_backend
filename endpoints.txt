@@ -93,22 +93,29 @@
 
 19. ===STUDENT-TIMESLOTS===
 
-- GET: => period/:periodId/student/:studentId/subject-group-time-slots (student's schedule)
+- ✅ GET: => period/:periodId/student/:studentId/schedule (student's schedule)
 
 16. ===TEACHER-SUBJECT-GROUPS===
 
-- GET: => period/:periodId/teacher/:teacherId/subject-groups
+- ✅ GET: => period/:periodId/teacher/:teacherId/subject-groups
 
 18. ===TEACHER-TIMESLOTS=== (Subject group Time slots)
 
-- GET: => period/:periodId/teachers/:teacherId/subject-group-time-slots (Teacher's schedule)
+- ✅ GET: => period/:periodId/teachers/:teacherId/subject-group-time-slots (Teacher's schedule)
+
+21. ===STUDENT-PERMISSIONS===
+
+- POST: => students/:studentId/permissions (Creates a permission request of a student)
+- GET: => period/:periodId/students/:studentId/permissions (Gets all permissions of a student)
+
 
 15. ===DAILY-REPORTS===
 
-- POST: => daily-reports/
+- POST: => daily-reports/ (assistance call)
 - GET: => daily-reports/:dailyReportId
 - DELETE: => daily-reports/:dailyReportId
 - PATCH: => daily-reports/:dailyReportId
+- GET: => period/:periodId/teachers/:teacherId/daily-reports (day in query params)
 
 14. ===ABSENCES===
 
@@ -143,10 +150,6 @@
 - GET: => period/:periodId/students/:studentId/subjects/:subjectId/absences (Get absences of a student's enrolled subject)
 
 
-21. ===STUDENT-PERMISSIONS===
-
-- POST: => students/:studentId/permissions (Creates a permission request of a student)
-- GET: => period/:periodId/students/:studentId/permissions (Gets all permissions of a student)
 
 
 17. ===STATS===

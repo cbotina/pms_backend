@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { SchdulesService } from './schdules.service';
-import { SchdulesController } from './schdules.controller';
+import { SchdulesService } from './schedules.service';
+import { SchdulesController } from './schedules.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { StudentScheduleView } from './entities/student-schedule.view';
 import { TeacherScheduleView } from './entities/teacher-schedule.view';
 

@@ -67,4 +67,23 @@ export class SubjectGroupsController {
   remove(@Param('subjectGroupId', ParseIntPipe) id: number) {
     return this.subjectGroupsService.remove(+id);
   }
+
+  @Get('periods/:periodId/teachers/:teacherId/subject-groups')
+  getTeacherSubjectGroups(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('teacherId', ParseIntPipe) teacherId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.subjectGroupsService.getTeacherSubjectGroups(
+      periodId,
+      teacherId,
+      options,
+    );
+  }
 }

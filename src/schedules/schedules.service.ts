@@ -7,8 +7,9 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { Day } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { TeacherScheduleView } from './entities/teacher-schedule.view';
+import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
 
 @Injectable()
 export class SchdulesService {
@@ -23,7 +24,7 @@ export class SchdulesService {
     periodId: number,
     studentId: number,
     options: IPaginationOptions,
-    day?: Day,
+    day?: WeekDay,
   ): Promise<Pagination<StudentScheduleView>> {
     const qb = this.studentScheduleRepository
       .createQueryBuilder('ss')
@@ -41,7 +42,7 @@ export class SchdulesService {
     periodId: number,
     teacherId: number,
     options: IPaginationOptions,
-    day?: Day,
+    day?: WeekDay,
   ): Promise<Pagination<TeacherScheduleView>> {
     const qb = this.teacherScheduleRepository
       .createQueryBuilder('tsch')
@@ -54,4 +55,54 @@ export class SchdulesService {
 
     return paginate<TeacherScheduleView>(qb, options);
   }
+
+  async getStudentScheduleByRange(
+    periodId: number,
+    studentId: number,
+    scheduleRangeDatesDto: ScheduleRangeDatesDto,
+  ): Promise<Map<string, StudentScheduleView[]>> {
+    const { startDate, endDate } = scheduleRangeDatesDto;
+
+    const nDate = new Date(startDate);
+    const end = new Date(endDate);
+
+    const scheduleMap: Map<string, StudentScheduleView[]> = new Map();
+
+    while (nDate <= end) {
+      console.log(nDate);
+      console.log(nDate.getDay());
+      console.log('--');
+      if (
+        !fairyDays.includes(nDate.toString()) &&
+        !(nDate.getDay() == 5 || nDate.getDay() == 6)
+      ) {
+        console.log('yes');
+        const qb = this.studentScheduleRepository
+          .createQueryBuilder('schedule')
+          .where('schedule.periodId = :periodId', { periodId })
+          .andWhere('schedule.studentId = :studentId', { studentId })
+          .andWhere('schedule.day = :day', { day: DaysMap[nDate.getDay()] });
+
+        const dayTimeSlots = await qb.execute();
+
+        scheduleMap.set(nDate.toISOString().slice(0, 10), dayTimeSlots);
+      }
+
+      nDate.setDate(nDate.getDate() + 1);
+    }
+
+    return scheduleMap;
+  }
 }
+
+export const DaysMap = {
+  6: undefined,
+  0: WeekDay.MONDAY,
+  1: WeekDay.TUESDAY,
+  2: WeekDay.WEDNESDAY,
+  3: WeekDay.THURSDAY,
+  4: WeekDay.FRIDAY,
+  5: undefined,
+};
+
+export const fairyDays: string[] = [new Date('2024-06-26').toString()];

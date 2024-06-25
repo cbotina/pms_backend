@@ -20,7 +20,9 @@ import { GroupStudentsModule } from './group-students/group-students.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { StudentEnrollmentsModule } from './student-enrollments/student-enrollments.module';
 import { AbsencesModule } from './absences/absences.module';
-import { SchdulesModule } from './schdules/schdules.module';
+import { SchdulesModule } from './schedules/schedules.module';
+import { DailyReportsModule } from './daily-reports/daily-reports.module';
+import { PermissionsModule } from './permissions/permissions.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import configValidation from './config/validation/config.validation';
     StudentEnrollmentsModule,
     AbsencesModule,
     SchdulesModule,
+    DailyReportsModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

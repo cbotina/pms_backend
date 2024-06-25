@@ -1,5 +1,7 @@
+import { Absence } from 'src/absences/entities/absence.entity';
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { Group } from 'src/groups/entities/group.entity';
+import { Permission } from 'src/permissions/entities/permission.entity';
 import {
   Column,
   Entity,
@@ -40,4 +42,10 @@ export class Student {
 
   @OneToMany(() => Enrollment, (enrollment) => enrollment.student)
   enrollments: Enrollment[];
+
+  @OneToMany(() => Permission, (permission) => permission.student)
+  permissions: Permission[];
+
+  @OneToMany(() => Absence, (absence) => absence.student)
+  absences: Absence[];
 }

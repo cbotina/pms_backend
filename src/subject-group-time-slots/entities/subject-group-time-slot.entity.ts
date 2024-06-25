@@ -1,8 +1,15 @@
+import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-export enum Day {
+export enum WeekDay {
   MONDAY = 'MON',
   TUESDAY = 'TUE',
   WEDNESDAY = 'WED',
@@ -23,7 +30,13 @@ export class SubjectGroupTimeSlot {
 
   @Column({
     type: 'enum',
-    enum: Day,
+    enum: WeekDay,
   })
-  day: Day;
+  day: WeekDay;
+
+  @OneToMany(
+    () => DailyReport,
+    (dailyReport) => dailyReport.subjectGroupTimeSlot,
+  )
+  dailyReports: DailyReport[];
 }
