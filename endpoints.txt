@@ -82,7 +82,7 @@
 
 12. ===ENROLLMENTS===
 
-- POST: => groups/:groupId/generate-enrollments (Enrolls all group students to a list of subjects)
+- ✅ POST: => groups/:groupId/generate-enrollments (Enrolls all group students to a list of subjects)
 - ✅ DELETE: => enrollments/:enrollmentId (Remove subject from student's subjects)
 
 
