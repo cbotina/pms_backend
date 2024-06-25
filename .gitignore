@@ -5,6 +5,7 @@
 
 insertions.sql
 normal_raw.sql
+dev_insertions.sql
 
 # Logs
 logs
