@@ -3,6 +3,7 @@ import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subj
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -20,6 +21,7 @@ export class DailyReport {
   isSubmitted: boolean;
 
   @ManyToOne(() => SubjectGroupTimeSlot, (sgts) => sgts.dailyReports)
+  @JoinColumn()
   subjectGroupTimeSlot: SubjectGroupTimeSlot;
 
   @OneToMany(() => Absence, (absence) => absence.dailyReport)

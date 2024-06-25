@@ -8,7 +8,7 @@ export class Absence {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   teacherNote: string;
 
   @ManyToOne(() => Permission, (permission) => permission.absences)

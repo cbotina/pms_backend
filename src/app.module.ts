@@ -23,6 +23,7 @@ import { AbsencesModule } from './absences/absences.module';
 import { SchdulesModule } from './schedules/schedules.module';
 import { DailyReportsModule } from './daily-reports/daily-reports.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { PermissionRequestsModule } from './permission-requests/permission-requests.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import configValidation from './config/validation/config.validation';
     SchdulesModule,
     DailyReportsModule,
     PermissionsModule,
+    PermissionRequestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

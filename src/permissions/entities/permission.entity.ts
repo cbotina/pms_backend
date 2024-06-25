@@ -30,8 +30,8 @@ export class Permission {
   @Column()
   requestDate: Date;
 
-  @Column()
-  approvalData: Date;
+  @Column({ nullable: true })
+  approvalDate: Date;
 
   @Column()
   reason: string;
@@ -39,10 +39,10 @@ export class Permission {
   @Column({ type: 'text' })
   evidenceUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   studentNote: string;
 
-  @Column()
+  @Column({ nullable: true })
   principalNote: string;
 
   @ManyToOne(() => Student, (student) => student.permissions)
