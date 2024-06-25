@@ -7,6 +7,7 @@ import {
   Delete,
   UseFilters,
   UseInterceptors,
+  Post,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
@@ -32,5 +33,10 @@ export class GroupsController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.groupsService.remove(id);
+  }
+
+  @Post(':id/generate-enrollments')
+  generateEnrollments(@Param('id') id: number) {
+    return this.groupsService.generateEnrollments(id);
   }
 }

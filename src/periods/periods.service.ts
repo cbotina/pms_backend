@@ -52,6 +52,7 @@ export class PeriodsService {
   ): Promise<Pagination<Period>> {
     const queryBuilder = this.periodsRepository.createQueryBuilder('period');
     queryBuilder.orderBy('period.id', 'DESC');
+
     if (search) {
       queryBuilder.where('period.name LIKE :search', { search: `%${search}%` });
     }

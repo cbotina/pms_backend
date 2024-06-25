@@ -77,19 +77,19 @@
 
 11. ===GROUP-STUDENTS===
 
-- POST: => groups/:groupId/students/promote (Changes all the student's groupId from a group)
-- GET: => groups/:groupId/students (Gets all students of a group)
+- ✅ POST: => groups/:groupId/students/promote (Changes all the student's groupId from a group)
+- ✅ GET: => groups/:groupId/students (Gets all students of a group)
 
 12. ===ENROLLMENTS===
 
-- POST: => period/:periodId/groups/:groupId/enrollments (Enrolls all group students to a list of subjects)
+- POST: => groups/:groupId/generate-enrollments (Enrolls all group students to a list of subjects)
+- ✅ DELETE: => enrollments/:enrollmentId (Remove subject from student's subjects)
 
 
 13. ===STUDENT-SUBJECTS===
 
-- POST: => /students/:studentId/subjects (Add subject to student's subjects)
-- DELETE: => /students/:studentId/subjects/:subjectId (Remove subject from student's subjects)
-- GET: => students/:studentId/subjects (Gets all student's enrolled subjects)
+- ✅ POST: => /students/:studentId/enrollments (Add subject to student's subjects)
+- ✅ GET: => students/:studentId/enrollments (Gets all student's enrolled subjects)
 
 13. ===ABSENCES===
 

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
 import { Repository } from 'typeorm';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
+import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 
 @Injectable()
 export class GroupsService {
@@ -12,6 +13,8 @@ export class GroupsService {
     private readonly groupsRepository: Repository<Group>,
     @InjectRepository(Teacher)
     private readonly teachersRepository: Repository<Teacher>,
+    @InjectRepository(Enrollment)
+    private readonly enrollmentsRepository: Repository<Enrollment>,
   ) {}
 
   findOne(id: number) {
@@ -44,5 +47,22 @@ export class GroupsService {
 
   remove(id: number) {
     return this.groupsRepository.delete({ id });
+  }
+
+  async generateEnrollments(groupId: number) {
+    const { students, subjectGroups } =
+      await this.groupsRepository.findOneOrFail({
+        where: { id: groupId },
+        relations: { students: true, subjectGroups: true },
+      });
+
+    subjectGroups.forEach((subjectGroup) => {
+      students.forEach(async (student) => {
+        await this.enrollmentsRepository.save({
+          student,
+          subjectGroup,
+        });
+      });
+    });
   }
 }
