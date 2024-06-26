@@ -86,4 +86,11 @@ export class SubjectGroupsController {
       options,
     );
   }
+
+  @Get('subject-groups/:subjectGroupId/students')
+  getSubjectGroupStudents(
+    @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
+  ) {
+    return this.subjectGroupsService.getSubjectGroupStudents(subjectGroupId);
+  }
 }

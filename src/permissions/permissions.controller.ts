@@ -1,45 +1,36 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
+  ParseIntPipe,
+  Query,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
-@Controller('permissions')
+@Controller('')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
-  @Post()
-  create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionsService.create(createPermissionDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.permissionsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.permissionsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updatePermissionDto: UpdatePermissionDto,
+  @Get('periods/:periodId/students/:studentId/permissions')
+  getStudentPeriodPermissions(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('studentId', ParseIntPipe) studentId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('search') search?: string,
   ) {
-    return this.permissionsService.update(+id, updatePermissionDto);
-  }
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.permissionsService.remove(+id);
+    return this.permissionsService.getStudentPeriodPermissions(
+      periodId,
+      studentId,
+      options,
+      search,
+    );
   }
 }

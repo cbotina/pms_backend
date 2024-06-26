@@ -7,6 +7,7 @@ import { DataSource, Repository } from 'typeorm';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { Absence } from 'src/absences/entities/absence.entity';
 import { Student } from 'src/students/entities/student.entity';
+import { TeacherDailyReportsView } from './entities/teacher-daily-reports.view';
 
 @Injectable()
 export class DailyReportsService {
@@ -20,6 +21,8 @@ export class DailyReportsService {
     private readonly absencesRepository: Repository<Absence>,
     @InjectRepository(Student)
     private readonly studentsRepository: Repository<Student>,
+    @InjectRepository(TeacherDailyReportsView)
+    private readonly teacherDailyReportsRepository: Repository<TeacherDailyReportsView>,
   ) {}
 
   async create(createDailyReportDto: CreateDailyReportDto) {
@@ -50,7 +53,7 @@ export class DailyReportsService {
         .getOne();
 
       if (!dailyReport) {
-        dailyReport = await this.dailyReportsRepository.create({
+        dailyReport = await this.dailyReportsRepository.save({
           subjectGroupTimeSlot,
           reportDate,
         });
@@ -87,15 +90,12 @@ export class DailyReportsService {
     return this.dailyReportsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dailyReport`;
-  }
-
-  update(id: number, updateDailyReportDto: UpdateDailyReportDto) {
-    return `This action updates a #${id} dailyReport`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} dailyReport`;
+  getTeacherDailyReports(periodId: number, teacherId: number, date: string) {
+    return this.teacherDailyReportsRepository
+      .createQueryBuilder('tdr')
+      .where('tdr.periodId = :periodId', { periodId })
+      .andWhere('tdr.teacherId = :teacherId', { teacherId })
+      .andWhere('tdr.reportDate like :date', { date: `${date}%` })
+      .getMany();
   }
 }

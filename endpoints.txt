@@ -103,6 +103,25 @@
 
 - ✅ GET: => period/:periodId/teachers/:teacherId/subject-group-time-slots (Teacher's schedule)
 
+
+19. ===UI===
+- Student timeslots in range: ✅
+- Request a permission(student): ✅
+- Student permissions: 
+- Permission details:
+- Student schedule: ✅
+- Student unjustified absences: 
+- Teacher reports of the day: ✅
+- Subject group students: ✅
+- Teacher subject groups:
+- Subject group top absent students:
+- Subject group student absences:
+- Teacher schedule: ✅
+- Daily report absences: (llamado lista)
+- Admin permission view: 
+- Permission details: 
+- stats: 
+
 21. ===STUDENT-PERMISSIONS===
 
 - POST: => students/:studentId/permissions (Creates a permission request of a student)

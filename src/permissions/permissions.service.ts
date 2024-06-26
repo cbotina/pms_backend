@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Permission } from './entities/permission.entity';
+import { Repository } from 'typeorm';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
+import { Student } from 'src/students/entities/student.entity';
+import { Group } from 'src/groups/entities/group.entity';
 
 @Injectable()
 export class PermissionsService {
-  create(createPermissionDto: CreatePermissionDto) {
-    return 'This action adds a new permission';
-  }
+  constructor(
+    @InjectRepository(Permission)
+    private readonly permissionsRepository: Repository<Permission>,
+  ) {}
 
-  findAll() {
-    return `This action returns all permissions`;
-  }
+  getStudentPeriodPermissions(
+    periodId: number,
+    studentId: number,
+    options: IPaginationOptions,
+    search?: string,
+  ): Promise<Pagination<Permission>> {
+    const qb = this.permissionsRepository
+      .createQueryBuilder('p')
+      .innerJoin(Student, 's', 's.id = p.studentId')
+      .innerJoin(Group, 'g', 'g.id = s.groupId')
+      .where('g.periodId = :periodId', { periodId })
+      .andWhere('s.id = :studentId', { studentId });
 
-  findOne(id: number) {
-    return `This action returns a #${id} permission`;
-  }
+    if (search) {
+      qb.andWhere('p.reason LIKE :search', { search: `%${search}%` });
+    }
 
-  update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    return `This action updates a #${id} permission`;
-  }
+    qb.orderBy('p.requestDate', 'DESC');
 
-  remove(id: number) {
-    return `This action removes a #${id} permission`;
+    return paginate<Permission>(qb, options);
   }
 }

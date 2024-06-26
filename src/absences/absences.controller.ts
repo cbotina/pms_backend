@@ -1,34 +1,71 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  DefaultValuePipe,
+} from '@nestjs/common';
 import { AbsencesService } from './absences.service';
-import { CreateAbsenceDto } from './dto/create-absence.dto';
-import { UpdateAbsenceDto } from './dto/update-absence.dto';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
-@Controller('absences')
+@Controller('')
 export class AbsencesController {
   constructor(private readonly absencesService: AbsencesService) {}
 
-  @Post()
-  create(@Body() createAbsenceDto: CreateAbsenceDto) {
-    return this.absencesService.create(createAbsenceDto);
+  @Get('students/:studentId/permissions/:permissionId/absences')
+  getPermissionsAbsences(
+    @Param('studentId', ParseIntPipe) studentId: number,
+    @Param('permissionId', ParseIntPipe) permissionId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.absencesService.getPermissionAbsences(
+      studentId,
+      permissionId,
+      options,
+    );
   }
 
-  @Get()
-  findAll() {
-    return this.absencesService.findAll();
+  @Get('periods/:periodId/students/:studentId/absences/unjustified')
+  getStudentUnjustifiedAbsences(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('studentId', ParseIntPipe) studentId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.absencesService.getStudentUnjustifiedAbsences(
+      periodId,
+      studentId,
+      options,
+    );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.absencesService.findOne(+id);
+  @Get('subject-groups/:subjectGroupId/absence-report')
+  getSubjectGroupAbsenceReport(
+    @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
+  ) {
+    return this.absencesService.getSubjectGroupAbsenceReport(subjectGroupId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAbsenceDto: UpdateAbsenceDto) {
-    return this.absencesService.update(+id, updateAbsenceDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.absencesService.remove(+id);
+  @Get('subject-groups/:subjectGroupId/students/:studentId/absences')
+  getSubjectGroupStudentAbsences(
+    @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
+    @Param('studentId', ParseIntPipe) studentId: number,
+  ) {
+    return this.absencesService.getSubjectGroupStudentAbsences(
+      subjectGroupId,
+      studentId,
+    );
   }
 }

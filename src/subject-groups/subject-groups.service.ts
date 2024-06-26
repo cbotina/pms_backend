@@ -13,6 +13,7 @@ import {
   paginate,
 } from 'nestjs-typeorm-paginate';
 import { TeacherSubjectsView } from './entities/teacher-subject-groups.view';
+import { SubjectGroupStudentsView } from './entities/subget-group-student.view';
 
 @Injectable()
 export class SubjectGroupsService {
@@ -25,6 +26,8 @@ export class SubjectGroupsService {
     private readonly teachersRepository: Repository<Teacher>,
     @InjectRepository(Subject)
     private readonly subjectsRepository: Repository<Subject>,
+    @InjectRepository(SubjectGroupStudentsView)
+    private readonly sgStudentsRepository: Repository<SubjectGroupStudentsView>,
     @InjectRepository(TeacherSubjectsView)
     private readonly teacherSubjectsReporitory: Repository<TeacherSubjectsView>,
   ) {}
@@ -133,5 +136,13 @@ export class SubjectGroupsService {
       .andWhere('tsg.periodId = :periodId', { periodId });
 
     return paginate<TeacherSubjectsView>(qb, options);
+  }
+
+  getSubjectGroupStudents(subjectGroupId: number) {
+    return this.sgStudentsRepository
+      .createQueryBuilder('sg')
+      .where('sg.subjectGroupId = :subjectGroupId', { subjectGroupId })
+      .orderBy('sg.studentName', 'ASC')
+      .getMany();
   }
 }

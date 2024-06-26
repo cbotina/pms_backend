@@ -1,26 +1,75 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAbsenceDto } from './dto/create-absence.dto';
-import { UpdateAbsenceDto } from './dto/update-absence.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PermissionAbsenceDetailsView } from './entities/permission-absence-details.view';
+import { Brackets, Repository } from 'typeorm';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
+import { UnjustifiedAbsenceDetailsView } from './entities/unjustified-absences.view';
+import { PermissionStatus } from 'src/permissions/entities/permission.entity';
+import { AbsenceCountView } from './entities/absence-count.view';
+import { SubjectGroupStudentAbsenceDetailsView } from './entities/student-absence-details.view';
 
 @Injectable()
 export class AbsencesService {
-  create(createAbsenceDto: CreateAbsenceDto) {
-    return 'This action adds a new absence';
+  constructor(
+    @InjectRepository(PermissionAbsenceDetailsView)
+    private readonly absenceDetailsRepository: Repository<PermissionAbsenceDetailsView>,
+    @InjectRepository(AbsenceCountView)
+    private readonly absenceCountRepository: Repository<AbsenceCountView>,
+    @InjectRepository(UnjustifiedAbsenceDetailsView)
+    private readonly unjustifiedAbsenceDetailsRepository: Repository<UnjustifiedAbsenceDetailsView>,
+    @InjectRepository(SubjectGroupStudentAbsenceDetailsView)
+    private readonly sgStudentsAbsencesDetailsRepository: Repository<SubjectGroupStudentAbsenceDetailsView>,
+  ) {}
+
+  getPermissionAbsences(
+    studentId: number,
+    permissionId: number,
+    options: IPaginationOptions,
+  ): Promise<Pagination<PermissionAbsenceDetailsView>> {
+    const qb = this.absenceDetailsRepository
+      .createQueryBuilder('ar')
+      .where('ar.permissionId = :permissionId', { permissionId })
+      .andWhere('ar.studentId = :studentId', { studentId })
+      .orderBy('ar.absenceDate', 'ASC');
+
+    return paginate<PermissionAbsenceDetailsView>(qb, options);
   }
 
-  findAll() {
-    return `This action returns all absences`;
+  getStudentUnjustifiedAbsences(
+    periodId: number,
+    studentId: number,
+    options: IPaginationOptions,
+  ): Promise<Pagination<UnjustifiedAbsenceDetailsView>> {
+    const qb = this.unjustifiedAbsenceDetailsRepository
+      .createQueryBuilder('ar')
+      .where('ar.periodId = :periodId', { periodId })
+      .andWhere('ar.studentId = :studentId', { studentId })
+      // .andWhere(
+      //   new Brackets((qb) => {
+      //     qb.where('ar.permissionId is null');
+      //   }),
+      // )
+      .orderBy('ar.absenceDate', 'ASC');
+
+    return paginate<UnjustifiedAbsenceDetailsView>(qb, options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} absence`;
+  getSubjectGroupAbsenceReport(subjectGroupId: number) {
+    return this.absenceCountRepository
+      .createQueryBuilder('ac')
+      .where('ac.subjectGroupId = :subjectGroupId', { subjectGroupId })
+      .getMany();
   }
 
-  update(id: number, updateAbsenceDto: UpdateAbsenceDto) {
-    return `This action updates a #${id} absence`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} absence`;
+  getSubjectGroupStudentAbsences(subjectGroupId: number, studentId: number) {
+    return this.sgStudentsAbsencesDetailsRepository
+      .createQueryBuilder('a')
+      .where('a.subjectGroupId = :subjectGroupId', { subjectGroupId })
+      .andWhere('a.studentId = :studentId', { studentId })
+      .getMany();
   }
 }

@@ -6,40 +6,37 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { DailyReportsService } from './daily-reports.service';
 import { CreateDailyReportDto } from './dto/create-daily-report.dto';
 import { UpdateDailyReportDto } from './dto/update-daily-report.dto';
 
-@Controller('daily-reports')
+@Controller()
 export class DailyReportsController {
   constructor(private readonly dailyReportsService: DailyReportsService) {}
 
-  @Post()
+  @Post('daily-reports')
   create(@Body() createDailyReportDto: CreateDailyReportDto) {
     return this.dailyReportsService.create(createDailyReportDto);
   }
 
-  @Get()
+  @Get('daily-reports')
   findAll() {
     return this.dailyReportsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dailyReportsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDailyReportDto: UpdateDailyReportDto,
+  @Get('periods/:periodId/teachers/:teacherId/daily-reports')
+  getTeacherDailyReports(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('teacherId', ParseIntPipe) teacherId: number,
+    @Query('date') date: string,
   ) {
-    return this.dailyReportsService.update(+id, updateDailyReportDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dailyReportsService.remove(+id);
+    return this.dailyReportsService.getTeacherDailyReports(
+      periodId,
+      teacherId,
+      date,
+    );
   }
 }

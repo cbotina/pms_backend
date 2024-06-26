@@ -7,6 +7,7 @@ import { Group } from 'src/groups/entities/group.entity';
 import { Subject } from 'src/subjects/entities/subject.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { TeacherSubjectsView } from './entities/teacher-subject-groups.view';
+import { SubjectGroupStudentsView } from './entities/subget-group-student.view';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TeacherSubjectsView } from './entities/teacher-subject-groups.view';
       Teacher,
       SubjectGroup,
       TeacherSubjectsView,
+      SubjectGroupStudentsView,
     ]),
   ],
   controllers: [SubjectGroupsController],

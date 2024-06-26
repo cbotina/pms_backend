@@ -69,14 +69,10 @@ export class SchdulesService {
     const scheduleMap: Map<string, StudentScheduleView[]> = new Map();
 
     while (nDate <= end) {
-      console.log(nDate);
-      console.log(nDate.getDay());
-      console.log('--');
       if (
         !fairyDays.includes(nDate.toString()) &&
         !(nDate.getDay() == 5 || nDate.getDay() == 6)
       ) {
-        console.log('yes');
         const qb = this.studentScheduleRepository
           .createQueryBuilder('schedule')
           .where('schedule.periodId = :periodId', { periodId })

@@ -5,6 +5,7 @@ import {
   IsDateString,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -33,7 +34,7 @@ export class StudentAbsence {
   @IsNotEmpty()
   studentId: number;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  teacherComment: string;
+  teacherComment?: string;
 }
