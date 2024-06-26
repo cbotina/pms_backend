@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PermissionAbsenceDetailsView } from './entities/permission-absence-details.view';
-import { Brackets, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import {
   IPaginationOptions,
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
 import { UnjustifiedAbsenceDetailsView } from './entities/unjustified-absences.view';
-import { PermissionStatus } from 'src/permissions/entities/permission.entity';
 import { AbsenceCountView } from './entities/absence-count.view';
 import { SubjectGroupStudentAbsenceDetailsView } from './entities/student-absence-details.view';
 
@@ -25,7 +24,7 @@ export class AbsencesService {
     private readonly sgStudentsAbsencesDetailsRepository: Repository<SubjectGroupStudentAbsenceDetailsView>,
   ) {}
 
-  getPermissionAbsences(
+  getStudentPermissionAbsences(
     studentId: number,
     permissionId: number,
     options: IPaginationOptions,

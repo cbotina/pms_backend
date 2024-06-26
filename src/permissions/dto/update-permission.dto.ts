@@ -1,4 +1,16 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePermissionDto } from './create-permission.dto';
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import { PermissionStatus } from '../entities/permission.entity';
 
-export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {}
+export class UpdatePermissionDto {
+  @IsOptional()
+  @IsDateString()
+  approvalDate?: Date;
+
+  @IsOptional()
+  @IsString()
+  principalNote?: string;
+
+  @IsOptional()
+  @IsEnum(PermissionStatus)
+  status?: PermissionStatus;
+}

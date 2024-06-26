@@ -3,7 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { Group } from 'src/groups/entities/group.entity';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
@@ -33,9 +33,19 @@ export class StudentsService {
     const queryBuilder = this.studentsRepository.createQueryBuilder('student');
     queryBuilder.orderBy('student.lastName', 'ASC');
     if (search) {
-      queryBuilder.where('student.name LIKE :search', {
-        search: `%${search}%`,
-      });
+      queryBuilder.where(
+        new Brackets((qb) => {
+          qb.where('student.firstName LIKE :search', {
+            search: `%${search}%`,
+          })
+            .orWhere('student.lastName LIKE :search', {
+              search: `%${search}%`,
+            })
+            .orWhere('student.cc LIKE :search', {
+              search: `%${search}%`,
+            });
+        }),
+      );
     }
     return paginate<Student>(queryBuilder, options);
   }

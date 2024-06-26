@@ -5,9 +5,13 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
+  Patch,
+  Body,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { PermissionStatus } from './entities/permission.entity';
+import { UpdatePermissionDto } from './dto/update-permission.dto';
 
 @Controller('')
 export class PermissionsController {
@@ -32,5 +36,42 @@ export class PermissionsController {
       options,
       search,
     );
+  }
+
+  @Get('periods/:periodId/permissions')
+  getPeriodPermissions(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('search') search?: string,
+    @Query('status') status?: PermissionStatus,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.permissionsService.getPeriodPermissions(
+      periodId,
+      options,
+      search,
+      status,
+    );
+  }
+
+  @Patch('permissions/:permissionId')
+  updatePermission(
+    @Param('permissionId', ParseIntPipe) permissionId: number,
+    @Body() updatePermissionDto: UpdatePermissionDto,
+  ) {
+    return this.permissionsService.updatePermission(
+      permissionId,
+      updatePermissionDto,
+    );
+  }
+
+  @Get('permissions/:permissionId')
+  getPermission(@Param('permissionId', ParseIntPipe) permissionId: number) {
+    return this.permissionsService.getPermission(permissionId);
   }
 }

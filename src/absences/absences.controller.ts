@@ -25,7 +25,7 @@ export class AbsencesController {
       page,
     };
 
-    return this.absencesService.getPermissionAbsences(
+    return this.absencesService.getStudentPermissionAbsences(
       studentId,
       permissionId,
       options,

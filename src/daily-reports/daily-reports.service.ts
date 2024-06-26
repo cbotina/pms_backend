@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDailyReportDto } from './dto/create-daily-report.dto';
-import { UpdateDailyReportDto } from './dto/update-daily-report.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DailyReport } from './entities/daily-report.entity';
 import { DataSource, Repository } from 'typeorm';

@@ -10,6 +10,7 @@ import { TeacherDailyReportsView } from 'src/daily-reports/entities/teacher-dail
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
+import { PermissionWithStudentView } from 'src/permissions/dto/permission-with-student.view';
 import { Permission } from 'src/permissions/entities/permission.entity';
 import { StudentScheduleView } from 'src/schedules/entities/student-schedule.view';
 import { TeacherScheduleView } from 'src/schedules/entities/teacher-schedule.view';
@@ -54,6 +55,7 @@ export const dbConfig = (
       UnjustifiedAbsenceDetailsView,
       AbsenceCountView,
       SubjectGroupStudentAbsenceDetailsView,
+      PermissionWithStudentView,
     ],
     synchronize: configService.get('database.synchronize'),
   };
