@@ -14,6 +14,11 @@ import { PermissionWithStudentView } from 'src/permissions/dto/permission-with-s
 import { Permission } from 'src/permissions/entities/permission.entity';
 import { StudentScheduleView } from 'src/schedules/entities/student-schedule.view';
 import { TeacherScheduleView } from 'src/schedules/entities/teacher-schedule.view';
+import { AbsencesByStudentView } from 'src/stats/entities/absences-by-student.view';
+import { AbsencesByGroupView } from 'src/stats/entities/absences-per-group.view';
+import { PermissionCountByReasonView } from 'src/stats/entities/permission-count-by-reason.view';
+import { PermissionCountByStatusView } from 'src/stats/entities/permission-count-by-status.view';
+import { SubjectsWithMostAbsencesView } from 'src/stats/entities/subject-with-most-absences.view';
 import { Student } from 'src/students/entities/student.entity';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { SubjectGroupStudentsView } from 'src/subject-groups/entities/subget-group-student.view';
@@ -56,6 +61,12 @@ export const dbConfig = (
       AbsenceCountView,
       SubjectGroupStudentAbsenceDetailsView,
       PermissionWithStudentView,
+      AbsencesByGroupView,
+      PermissionCountByReasonView,
+      AbsencesByStudentView,
+      PermissionCountByReasonView,
+      PermissionCountByStatusView,
+      SubjectsWithMostAbsencesView,
     ],
     synchronize: configService.get('database.synchronize'),
   };

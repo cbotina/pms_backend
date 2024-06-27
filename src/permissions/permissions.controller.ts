@@ -7,13 +7,19 @@ import {
   DefaultValuePipe,
   Patch,
   Body,
+  UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PermissionStatus } from './entities/permission.entity';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 
-@Controller('')
+@UseInterceptors(LoggingInterceptor)
+@UseFilters(TypeORMExceptionFilter)
+@Controller()
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
