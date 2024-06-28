@@ -9,18 +9,12 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
-  UseFilters,
-  UseInterceptors,
 } from '@nestjs/common';
 import { SubjectGroupTimeSlotsService } from './subject-group-time-slots.service';
 import { CreateSubjectGroupTimeSlotDto } from './dto/create-subject-group-time-slot.dto';
 import { UpdateSubjectGroupTimeSlotDto } from './dto/update-subject-group-time-slot.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller()
 export class SubjectGroupTimeSlotsController {
   constructor(

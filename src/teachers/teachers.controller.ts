@@ -6,8 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
-  UseInterceptors,
   Query,
   DefaultValuePipe,
   ParseIntPipe,
@@ -15,12 +13,9 @@ import {
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
+
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller('teachers')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}

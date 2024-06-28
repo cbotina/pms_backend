@@ -17,13 +17,19 @@ export class Absence {
   @Column({ type: 'text', nullable: true })
   teacherNote: string;
 
-  @ManyToOne(() => Permission, (permission) => permission.absences)
+  @ManyToOne(() => Permission, (permission) => permission.absences, {
+    onDelete: 'SET NULL',
+  })
   permission?: Permission;
 
-  @ManyToOne(() => DailyReport, (dailyReport) => dailyReport.absences)
+  @ManyToOne(() => DailyReport, (dailyReport) => dailyReport.absences, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   dailyReport: DailyReport;
 
-  @ManyToOne(() => Student, (student) => student.absences)
+  @ManyToOne(() => Student, (student) => student.absences, {
+    onDelete: 'CASCADE',
+  })
   student: Student;
 }

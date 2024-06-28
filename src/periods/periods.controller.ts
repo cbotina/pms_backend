@@ -21,8 +21,6 @@ import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.f
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller('periods')
 export class PeriodsController {
   constructor(private readonly periodsService: PeriodsService) {}

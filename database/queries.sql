@@ -99,6 +99,22 @@ where t.firstName = 'Alejandra'
 and sgts.day = 'TUE'
 order by ts.startTime;
 
+select 
+ts.startTime as Inicio,
+ts.endTime as Fin,
+t.id,
+g.periodId,
+g.name as Grupo,
+sub.name as Materia,
+sgts.day as Dia,
+concat(t.firstName, ' ', t.lastName) as Docente
+from subjectGroupTimeSlot sgts
+inner join timeSlot ts on ts.id = sgts.timeSlotId
+inner join subjectGroup sg on sgts.subjectGroupId = sg.id
+inner join `group` g on g.id = sg.groupId
+inner join subject sub on sub.id = sg.subjectId
+inner join teacher t on t.id = sg.teacherId;
+
 -- STUDENT SCHEDULE
 select 
 sgts.id as subjectGroupTimeSlotId,
@@ -369,4 +385,160 @@ INNER JOIN `group` g ON sg.groupId = g.id
 LEFT JOIN subjectGroupTimeSlot sgts ON sg.id = sgts.subjectGroupId
 LEFT JOIN absence a ON sgts.id = a.subjectGroupTimeSlotId
 WHERE a.id IS not null);
+
+
+
+##########
+
+select * from absence left join permission p on p.id = absence.permissionId;
+
+select 
+count(*) as absences,
+g.name as `group`
+from absence a
+left join daily_report dr on dr.id = a.dailyReportId
+left join permission p on p.id = a.permissionId
+inner join subject_group_time_slot sgts on sgts.id = dr.subjectGroupTimeSlotId
+inner join subject_group sg on sg.id = sgts.subjectGroupId
+inner join `group` g on g.id = sg.groupId
+where g.periodId = 1
+and (
+p.status !='A' or p.id is null
+)
+group by g.id;
+
+
+select 
+count(*),
+p.reason
+from permission p 
+inner join student st on p.studentId = st.id
+inner join `group` g on g.id = st.groupId
+-- where g.periodId = 1
+group by p.reason;
+
+
+select
+count(*) as absences,
+concat(st.firstName, ' ', st.lastName) as student
+from absence a
+inner join student st on st.id = a.studentId
+left join daily_report dr on dr.id = a.dailyReportId
+left join permission p on p.id = a.permissionId
+inner join subject_group_time_slot sgts on sgts.id = dr.subjectGroupTimeSlotId
+inner join subject_group sg on sg.id = sgts.subjectGroupId
+inner join `group` g on g.id = sg.groupId
+ where g.periodId = 1
+and (
+p.status !='A' or p.id is null
+)
+group by a.studentId
+order by absences desc;
+
+
+select 
+count(*),
+p.status
+from permission p 
+inner join student st on p.studentId = st.id
+inner join `group` g on g.id = st.groupId
+-- where g.periodId = 1
+group by p.status;
+
+
+
+
+select
+count(*) as absences,
+sub.name as subject,
+g.name as `group`
+from absence a
+left join daily_report dr on dr.id = a.dailyReportId
+inner join subject_group_time_slot sgts on sgts.id = dr.subjectGroupTimeSlotId
+inner join subject_group sg on sg.id  = sgts.subjectGroupId
+inner join subject sub on sg.subjectId = sub.id
+inner join student st on st.id = a.studentId
+left join permission p on a.permissionId = p.id
+inner join `group` g on sg.groupId = g.id
+-- where g.periodId = 1
+and (
+p.status != 'A' or p.status is null
+)
+group by sg.id
+order by absences desc;
+
+show tables;
+select * from teacher_subjects_view;
+select * from permission;
+select * from absence;
+select * from daily_report;
+delete from permission where id = 6;
+
+update permission set status = 'A' where id = 11;
+select
+-- *
+count(*) as Faltas,
+concat(st.firstName, ' ', st.lastName) as Estudiante
+from daily_report dr
+inner join absence a on a.dailyReportId =  dr.id
+left join permission p on p.id = a.permissionId
+inner join subject_group_time_slot sgts on sgts.id = dr.subjectGroupTimeSlotId
+inner join subject_group sg on sg.id  = sgts.subjectGroupId
+inner join student st on st.id = a.studentId
+where sg.id = 6 -- AFUERA
+and (
+p.status != 'A' or p.id is null 
+)
+group by a.studentId
+order by Faltas desc;
+;
+update permission set status = 'R' where id = 1;
+
+select 
+sgts.id subjectGroupTimeSlotId,
+dr.reportDate,
+ts.startTime startTime,
+ts.endTime endTime,
+s.name subjectName,
+g.name groupName,
+dr.isSubmitted isSubmitted,
+g.periodId periodId,
+t.id teacherId
+from subject_group_time_slot sgts
+inner join daily_report dr on sgts.id = dr.subjectGroupTimeslotId
+inner join time_slot ts on ts.id = sgts.timeSlotId
+inner join subject_group sg on sg.id = sgts.subjectGroupId
+inner join `group` g on g.id = sg.groupId
+inner join teacher t on t.id = sg.teacherId
+inner join subject s on s.id = sg.subjectId
+where sgts.day = 'MON'
+and t.id = 2
+and g.periodId = 1
+-- and dr.reportDate = '2024-06-24' 
+order by ts.startTime;
+
+
+
+SELECT 
+    sg.id subjectGroupId,
+    s.name AS subjectName,
+    g.name AS groupName,
+    CONCAT(t.firstName, ' ', t.lastName) AS teacherName,
+    sg.hours
+FROM 
+    subject_group sg
+JOIN 
+    teacher t ON sg.teacherId = t.id
+JOIN 
+    subject s ON sg.subjectId = s.id
+JOIN 
+    `group` g ON sg.groupId = g.id
+    
+
+
+order by s.name;
+
+use pms_dev;
+
+
 

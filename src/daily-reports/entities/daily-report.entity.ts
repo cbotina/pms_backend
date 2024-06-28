@@ -20,7 +20,9 @@ export class DailyReport {
   @Column({ default: false })
   isSubmitted: boolean;
 
-  @ManyToOne(() => SubjectGroupTimeSlot, (sgts) => sgts.dailyReports)
+  @ManyToOne(() => SubjectGroupTimeSlot, (sgts) => sgts.dailyReports, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   subjectGroupTimeSlot: SubjectGroupTimeSlot;
 

@@ -45,7 +45,9 @@ export class Permission {
   @Column({ nullable: true })
   principalNote: string;
 
-  @ManyToOne(() => Student, (student) => student.permissions)
+  @ManyToOne(() => Student, (student) => student.permissions, {
+    onDelete: 'CASCADE',
+  })
   student: Student;
 
   @OneToMany(() => Absence, (absence) => absence.permission)

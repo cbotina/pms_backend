@@ -5,17 +5,11 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
-  UseInterceptors,
   Post,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller('groups')
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}

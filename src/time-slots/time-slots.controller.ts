@@ -1,20 +1,7 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseFilters,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TimeSlotsService } from './time-slots.service';
 import { UpdateTimeSlotDto } from './dto/update-time-slot.dto';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller('time-slots')
 export class TimeSlotsController {
   constructor(private readonly timeSlotsService: TimeSlotsService) {}

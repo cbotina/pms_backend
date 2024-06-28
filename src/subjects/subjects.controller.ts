@@ -9,18 +9,12 @@ import {
   Query,
   DefaultValuePipe,
   ParseIntPipe,
-  UseInterceptors,
-  UseFilters,
 } from '@nestjs/common';
 import { SubjectsService } from './subjects.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller('subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}

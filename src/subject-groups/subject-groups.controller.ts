@@ -19,8 +19,6 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller()
 export class SubjectGroupsController {
   constructor(private readonly subjectGroupsService: SubjectGroupsService) {}

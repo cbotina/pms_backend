@@ -33,6 +33,9 @@ export class SchdulesService {
 
     if (day) {
       qb.andWhere('ss.day = :day', { day });
+      qb.orderBy('ss.startTime', 'ASC');
+    } else {
+      qb.orderBy('ss.day');
     }
 
     return paginate<StudentScheduleView>(qb, options);
@@ -51,6 +54,9 @@ export class SchdulesService {
 
     if (day) {
       qb.andWhere('tsch.day = :day', { day });
+      qb.orderBy('tsch.startTime', 'ASC');
+    } else {
+      qb.orderBy('tsch.day', 'ASC');
     }
 
     return paginate<TeacherScheduleView>(qb, options);
@@ -77,7 +83,8 @@ export class SchdulesService {
           .createQueryBuilder('schedule')
           .where('schedule.periodId = :periodId', { periodId })
           .andWhere('schedule.studentId = :studentId', { studentId })
-          .andWhere('schedule.day = :day', { day: DaysMap[nDate.getDay()] });
+          .andWhere('schedule.day = :day', { day: DaysMap[nDate.getDay()] })
+          .orderBy('schedule.startTime', 'ASC');
 
         const dayTimeSlots = await qb.execute();
 

@@ -22,10 +22,14 @@ export class SubjectGroupTimeSlot {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => TimeSlot, (ts) => ts.subjectGroupTimeSlots)
+  @ManyToOne(() => TimeSlot, (ts) => ts.subjectGroupTimeSlots, {
+    onDelete: 'CASCADE',
+  })
   timeSlot: TimeSlot;
 
-  @ManyToOne(() => SubjectGroup, (sg) => sg.subjectGroupTimeslots)
+  @ManyToOne(() => SubjectGroup, (sg) => sg.subjectGroupTimeslots, {
+    onDelete: 'CASCADE',
+  })
   subjectGroup: SubjectGroup;
 
   @Column({

@@ -7,17 +7,11 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  UseFilters,
-  UseInterceptors,
 } from '@nestjs/common';
 import { PeriodGroupsService } from './period-groups.service';
 import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller('periods/:periodId/groups')
 export class PeriodGroupsController {
   constructor(private readonly periodGroupsService: PeriodGroupsService) {}

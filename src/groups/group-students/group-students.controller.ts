@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { GroupStudentsService } from './group-students.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { PromoteStudentsDto } from './dto/promote-students.dto';
+import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
 
 @Controller('groups/:groupId/students')
 export class GroupStudentsController {

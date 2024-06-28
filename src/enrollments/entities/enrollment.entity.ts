@@ -7,9 +7,13 @@ export class Enrollment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Student, (student) => student.enrollments)
+  @ManyToOne(() => Student, (student) => student.enrollments, {
+    onDelete: 'CASCADE',
+  })
   student: Student;
 
-  @ManyToOne(() => SubjectGroup, (sg) => sg.enrollments)
+  @ManyToOne(() => SubjectGroup, (sg) => sg.enrollments, {
+    onDelete: 'CASCADE',
+  })
   subjectGroup: SubjectGroup;
 }

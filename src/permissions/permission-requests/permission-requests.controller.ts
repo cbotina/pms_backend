@@ -1,20 +1,8 @@
-import {
-  Body,
-  Controller,
-  Param,
-  ParseIntPipe,
-  Post,
-  UseFilters,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { PermissionRequestsService } from './permission-requests.service';
-import { PermissionRequestDto } from './dto/permission-request.dto';
-import { JustifyAbsencesRequestDto } from './dto/justify-absences-request.dto';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
+import { PermissionRequestDto } from '../dto/permission-request.dto';
+import { JustifyAbsencesRequestDto } from '../dto/justify-absences-request.dto';
 
-@UseInterceptors(LoggingInterceptor)
-@UseFilters(TypeORMExceptionFilter)
 @Controller()
 export class PermissionRequestsController {
   constructor(

@@ -25,21 +25,26 @@ export class Group {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   semester: string;
 
   @Column({
     type: 'enum',
     enum: Modality,
+    nullable: true,
   })
   modality: Modality;
 
-  @ManyToOne(() => Period, (period) => period.groups)
+  @ManyToOne(() => Period, (period) => period.groups, {
+    onDelete: 'CASCADE',
+  })
   period: Period;
 
-  @OneToOne(() => Teacher)
+  @OneToOne(() => Teacher, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
-  tutor: Teacher;
+  tutor?: Teacher;
 
   @OneToMany(() => SubjectGroup, (subjectGroup) => subjectGroup.group)
   subjectGroups: SubjectGroup[];

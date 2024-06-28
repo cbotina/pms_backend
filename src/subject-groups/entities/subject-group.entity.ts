@@ -19,13 +19,19 @@ export class SubjectGroup {
   @Column()
   hours: number;
 
-  @ManyToOne(() => Teacher, (teacher) => teacher.subjectGroups)
+  @ManyToOne(() => Teacher, (teacher) => teacher.subjectGroups, {
+    onDelete: 'CASCADE',
+  })
   teacher: Teacher;
 
-  @ManyToOne(() => Subject, (subject) => subject.subjectGroups)
+  @ManyToOne(() => Subject, (subject) => subject.subjectGroups, {
+    onDelete: 'CASCADE',
+  })
   subject: Subject;
 
-  @ManyToOne(() => Group, (group) => group.subjectGroups)
+  @ManyToOne(() => Group, (group) => group.subjectGroups, {
+    onDelete: 'CASCADE',
+  })
   group: Group;
 
   @OneToMany(() => SubjectGroupTimeSlot, (sgts) => sgts.subjectGroup)

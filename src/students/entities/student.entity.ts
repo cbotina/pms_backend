@@ -37,7 +37,9 @@ export class Student {
   })
   gender: Gender;
 
-  @ManyToOne(() => Group, (group) => group.students)
+  @ManyToOne(() => Group, (group) => group.students, {
+    onDelete: 'CASCADE',
+  })
   group: Group;
 
   @OneToMany(() => Enrollment, (enrollment) => enrollment.student)
