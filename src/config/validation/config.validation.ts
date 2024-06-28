@@ -7,7 +7,7 @@ const validationSchema = Joi.object({
   DB_HOST: Joi.string(),
   DB_NAME: Joi.string(),
   DB_PORT: Joi.string(),
-  JWT_SECRET: Joi.string(),
+  JWT_SECRET: Joi.string().required(),
 });
 
 export default validationSchema;

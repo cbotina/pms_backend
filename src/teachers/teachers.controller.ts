@@ -15,7 +15,9 @@ import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Teachers 👩‍🏫')
 @Controller('teachers')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}

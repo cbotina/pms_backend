@@ -9,16 +9,14 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
-  UseFilters,
-  UseInterceptors,
 } from '@nestjs/common';
 import { SubjectGroupsService } from './subject-groups.service';
 import { CreateSubjectGroupDto } from './dto/create-subject-group.dto';
 import { UpdateSubjectGroupDto } from './dto/update-subject-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Subject Groups 📚👥')
 @Controller()
 export class SubjectGroupsController {
   constructor(private readonly subjectGroupsService: SubjectGroupsService) {}

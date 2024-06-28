@@ -1,7 +1,9 @@
 import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TimeSlotsService } from './time-slots.service';
 import { UpdateTimeSlotDto } from './dto/update-time-slot.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Time Slots ⌚')
 @Controller('time-slots')
 export class TimeSlotsController {
   constructor(private readonly timeSlotsService: TimeSlotsService) {}

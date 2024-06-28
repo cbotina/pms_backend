@@ -12,7 +12,9 @@ import { PermissionsService } from './permissions.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PermissionStatus } from './entities/permission.entity';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Permissions 🅿️')
 @Controller()
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}

@@ -1,6 +1,8 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { StatsService } from './stats.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Stats 📊')
 @Controller('periods/:periodId/stats')
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}

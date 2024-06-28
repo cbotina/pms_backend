@@ -11,7 +11,9 @@ import { SchdulesService } from './schedules.service';
 import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Schedules 📜')
 @Controller('periods/:periodId')
 export class SchdulesController {
   constructor(private readonly schdulesService: SchdulesService) {}

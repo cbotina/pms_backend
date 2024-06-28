@@ -12,7 +12,9 @@ import { PeriodTimeSlotsService } from './period-time-slots.service';
 import { CreateTimeSlotDto } from 'src/time-slots/dto/create-time-slot.dto';
 import { CopyTimeSlotsDto } from 'src/time-slots/dto/copy-time-slots.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Period timeslots 🗓️⌚')
 @Controller('periods/:periodId/time-slots')
 export class PeriodTimeSlotsController {
   constructor(

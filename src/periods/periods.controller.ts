@@ -6,21 +6,22 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
   ParseIntPipe,
   HttpCode,
   Query,
   DefaultValuePipe,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 
 import { PeriodsService } from './periods.service';
 import { CreatePeriodDto } from './dto/create-period.dto';
 import { UpdatePeriodDto } from './dto/update-period.dto';
-import { TypeORMExceptionFilter } from 'src/exception-filter/typeorm-exception.filter';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
+@ApiBearerAuth()
+@ApiTags('Periods 🗓️')
 @Controller('periods')
 export class PeriodsController {
   constructor(private readonly periodsService: PeriodsService) {}
@@ -30,6 +31,7 @@ export class PeriodsController {
     return this.periodsService.create(createPeriodDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.periodsService.findAll();
   }

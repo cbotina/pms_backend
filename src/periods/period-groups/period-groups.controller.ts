@@ -11,7 +11,9 @@ import {
 import { PeriodGroupsService } from './period-groups.service';
 import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Period Groups 🅿️👥')
 @Controller('periods/:periodId/groups')
 export class PeriodGroupsController {
   constructor(private readonly periodGroupsService: PeriodGroupsService) {}

@@ -14,7 +14,9 @@ import { SubjectGroupTimeSlotsService } from './subject-group-time-slots.service
 import { CreateSubjectGroupTimeSlotDto } from './dto/create-subject-group-time-slot.dto';
 import { UpdateSubjectGroupTimeSlotDto } from './dto/update-subject-group-time-slot.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('SubjectGroupTimeSlots ⌚📚')
 @Controller()
 export class SubjectGroupTimeSlotsController {
   constructor(

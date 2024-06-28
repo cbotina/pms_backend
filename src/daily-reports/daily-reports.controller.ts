@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { DailyReportsService } from './daily-reports.service';
 import { CreateDailyReportDto } from './dto/create-daily-report.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Daily Reports 📃')
 @Controller()
 export class DailyReportsController {
   constructor(private readonly dailyReportsService: DailyReportsService) {}

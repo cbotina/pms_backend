@@ -8,8 +8,10 @@ import {
 } from '@nestjs/common';
 import { AbsencesService } from './absences.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('')
+@ApiTags('Absences 🚨')
+@Controller()
 export class AbsencesController {
   constructor(private readonly absencesService: AbsencesService) {}
 

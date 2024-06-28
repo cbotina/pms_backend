@@ -27,6 +27,7 @@ import { TeacherSubjectsView } from 'src/subject-groups/entities/teacher-subject
 import { Subject } from 'src/subjects/entities/subject.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
+import { User } from 'src/users/entities/user.entity';
 
 export const dbConfig = (
   configService: ConfigService,
@@ -67,6 +68,7 @@ export const dbConfig = (
       PermissionCountByReasonView,
       PermissionCountByStatusView,
       SubjectsWithMostAbsencesView,
+      User,
     ],
     synchronize: configService.get('database.synchronize'),
   };

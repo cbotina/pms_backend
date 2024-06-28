@@ -23,3 +23,9 @@ select sg.id as subjectGroupId, concat(t.firstName, ' ', t.lastName) as teacher,
 from subject_group sg inner join teacher t on t.id = sg.teacherId inner join `group` g on g.id = sg.groupId inner join subject s on s.id = sg.subjectId
 where g.name = '13-04' 
 and s.name like "%%"
+;
+use pms_dev;
+
+delete from user where id = 2;
+
+

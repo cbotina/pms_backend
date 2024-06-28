@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { environments } from './config/environments';
 import configuration from './config/configuration';
@@ -20,6 +18,8 @@ import { SchdulesModule } from './schedules/schedules.module';
 import { DailyReportsModule } from './daily-reports/daily-reports.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { StatsModule } from './stats/stats.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -27,6 +27,7 @@ import configValidation from './config/validation/config.validation';
       envFilePath: environments[process.env.NODE_ENV],
       load: [configuration],
       validationSchema: configValidation,
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -47,8 +48,8 @@ import configValidation from './config/validation/config.validation';
     DailyReportsModule,
     PermissionsModule,
     StatsModule,
+    UsersModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

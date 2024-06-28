@@ -11,7 +11,9 @@ import {
 import { GroupStudentsService } from './group-students.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Group Students 👥🎒')
 @Controller('groups/:groupId/students')
 export class GroupStudentsController {
   constructor(private readonly groupStudentsService: GroupStudentsService) {}

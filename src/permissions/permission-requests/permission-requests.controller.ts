@@ -2,7 +2,9 @@ import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { PermissionRequestsService } from './permission-requests.service';
 import { PermissionRequestDto } from '../dto/permission-request.dto';
 import { JustifyAbsencesRequestDto } from '../dto/justify-absences-request.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Permission Requests 🅿️🙋‍♂️')
 @Controller()
 export class PermissionRequestsController {
   constructor(
