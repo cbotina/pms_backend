@@ -10,4 +10,9 @@ export default () => ({
     synchronize: process.env.NODE_ENV === 'dev',
   },
   jwtSecret: process.env.JWT_SECRET,
+  email: {
+    host: process.env.EMAIL_HOST,
+    pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER,
+  },
 });

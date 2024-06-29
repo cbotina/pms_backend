@@ -20,6 +20,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { StatsModule } from './stats/stats.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { MailModule } from './mail/mail.module';
 import configValidation from './config/validation/config.validation';
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import configValidation from './config/validation/config.validation';
     StatsModule,
     UsersModule,
     AuthModule,
+    MailModule,
   ],
 })
 export class AppModule {}

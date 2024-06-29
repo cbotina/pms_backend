@@ -14,11 +14,14 @@ export class User {
   id: number;
 
   @Column({ unique: true })
-  username: string;
+  email: string;
 
   @Exclude()
   @Column()
   password: string;
+
+  @Column({ nullable: true })
+  entityId?: number;
 
   @Column({
     type: 'enum',

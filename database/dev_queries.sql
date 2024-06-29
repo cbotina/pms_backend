@@ -26,6 +26,9 @@ and s.name like "%%"
 ;
 use pms_dev;
 
-delete from user where id = 2;
+select * from user;
+
+delete from user where id >0;
+delete from user where id = 3;
 
 

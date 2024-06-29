@@ -9,12 +9,15 @@ import {
 import { AbsencesService } from './absences.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
 @ApiTags('Absences 🚨')
 @Controller()
 export class AbsencesController {
   constructor(private readonly absencesService: AbsencesService) {}
 
+  @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('students/:studentId/permissions/:permissionId/absences')
   getPermissionsAbsences(
     @Param('studentId', ParseIntPipe) studentId: number,
@@ -34,6 +37,7 @@ export class AbsencesController {
     );
   }
 
+  @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('periods/:periodId/students/:studentId/absences/unjustified')
   getStudentUnjustifiedAbsences(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -53,6 +57,7 @@ export class AbsencesController {
     );
   }
 
+  @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/absence-report')
   getSubjectGroupAbsenceReport(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
@@ -60,6 +65,7 @@ export class AbsencesController {
     return this.absencesService.getSubjectGroupAbsenceReport(subjectGroupId);
   }
 
+  @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students/:studentId/absences')
   getSubjectGroupStudentAbsences(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,

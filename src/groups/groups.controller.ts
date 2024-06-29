@@ -6,15 +6,20 @@ import {
   Param,
   Delete,
   Post,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UsersService } from 'src/users/users.service';
 
 @ApiTags('Groups 👥')
 @Controller('groups')
 export class GroupsController {
-  constructor(private readonly groupsService: GroupsService) {}
+  constructor(
+    private readonly groupsService: GroupsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Get(':id')
   findOne(@Param('id') id: number) {
@@ -32,7 +37,12 @@ export class GroupsController {
   }
 
   @Post(':id/generate-enrollments')
-  generateEnrollments(@Param('id') id: number) {
+  generateEnrollments(@Param('id', ParseIntPipe) id: number) {
     return this.groupsService.generateEnrollments(id);
+  }
+
+  @Post(':id/generate-users')
+  generateUsers(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.createGroupStudentsAccounts(id);
   }
 }

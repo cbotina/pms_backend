@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id } = payload;
 
     try {
-      await this.userService.findOneByUsername(id);
+      await this.userService.findOne(id);
     } catch (error) {
       throw new HttpException('User in JWT payload not found', 404);
     }

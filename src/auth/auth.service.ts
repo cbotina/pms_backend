@@ -10,15 +10,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findOneByUsername(username);
+  async login(email: string, password: string): Promise<any> {
+    const user = await this.usersService.findOneByEmail(email);
     const checkPassword = compareSync(password, user.password);
 
     if (!checkPassword) {
       throw new UnauthorizedException('Wrong Password');
     }
 
-    const payload = { id: user.username, role: user.role };
+    const payload = { id: user.id, role: user.role, entityId: user.entityId };
     const data = { token: this.jwtService.sign(payload) };
 
     return data;

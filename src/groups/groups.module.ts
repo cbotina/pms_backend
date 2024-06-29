@@ -8,10 +8,12 @@ import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { GroupStudentsController } from './group-students/group-students.controller';
 import { GroupStudentsService } from './group-students/group-students.service';
 import { Student } from 'src/students/entities/student.entity';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Group, Teacher, Enrollment, Student, Group]),
+    UsersModule,
   ],
   controllers: [GroupsController, GroupStudentsController],
   providers: [GroupsService, GroupStudentsService],
