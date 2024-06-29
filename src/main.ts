@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(new TypeORMExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
-  // app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
+  app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
 
   const config = new DocumentBuilder()
     .setTitle('Sistema Gestor de Permisos')

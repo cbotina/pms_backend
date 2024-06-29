@@ -1,7 +1,5 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { join } from 'path';
-import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class MailService {
@@ -19,6 +17,4 @@ export class MailService {
 
     return { message: 'Email sent successfully' };
   }
-
-  async sendWelcomeMessage(user: User) {}
 }

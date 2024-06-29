@@ -4,7 +4,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles, User } from './entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -134,10 +133,6 @@ export class UsersService {
 
   findOneByEmail(email: string) {
     return this.usersRepository.findOneByOrFail({ email });
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
