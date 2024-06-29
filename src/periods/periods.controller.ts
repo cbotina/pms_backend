@@ -31,11 +31,6 @@ export class PeriodsController {
     return this.periodsService.create(createPeriodDto);
   }
 
-  @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.periodsService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.periodsService.findOne(id);

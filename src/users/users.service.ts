@@ -45,7 +45,7 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(username: string) {
+  findOneByUsername(username: string) {
     return this.usersRepository.findOneByOrFail({ username: username });
   }
 
