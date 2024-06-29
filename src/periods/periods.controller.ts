@@ -19,8 +19,12 @@ import { UpdatePeriodDto } from './dto/update-period.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
 @ApiBearerAuth()
+@UseGuards(RolesGuard)
 @ApiTags('Periods 🗓️')
 @Controller('periods')
 export class PeriodsController {
@@ -31,6 +35,7 @@ export class PeriodsController {
     return this.periodsService.create(createPeriodDto);
   }
 
+  @Role(Roles.STUDENT)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.periodsService.findOne(id);

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Role, User } from './entities/user.entity';
+import { Roles, User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
@@ -22,10 +22,10 @@ export class UsersService {
     const { username, role } = createUserDto;
 
     switch (role) {
-      case Role.STUDENT:
+      case Roles.STUDENT:
         await this.studentsRepository.findOneByOrFail({ cc: username });
         break;
-      case Role.TEACHER:
+      case Roles.TEACHER:
         await this.teachersRepository.findOneByOrFail({ cc: username });
         break;
     }
