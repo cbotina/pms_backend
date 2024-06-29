@@ -21,6 +21,7 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 
+@Role(Roles.SECRETARY)
 @ApiBearerAuth()
 @UseGuards(RolesGuard)
 @ApiTags('Periods 🗓️')
@@ -33,7 +34,6 @@ export class PeriodsController {
     return this.periodsService.create(createPeriodDto);
   }
 
-  @Role(Roles.STUDENT)
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.periodsService.findOne(id);

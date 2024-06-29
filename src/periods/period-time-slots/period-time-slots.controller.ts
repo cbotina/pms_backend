@@ -13,7 +13,9 @@ import { CreateTimeSlotDto } from 'src/time-slots/dto/create-time-slot.dto';
 import { CopyTimeSlotsDto } from 'src/time-slots/dto/copy-time-slots.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
+@Role(Roles.SECRETARY)
 @ApiTags('Period timeslots 🗓️⌚')
 @Controller('periods/:periodId/time-slots')
 export class PeriodTimeSlotsController {

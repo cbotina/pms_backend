@@ -16,7 +16,10 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
+@Role(Roles.SECRETARY)
 @ApiTags('Teachers 👩‍🏫')
 @Controller('teachers')
 export class TeachersController {

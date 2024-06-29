@@ -12,7 +12,10 @@ import { GroupsService } from './groups.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from 'src/users/users.service';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
+@Role(Roles.SECRETARY)
 @ApiTags('Groups 👥')
 @Controller('groups')
 export class GroupsController {

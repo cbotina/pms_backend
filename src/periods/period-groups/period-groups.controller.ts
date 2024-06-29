@@ -12,7 +12,9 @@ import { PeriodGroupsService } from './period-groups.service';
 import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
+@Role(Roles.SECRETARY)
 @ApiTags('Period Groups 🅿️👥')
 @Controller('periods/:periodId/groups')
 export class PeriodGroupsController {

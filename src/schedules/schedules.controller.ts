@@ -12,12 +12,15 @@ import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-tim
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
 @ApiTags('Schedules 📜')
 @Controller('periods/:periodId')
 export class SchdulesController {
   constructor(private readonly schdulesService: SchdulesService) {}
 
+  @Role(Roles.STUDENT)
   @Get('students/:studentId/schedule')
   getStudentSchedule(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -39,6 +42,7 @@ export class SchdulesController {
     );
   }
 
+  @Role(Roles.TEACHER)
   @Get('teachers/:teacherId/schedule')
   getTeachersSchedule(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -60,6 +64,7 @@ export class SchdulesController {
     );
   }
 
+  @Role(Roles.SECRETARY, Roles.STUDENT)
   @Get('students/:studentId/range-schedule')
   async getStudentScheduleByRange(
     @Param('periodId', ParseIntPipe) periodId: number,

@@ -15,7 +15,10 @@ import { CreateSubjectGroupDto } from './dto/create-subject-group.dto';
 import { UpdateSubjectGroupDto } from './dto/update-subject-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
+@Role(Roles.SECRETARY)
 @ApiTags('Subject Groups 📚👥')
 @Controller()
 export class SubjectGroupsController {
@@ -64,6 +67,7 @@ export class SubjectGroupsController {
     return this.subjectGroupsService.remove(+id);
   }
 
+  @Role(Roles.TEACHER)
   @Get('periods/:periodId/teachers/:teacherId/subject-groups')
   getTeacherSubjectGroups(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -83,6 +87,7 @@ export class SubjectGroupsController {
     );
   }
 
+  @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students')
   getSubjectGroupStudents(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,

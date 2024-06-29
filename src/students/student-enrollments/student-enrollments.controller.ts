@@ -13,6 +13,7 @@ import { CreateEnrollmentDto } from 'src/enrollments/dto/create-enrollment.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 
+@Role(Roles.SECRETARY)
 @ApiTags('Student enrollments 👦📚')
 @Controller('students/:studentId/enrollments')
 export class StudentEnrollmentsController {

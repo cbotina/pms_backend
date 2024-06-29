@@ -2,7 +2,10 @@ import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TimeSlotsService } from './time-slots.service';
 import { UpdateTimeSlotDto } from './dto/update-time-slot.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
+@Role(Roles.SECRETARY)
 @ApiTags('Time Slots ⌚')
 @Controller('time-slots')
 export class TimeSlotsController {

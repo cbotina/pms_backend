@@ -13,6 +13,7 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
 import { ApiTags } from '@nestjs/swagger';
 
+@Role(Roles.SECRETARY)
 @ApiTags('Group Students 👥🎒')
 @Controller('groups/:groupId/students')
 export class GroupStudentsController {

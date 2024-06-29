@@ -13,12 +13,15 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PermissionStatus } from './entities/permission.entity';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
 @ApiTags('Permissions 🅿️')
 @Controller()
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
+  @Role(Roles.SECRETARY, Roles.STUDENT)
   @Get('periods/:periodId/students/:studentId/permissions')
   getStudentPeriodPermissions(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -40,6 +43,7 @@ export class PermissionsController {
     );
   }
 
+  @Role(Roles.SECRETARY)
   @Get('periods/:periodId/permissions')
   getPeriodPermissions(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -61,6 +65,8 @@ export class PermissionsController {
     );
   }
 
+  // todo: check secreatry permissions for this operation
+  @Role(Roles.SECRETARY)
   @Patch('permissions/:permissionId')
   updatePermission(
     @Param('permissionId', ParseIntPipe) permissionId: number,
@@ -72,6 +78,7 @@ export class PermissionsController {
     );
   }
 
+  @Role(Roles.SECRETARY, Roles.STUDENT, Roles.TEACHER)
   @Get('permissions/:permissionId')
   getPermission(@Param('permissionId', ParseIntPipe) permissionId: number) {
     return this.permissionsService.getPermission(permissionId);
