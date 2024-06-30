@@ -15,12 +15,14 @@ import { UserGuard } from 'src/common/guards/user.guard';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './entities/user.entity';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Role(Roles.SECRETARY)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
