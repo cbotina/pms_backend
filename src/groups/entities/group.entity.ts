@@ -40,7 +40,7 @@ export class Group {
   })
   period: Period;
 
-  @OneToOne(() => Teacher, {
+  @ManyToOne(() => Teacher, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()

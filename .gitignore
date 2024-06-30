@@ -6,6 +6,7 @@
 insertions.sql
 normal_raw.sql
 dev_insertions.sql
+dev_insertions_2024A.sql
 
 # Logs
 logs

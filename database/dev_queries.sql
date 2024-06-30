@@ -25,7 +25,7 @@ where g.name = '13-04'
 and s.name like "%%"
 ;
 use pms_dev;
-
+select * from student where groupId = 2;
 select * from user;
 
 delete from user where id >0;

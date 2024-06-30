@@ -12,6 +12,8 @@ import { GroupStudentsService } from './group-students.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/users/entities/user.entity';
+import { Role } from 'src/common/decorators/roles.decorator';
 
 @Role(Roles.SECRETARY)
 @ApiTags('Group Students 👥🎒')

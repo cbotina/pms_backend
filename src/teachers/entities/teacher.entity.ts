@@ -25,8 +25,8 @@ export class Teacher {
   @Column()
   lastName: string;
 
-  @OneToOne(() => Group)
-  tutoredGroup: Group;
+  @OneToMany(() => Group, (group) => group.tutor)
+  tutoredGroups: Group[];
 
   @OneToMany(() => SubjectGroup, (subjectGroup) => subjectGroup.teacher)
   subjectGroups: SubjectGroup[];

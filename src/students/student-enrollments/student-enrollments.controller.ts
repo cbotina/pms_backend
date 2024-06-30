@@ -12,6 +12,8 @@ import { StudentEnrollmentsService } from './student-enrollments.service';
 import { CreateEnrollmentDto } from 'src/enrollments/dto/create-enrollment.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/users/entities/user.entity';
 
 @Role(Roles.SECRETARY)
 @ApiTags('Student enrollments 👦📚')
