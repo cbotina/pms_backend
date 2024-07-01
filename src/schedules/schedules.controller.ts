@@ -77,6 +77,6 @@ export class SchdulesController {
       scheduleRangeDatesDto,
     );
 
-    return Array.from(scheduleMap.entries());
+    return scheduleMap;
   }
 }

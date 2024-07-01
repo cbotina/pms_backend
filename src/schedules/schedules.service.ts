@@ -10,6 +10,7 @@ import {
 import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { TeacherScheduleView } from './entities/teacher-schedule.view';
 import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
+import { DayTimeSlots } from './models/day-time-slots';
 
 @Injectable()
 export class SchdulesService {
@@ -66,13 +67,13 @@ export class SchdulesService {
     periodId: number,
     studentId: number,
     scheduleRangeDatesDto: ScheduleRangeDatesDto,
-  ): Promise<Map<string, StudentScheduleView[]>> {
+  ): Promise<DayTimeSlots[]> {
     const { startDate, endDate } = scheduleRangeDatesDto;
 
     const nDate = new Date(startDate);
     const end = new Date(endDate);
 
-    const scheduleMap: Map<string, StudentScheduleView[]> = new Map();
+    const dayTimeSlotsList: DayTimeSlots[] = [];
 
     while (nDate <= end) {
       if (
@@ -86,15 +87,18 @@ export class SchdulesService {
           .andWhere('schedule.day = :day', { day: DaysMap[nDate.getDay()] })
           .orderBy('schedule.startTime', 'ASC');
 
-        const dayTimeSlots = await qb.execute();
+        const dayTimeSlots = await qb.getMany();
 
-        scheduleMap.set(nDate.toISOString().slice(0, 10), dayTimeSlots);
+        dayTimeSlotsList.push({
+          date: nDate.toISOString().slice(0, 10),
+          subjectGroupTimeSlots: dayTimeSlots,
+        });
       }
 
       nDate.setDate(nDate.getDate() + 1);
     }
 
-    return scheduleMap;
+    return dayTimeSlotsList;
   }
 }
 
