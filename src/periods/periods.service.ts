@@ -9,6 +9,7 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
+import { SetActivePeriodDto } from './dto/set-active-period.dto';
 
 @Injectable()
 export class PeriodsService {
@@ -58,5 +59,25 @@ export class PeriodsService {
     }
 
     return paginate<Period>(queryBuilder, options);
+  }
+
+  async setActivePeriod(id: number) {
+    const periods = await this.periodsRepository.find();
+    for (let i = 0; i < periods.length; i++) {
+      const period = periods[i];
+
+      if (period.id != id) {
+        period.active = false;
+      } else {
+        period.active = true;
+      }
+      await this.periodsRepository.save(period);
+    }
+
+    return { message: 'Active period changed successfully' };
+  }
+
+  getActivePeriod() {
+    return this.periodsRepository.findOneBy({ active: true });
   }
 }

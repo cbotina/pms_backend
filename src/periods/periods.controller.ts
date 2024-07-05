@@ -20,14 +20,24 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { SetActivePeriodDto } from './dto/set-active-period.dto';
 
 @Role(Roles.SECRETARY)
 @ApiBearerAuth()
-@UseGuards(RolesGuard)
 @ApiTags('Periods 🗓️')
 @Controller('periods')
 export class PeriodsController {
   constructor(private readonly periodsService: PeriodsService) {}
+
+  @Patch(':id/activate')
+  setActivePeriod(@Param('id', ParseIntPipe) id: number) {
+    return this.periodsService.setActivePeriod(id);
+  }
+
+  @Get('active')
+  getActivePeriod() {
+    return this.periodsService.getActivePeriod();
+  }
 
   @Post()
   create(@Body() createPeriodDto: CreatePeriodDto) {
