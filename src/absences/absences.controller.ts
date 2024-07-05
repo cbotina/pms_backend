@@ -57,6 +57,15 @@ export class AbsencesController {
     );
   }
 
+  @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
+  @Get('periods/:periodId/students/:studentId/absences/justificable')
+  getJustificableAbsences(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('studentId', ParseIntPipe) studentId: number,
+  ) {
+    return this.absencesService.getJustificableAbsences(periodId, studentId);
+  }
+
   @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/absence-report')
   getSubjectGroupAbsenceReport(

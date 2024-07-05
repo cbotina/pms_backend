@@ -38,7 +38,6 @@ export class UsersController {
     return this.usersService.remove(+id);
   }
 
-  @UseGuards(UserGuard)
   @Patch(':id/change-password')
   changePassword(
     @Param('id', ParseIntPipe) id: number,

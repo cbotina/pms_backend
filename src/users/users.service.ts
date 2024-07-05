@@ -71,6 +71,7 @@ export class UsersService {
     const { oldPassword, newPassword } = changePasswordDto;
 
     const checkPassword = compareSync(oldPassword, user.password);
+
     if (!checkPassword) {
       throw new UnauthorizedException('Wrong Password');
     }

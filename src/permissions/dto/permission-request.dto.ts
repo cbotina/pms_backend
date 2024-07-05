@@ -4,6 +4,7 @@ import {
   IsDateString,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -17,8 +18,8 @@ export class PermissionRequestDto {
   @IsNotEmpty()
   evidenceUrl: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   studentNote: string;
 
   @IsArray()

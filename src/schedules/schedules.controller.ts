@@ -69,12 +69,17 @@ export class SchdulesController {
   async getStudentScheduleByRange(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Param('studentId', ParseIntPipe) studentId: number,
-    @Body() scheduleRangeDatesDto: ScheduleRangeDatesDto,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+    // @Body() scheduleRangeDatesDto: ScheduleRangeDatesDto,
   ) {
     const scheduleMap = await this.schdulesService.getStudentScheduleByRange(
       periodId,
       studentId,
-      scheduleRangeDatesDto,
+      {
+        startDate,
+        endDate,
+      },
     );
 
     return scheduleMap;

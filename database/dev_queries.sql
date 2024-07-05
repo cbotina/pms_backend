@@ -1,5 +1,7 @@
 use pms_dev;
 
+select * from `group`;
+
 SELECT 
     sg.id subjectGroupId,
     s.name AS subjectName,

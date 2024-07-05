@@ -112,4 +112,8 @@ export const DaysMap = {
   5: undefined,
 };
 
-export const fairyDays: string[] = [new Date('2024-06-26').toString()];
+export const fairyDays: string[] = [
+  // new Date('2024-07-01').toDateString(),
+  new Date('2024-07-02').toDateString(),
+];
+export const fairyDates: Date[] = [new Date('2024-07-01')];

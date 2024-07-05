@@ -10,6 +10,7 @@ import {
 import { UnjustifiedAbsenceDetailsView } from './entities/unjustified-absences.view';
 import { AbsenceCountView } from './entities/absence-count.view';
 import { SubjectGroupStudentAbsenceDetailsView } from './entities/student-absence-details.view';
+import { fairyDates, fairyDays } from 'src/schedules/schedules.service';
 
 @Injectable()
 export class AbsencesService {
@@ -55,6 +56,55 @@ export class AbsencesService {
       .orderBy('ar.absenceDate', 'ASC');
 
     return paginate<UnjustifiedAbsenceDetailsView>(qb, options);
+  }
+
+  async getJustificableAbsences(
+    periodId: number,
+    studentId: number,
+  ): Promise<UnjustifiedAbsenceDetailsView[]> {
+    const qb = await this.unjustifiedAbsenceDetailsRepository
+      .createQueryBuilder('ar')
+      .where('ar.periodId = :periodId', { periodId })
+      .andWhere('ar.studentId = :studentId', { studentId })
+      .orderBy('ar.absenceDate', 'ASC')
+      .getMany();
+
+    return qb.filter((e) => {
+      // return true;
+      return this.hasBeenLessThanThreeWorkdays(e.absenceDate);
+    });
+  }
+
+  isWorkday(date: Date): boolean {
+    const day = date.getDay();
+    const isWeekend = day === 0 || day === 6;
+    const isHoliday =
+      fairyDays.includes(date.toDateString()) ||
+      date.getDay() == 5 ||
+      date.getDay() == 6;
+
+    return !isWeekend && !isHoliday;
+  }
+
+  getWorkdaysBetween(startDate: Date, endDate: Date): number {
+    let workdays = 0;
+    const currentDate = new Date(startDate);
+    // console.log('=======');
+    while (currentDate < endDate) {
+      // console.log(this.isWorkday(currentDate));
+      if (this.isWorkday(currentDate)) {
+        workdays++;
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return workdays;
+  }
+
+  hasBeenLessThanThreeWorkdays(targetDate: Date): boolean {
+    const now = new Date();
+    const workdays = this.getWorkdaysBetween(targetDate, now);
+    console.log(workdays);
+    return workdays <= 3;
   }
 
   getSubjectGroupAbsenceReport(subjectGroupId: number) {

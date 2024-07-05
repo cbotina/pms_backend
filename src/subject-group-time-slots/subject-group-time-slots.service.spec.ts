@@ -9,7 +9,9 @@ describe('SubjectGroupTimeSlotsService', () => {
       providers: [SubjectGroupTimeSlotsService],
     }).compile();
 
-    service = module.get<SubjectGroupTimeSlotsService>(SubjectGroupTimeSlotsService);
+    service = module.get<SubjectGroupTimeSlotsService>(
+      SubjectGroupTimeSlotsService,
+    );
   });
 
   it('should be defined', () => {
