@@ -78,10 +78,7 @@ export class AbsencesService {
   isWorkday(date: Date): boolean {
     const day = date.getDay();
     const isWeekend = day === 0 || day === 6;
-    const isHoliday =
-      fairyDays.includes(date.toDateString()) ||
-      date.getDay() == 5 ||
-      date.getDay() == 6;
+    const isHoliday = fairyDays.includes(date.toDateString());
 
     return !isWeekend && !isHoliday;
   }

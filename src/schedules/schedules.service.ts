@@ -78,7 +78,7 @@ export class SchdulesService {
     while (nDate <= end) {
       if (
         !fairyDays.includes(nDate.toString()) &&
-        !(nDate.getDay() == 5 || nDate.getDay() == 6)
+        !(nDate.getDay() == 0 || nDate.getDay() == 6)
       ) {
         const qb = this.studentScheduleRepository
           .createQueryBuilder('schedule')
@@ -103,13 +103,13 @@ export class SchdulesService {
 }
 
 export const DaysMap = {
+  0: undefined,
+  1: WeekDay.MONDAY,
+  2: WeekDay.TUESDAY,
+  3: WeekDay.WEDNESDAY,
+  4: WeekDay.THURSDAY,
+  5: WeekDay.FRIDAY,
   6: undefined,
-  0: WeekDay.MONDAY,
-  1: WeekDay.TUESDAY,
-  2: WeekDay.WEDNESDAY,
-  3: WeekDay.THURSDAY,
-  4: WeekDay.FRIDAY,
-  5: undefined,
 };
 
 export const fairyDays: string[] = [
