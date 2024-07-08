@@ -6,12 +6,10 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserGuard } from 'src/common/guards/user.guard';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './entities/user.entity';
