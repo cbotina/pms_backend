@@ -11,6 +11,7 @@ export default () => ({
       process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'localProd',
   },
   jwtSecret: process.env.JWT_SECRET,
+  jwtDuration: process.env.JWT_DURATION,
   email: {
     host: process.env.EMAIL_HOST,
     pass: process.env.EMAIL_PASS,
