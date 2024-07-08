@@ -34,6 +34,7 @@ export class PeriodsController {
     return this.periodsService.setActivePeriod(id);
   }
 
+  @Role(Roles.STUDENT, Roles.TEACHER)
   @Get('active')
   getActivePeriod() {
     return this.periodsService.getActivePeriod();
