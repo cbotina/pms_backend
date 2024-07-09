@@ -5,12 +5,14 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
 import { AbsencesService } from './absences.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { StudentIdGuard } from 'src/common/guards/student_id.guard';
 
 @ApiTags('Absences 🚨')
 @Controller()

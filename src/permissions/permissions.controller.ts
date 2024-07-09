@@ -23,7 +23,6 @@ import { StudentIdGuard } from 'src/common/guards/student_id.guard';
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
-  @UseGuards(StudentIdGuard)
   @Role(Roles.SECRETARY, Roles.STUDENT)
   @Get('periods/:periodId/students/:studentId/permissions')
   getStudentPeriodPermissions(

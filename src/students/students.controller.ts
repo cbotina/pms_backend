@@ -43,6 +43,7 @@ export class StudentsController {
     return this.studentsService.findAll(options, search);
   }
 
+  @Role(Roles.STUDENT)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentsService.findOne(+id);

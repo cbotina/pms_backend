@@ -1,25 +1,26 @@
 import {
-  Body,
   Controller,
   DefaultValuePipe,
   Get,
   Param,
   ParseIntPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SchdulesService } from './schedules.service';
 import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { StudentIdGuard } from 'src/common/guards/student_id.guard';
 
 @ApiTags('Schedules 📜')
 @Controller('periods/:periodId')
 export class SchdulesController {
   constructor(private readonly schdulesService: SchdulesService) {}
 
+  @UseGuards(StudentIdGuard)
   @Role(Roles.STUDENT)
   @Get('students/:studentId/schedule')
   getStudentSchedule(
