@@ -18,13 +18,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const { id, role, entityId } = payload;
+    const { id, role, entityId, userId } = payload;
 
     try {
       await this.userService.findOne(id);
     } catch (error) {
       throw new HttpException('User in JWT payload not found', 404);
     }
-    return { id, role, entityId };
+    return { id, role, entityId, userId };
   }
 }

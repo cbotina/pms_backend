@@ -12,6 +12,6 @@ export class UserIdGuard implements CanActivate {
       return true;
     }
 
-    return userId == user.entityId;
+    return userId == user.id;
   }
 }

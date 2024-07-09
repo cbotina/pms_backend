@@ -39,13 +39,13 @@ export class UsersController {
     return this.usersService.remove(+id);
   }
 
-  @UseGuards(UserIdGuard)
   @Role(Roles.STUDENT)
+  @UseGuards(UserIdGuard)
   @Patch(':userId/change-password')
   changePassword(
-    @Param('userId', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) userId: number,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
-    return this.usersService.changePassword(changePasswordDto, id);
+    return this.usersService.changePassword(changePasswordDto, userId);
   }
 }
