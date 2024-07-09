@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class JustifyAbsencesRequestDto {
   @IsString()
@@ -10,7 +10,7 @@ export class JustifyAbsencesRequestDto {
   evidenceUrl: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   studentNote: string;
 
   @IsArray()

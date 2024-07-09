@@ -18,8 +18,8 @@ export class PermissionRequestDto {
   @IsNotEmpty()
   evidenceUrl: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   studentNote: string;
 
   @IsArray()
