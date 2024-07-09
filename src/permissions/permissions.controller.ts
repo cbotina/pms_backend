@@ -7,7 +7,6 @@ import {
   DefaultValuePipe,
   Patch,
   Body,
-  UseGuards,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
@@ -16,7 +15,6 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-import { StudentIdGuard } from 'src/common/guards/student_id.guard';
 
 @ApiTags('Permissions 🅿️')
 @Controller()
