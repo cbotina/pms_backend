@@ -16,8 +16,9 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { StudentIdGuard } from 'src/common/guards/student_id.guard';
+import { UserIdGuard } from 'src/common/guards/user_id.guard';
 
-@Role(Roles.SECRETARY)
+// @Role(Roles.SECRETARY)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -38,11 +39,11 @@ export class UsersController {
     return this.usersService.remove(+id);
   }
 
-  @UseGuards(StudentIdGuard)
+  @UseGuards(UserIdGuard)
   @Role(Roles.STUDENT)
-  @Patch(':id/change-password')
+  @Patch(':userId/change-password')
   changePassword(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) id: number,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
     return this.usersService.changePassword(changePasswordDto, id);
