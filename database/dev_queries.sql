@@ -1,7 +1,7 @@
 use pms_dev;
 
-select * from `group`;
-
+select * from user;
+select * from student;
 SELECT 
     sg.id subjectGroupId,
     s.name AS subjectName,

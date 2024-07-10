@@ -15,7 +15,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from './entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
-import { StudentIdGuard } from 'src/common/guards/student_id.guard';
 import { UserIdGuard } from 'src/common/guards/user_id.guard';
 
 // @Role(Roles.SECRETARY)

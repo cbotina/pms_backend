@@ -12,6 +12,7 @@ import { Subject } from 'src/subjects/entities/subject.entity';
     dataSource
       .createQueryBuilder()
       .select('sgts.id', 'subjectGroupTimeSlotId')
+      .addSelect('dr.id', 'dailyReportId')
       .addSelect('dr.reportDate', 'reportDate')
       .addSelect('ts.startTime', 'startTime')
       .addSelect('ts.endTime', 'endTime')
@@ -27,9 +28,13 @@ import { Subject } from 'src/subjects/entities/subject.entity';
       .innerJoin(SubjectGroup, 'sg', 'sg.id = sgts.subjectGroupId')
       .innerJoin(Group, 'g', 'g.id = sg.groupId')
       .innerJoin(Teacher, 't', 't.id = sg.teacherId')
-      .innerJoin(Subject, 's', 's.id = sg.subjectId'),
+      .innerJoin(Subject, 's', 's.id = sg.subjectId')
+      .orderBy('ts.startTime', 'ASC'),
 })
-export class TeacherDailyReportsView {
+export class TeacherDailyReportView {
+  @ViewColumn()
+  dailyReportId: number;
+
   @ViewColumn()
   subjectGroupTimeSlotId: number;
 

@@ -16,13 +16,13 @@ export const passwordOptions: IsStrongPasswordOptions = {
 };
 
 export class CreateUserDto {
-  @IsEmail()
   @MaxLength(150)
+  @IsEmail()
   email: string;
 
-  @IsOptional()
   @IsStrongPassword(passwordOptions)
   @MaxLength(30)
+  @IsOptional()
   password?: string;
 
   @IsEnum(Roles)

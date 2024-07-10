@@ -5,8 +5,9 @@ import { Absence } from 'src/absences/entities/absence.entity';
 import { PermissionAbsenceDetailsView } from 'src/absences/entities/permission-absence-details.view';
 import { SubjectGroupStudentAbsenceDetailsView } from 'src/absences/entities/student-absence-details.view';
 import { UnjustifiedAbsenceDetailsView } from 'src/absences/entities/unjustified-absences.view';
+import { DailyReportPermissionView } from 'src/daily-reports/dto/daily-reports-permission.view';
 import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { TeacherDailyReportsView } from 'src/daily-reports/entities/teacher-daily-reports.view';
+import { TeacherDailyReportView } from 'src/daily-reports/entities/teacher-daily-reports.view';
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
@@ -55,7 +56,7 @@ export const dbConfig = (
       Absence,
       DailyReport,
       TeacherSubjectsView,
-      TeacherDailyReportsView,
+      TeacherDailyReportView,
       SubjectGroupStudentsView,
       PermissionAbsenceDetailsView,
       UnjustifiedAbsenceDetailsView,
@@ -68,6 +69,7 @@ export const dbConfig = (
       PermissionCountByReasonView,
       PermissionCountByStatusView,
       SubjectsWithMostAbsencesView,
+      DailyReportPermissionView,
       User,
     ],
     synchronize: configService.get('database.synchronize'),

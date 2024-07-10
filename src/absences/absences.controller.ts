@@ -11,6 +11,7 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Absences 🚨')
 @Controller()
@@ -66,7 +67,9 @@ export class AbsencesController {
     return this.absencesService.getJustificableAbsences(periodId, studentId);
   }
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo: remove public
+  // @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/absence-report')
   getSubjectGroupAbsenceReport(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
@@ -74,7 +77,9 @@ export class AbsencesController {
     return this.absencesService.getSubjectGroupAbsenceReport(subjectGroupId);
   }
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo: remove public
+  // @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students/:studentId/absences')
   getSubjectGroupStudentAbsences(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,

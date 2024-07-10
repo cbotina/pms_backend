@@ -12,13 +12,23 @@ import { CreateDailyReportDto } from './dto/create-daily-report.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DailyReportPermissionView } from './dto/daily-reports-permission.view';
+import { Repository } from 'typeorm';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Daily Reports 📃')
 @Controller()
 export class DailyReportsController {
-  constructor(private readonly dailyReportsService: DailyReportsService) {}
+  constructor(
+    private readonly dailyReportsService: DailyReportsService,
+    @InjectRepository(DailyReportPermissionView)
+    private readonly drPermissionRepository: Repository<DailyReportPermissionView>,
+  ) {}
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo: delete public
+  // @Role(Roles.TEACHER)
   @Post('daily-reports')
   create(@Body() createDailyReportDto: CreateDailyReportDto) {
     return this.dailyReportsService.create(createDailyReportDto);
@@ -30,7 +40,9 @@ export class DailyReportsController {
     return this.dailyReportsService.findAll();
   }
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo : remove public
+  // @Role(Roles.TEACHER)
   @Get('periods/:periodId/teachers/:teacherId/daily-reports')
   getTeacherDailyReports(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -42,5 +54,14 @@ export class DailyReportsController {
       teacherId,
       date,
     );
+  }
+
+  @Public()
+  // todo: remove public
+  @Get('daily-reports/:dailyReportId/permissions')
+  getDailyReportPermissions(
+    @Param('dailyReportId', ParseIntPipe) dailyReportId: number,
+  ) {
+    return this.drPermissionRepository.find({ where: { dailyReportId } });
   }
 }

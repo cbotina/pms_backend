@@ -14,6 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { StudentIdGuard } from 'src/common/guards/student_id.guard';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Schedules 📜')
 @Controller('periods/:periodId')
@@ -43,7 +44,9 @@ export class SchdulesController {
     );
   }
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo: remove public
+  // @Role(Roles.TEACHER)
   @Get('teachers/:teacherId/schedule')
   getTeachersSchedule(
     @Param('periodId', ParseIntPipe) periodId: number,

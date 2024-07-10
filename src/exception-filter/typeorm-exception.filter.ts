@@ -27,6 +27,9 @@ export class TypeORMExceptionFilter implements ExceptionFilter {
         status = HttpStatus.NOT_FOUND;
         message = (exception as QueryFailedError).message;
         break;
+      default:
+        console.log(exception);
+        console.log('indefinido');
     }
 
     response.status(status).json({

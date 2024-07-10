@@ -53,7 +53,8 @@ export class PermissionRequestsService {
         evidenceUrl,
       });
 
-      absenceTimeSlots.forEach(async (e) => {
+      for (let i = 0; i < absenceTimeSlots.length; i++) {
+        const e = absenceTimeSlots[i];
         const subjectGroupTimeSlot = await this.sgtsRepository.findOneByOrFail({
           id: e.subjectGroupTimeSlotId,
         });
@@ -78,7 +79,34 @@ export class PermissionRequestsService {
           permission,
           student,
         });
-      });
+      }
+
+      // absenceTimeSlots.forEach(async (e) => {
+      //   const subjectGroupTimeSlot = await this.sgtsRepository.findOneByOrFail({
+      //     id: e.subjectGroupTimeSlotId,
+      //   });
+
+      //   let dailyReport = await this.dailyReportsRepository.findOne({
+      //     where: {
+      //       reportDate: e.absenceDate,
+      //       subjectGroupTimeSlot: subjectGroupTimeSlot,
+      //     },
+      //   });
+
+      //   if (!dailyReport) {
+      //     dailyReport = await this.dailyReportsRepository.save({
+      //       reportDate: e.absenceDate,
+      //       subjectGroupTimeSlot: subjectGroupTimeSlot,
+      //       absences: [],
+      //     });
+      //   }
+
+      //   await this.absencesRepository.save({
+      //     dailyReport,
+      //     permission,
+      //     student,
+      //   });
+      // });
 
       await queryRunner.commitTransaction();
 

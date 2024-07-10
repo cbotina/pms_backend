@@ -6,7 +6,8 @@ import { DataSource, Repository } from 'typeorm';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { Absence } from 'src/absences/entities/absence.entity';
 import { Student } from 'src/students/entities/student.entity';
-import { TeacherDailyReportsView } from './entities/teacher-daily-reports.view';
+import { TeacherDailyReportView } from './entities/teacher-daily-reports.view';
+import { CreateAbsenceDto } from 'src/absences/dto/create-absence.dto';
 
 @Injectable()
 export class DailyReportsService {
@@ -20,8 +21,8 @@ export class DailyReportsService {
     private readonly absencesRepository: Repository<Absence>,
     @InjectRepository(Student)
     private readonly studentsRepository: Repository<Student>,
-    @InjectRepository(TeacherDailyReportsView)
-    private readonly teacherDailyReportsRepository: Repository<TeacherDailyReportsView>,
+    @InjectRepository(TeacherDailyReportView)
+    private readonly teacherDailyReportsRepository: Repository<TeacherDailyReportView>,
   ) {}
 
   async create(createDailyReportDto: CreateDailyReportDto) {
@@ -58,7 +59,9 @@ export class DailyReportsService {
         });
       }
 
-      studentsAbsences.forEach(async (e) => {
+      for (let i = 0; i < studentsAbsences.length; i++) {
+        const e = studentsAbsences[i];
+
         const student = await this.studentsRepository.findOneByOrFail({
           id: e.studentId,
         });
@@ -68,11 +71,26 @@ export class DailyReportsService {
           teacherNote: e.teacherComment,
           dailyReport,
         });
-      });
+      }
+
+      // studentsAbsences.forEach(async (e) => {
+      //   const student = await this.studentsRepository.findOneByOrFail({
+      //     id: e.studentId,
+      //   });
+
+      //   await this.absencesRepository.save({
+      //     student,
+      //     teacherNote: e.teacherComment,
+      //     dailyReport,
+      //   });
+      // });
 
       dailyReport.isSubmitted = isSubmitted;
 
       await this.dailyReportsRepository.save(dailyReport);
+      // await queryRunner.manager.save<DailyReport>(dailyReport);
+
+      await queryRunner.commitTransaction();
 
       return {
         message: 'Daily report created successfully',

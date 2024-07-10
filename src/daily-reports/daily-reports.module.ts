@@ -6,7 +6,8 @@ import { DailyReport } from './entities/daily-report.entity';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { Student } from 'src/students/entities/student.entity';
 import { Absence } from 'src/absences/entities/absence.entity';
-import { TeacherDailyReportsView } from './entities/teacher-daily-reports.view';
+import { TeacherDailyReportView } from './entities/teacher-daily-reports.view';
+import { DailyReportPermissionView } from './dto/daily-reports-permission.view';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { TeacherDailyReportsView } from './entities/teacher-daily-reports.view';
       SubjectGroupTimeSlot,
       Student,
       Absence,
-      TeacherDailyReportsView,
+      TeacherDailyReportView,
+      DailyReportPermissionView,
     ]),
   ],
   controllers: [DailyReportsController],

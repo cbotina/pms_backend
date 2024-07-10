@@ -17,6 +17,7 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Role(Roles.SECRETARY)
 @ApiTags('Subject Groups 📚👥')
@@ -67,13 +68,15 @@ export class SubjectGroupsController {
     return this.subjectGroupsService.remove(+id);
   }
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo: delete public
+  // @Role(Roles.TEACHER)
   @Get('periods/:periodId/teachers/:teacherId/subject-groups')
   getTeacherSubjectGroups(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Param('teacherId', ParseIntPipe) teacherId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number = 1,
   ) {
     const options: IPaginationOptions = {
       limit,
@@ -87,7 +90,9 @@ export class SubjectGroupsController {
     );
   }
 
-  @Role(Roles.TEACHER)
+  @Public()
+  // todo: remove public
+  // @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students')
   getSubjectGroupStudents(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
