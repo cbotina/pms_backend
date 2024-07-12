@@ -58,4 +58,7 @@ export class TeacherDailyReportView {
 
   @ViewColumn()
   isSubmitted: boolean;
+
+  @ViewColumn()
+  teacherId: number;
 }

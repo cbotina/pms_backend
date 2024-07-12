@@ -15,6 +15,8 @@ export enum WeekDay {
   WEDNESDAY = 'WED',
   THURSDAY = 'THU',
   FRIDAY = 'FRI',
+  SATURDAY = 'SAT',
+  SUNDAY = 'SUN',
 }
 
 @Entity()

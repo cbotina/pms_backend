@@ -15,6 +15,7 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Public } from 'src/common/decorators/public.decorator';
 @Role(Roles.SECRETARY)
 @ApiTags('Period timeslots 🗓️⌚')
 @Controller('periods/:periodId/time-slots')
@@ -23,7 +24,9 @@ export class PeriodTimeSlotsController {
     private readonly periodTimeSlotsService: PeriodTimeSlotsService,
   ) {}
 
-  @Role(Roles.STUDENT)
+  // @Role(Roles.STUDENT)
+  @Public()
+  // todo: remove public
   @Get()
   async getPeriodTimeSlots(
     @Param('periodId', ParseIntPipe) periodId: number,

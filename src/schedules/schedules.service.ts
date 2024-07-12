@@ -103,13 +103,13 @@ export class SchdulesService {
 }
 
 export const DaysMap = {
-  0: undefined,
+  0: WeekDay.SUNDAY,
   1: WeekDay.MONDAY,
   2: WeekDay.TUESDAY,
   3: WeekDay.WEDNESDAY,
   4: WeekDay.THURSDAY,
   5: WeekDay.FRIDAY,
-  6: undefined,
+  6: WeekDay.SATURDAY,
 };
 
 export const fairyDays: string[] = [

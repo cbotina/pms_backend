@@ -4,7 +4,7 @@ import { Absence } from './absence.entity';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { Gender, Student } from 'src/students/entities/student.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>
@@ -12,6 +12,7 @@ import { Student } from 'src/students/entities/student.entity';
       .createQueryBuilder()
       .select('count(*)', 'absences')
       .addSelect(`concat(st.firstName, ' ', st.lastName)`, 'student')
+      .addSelect(`st.gender`, 'studentGender')
       .addSelect('sg.id', 'subjectGroupId')
       .from(DailyReport, 'dr')
       .innerJoin(Absence, 'a', 'a.dailyReportId = dr.id')
@@ -40,4 +41,7 @@ export class AbsenceCountView {
 
   @ViewColumn()
   student: string;
+
+  @ViewColumn()
+  studentGender: Gender;
 }

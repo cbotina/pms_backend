@@ -1,7 +1,7 @@
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { Gender, Student } from 'src/students/entities/student.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>
@@ -9,7 +9,9 @@ import { Student } from 'src/students/entities/student.entity';
       .createQueryBuilder()
       .select('st.id', 'studentId')
       .addSelect('en.subjectGroupId', 'subjectGroupId')
-      .addSelect(`concat(st.lastName, ' ', st.firstName)`, 'studentName')
+      .addSelect('st.gender', 'studentGender')
+      .addSelect(`st.firstName`, 'studentFirstName')
+      .addSelect(`st.lastName`, 'studentLastName')
       .from(Enrollment, 'en')
       .innerJoin(Student, 'st', 'st.id = en.studentId'),
 })
@@ -18,5 +20,11 @@ export class SubjectGroupStudentsView {
   studentId: number;
 
   @ViewColumn()
-  studentName: string;
+  studentFirstName: string;
+
+  @ViewColumn()
+  studentGender: Gender;
+
+  @ViewColumn()
+  studentLastName: string;
 }

@@ -142,7 +142,7 @@ export class SubjectGroupsService {
     return this.sgStudentsRepository
       .createQueryBuilder('sg')
       .where('sg.subjectGroupId = :subjectGroupId', { subjectGroupId })
-      .orderBy('sg.studentName', 'ASC')
+      .orderBy('sg.studentLastName', 'ASC')
       .getMany();
   }
 }

@@ -108,11 +108,13 @@ export class DailyReportsService {
   }
 
   getTeacherDailyReports(periodId: number, teacherId: number, date: string) {
-    return this.teacherDailyReportsRepository
-      .createQueryBuilder('tdr')
-      .where('tdr.periodId = :periodId', { periodId })
-      .andWhere('tdr.teacherId = :teacherId', { teacherId })
-      .andWhere('tdr.reportDate like :date', { date: `${date}%` })
-      .getMany();
+    return (
+      this.teacherDailyReportsRepository
+        .createQueryBuilder('tdr')
+        .where('tdr.periodId = :periodId', { periodId })
+        // .andWhere('tdr.teacherId = :teacherId', { teacherId })
+        .andWhere('tdr.reportDate like :date', { date: `${date}%` })
+        .getMany()
+    );
   }
 }
