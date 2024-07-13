@@ -45,8 +45,7 @@ export class TeachersController {
     return await this.teachersService.findAll(options, search);
   }
 
-  @Public()
-  // todo: remove public
+  @Role(Roles.TEACHER)
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.teachersService.findOne(id);

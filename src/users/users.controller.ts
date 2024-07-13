@@ -38,7 +38,7 @@ export class UsersController {
     return this.usersService.remove(+id);
   }
 
-  @Role(Roles.STUDENT)
+  @Role(Roles.STUDENT, Roles.TEACHER)
   @UseGuards(UserIdGuard)
   @Patch(':userId/change-password')
   changePassword(

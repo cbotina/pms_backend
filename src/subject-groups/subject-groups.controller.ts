@@ -68,9 +68,8 @@ export class SubjectGroupsController {
     return this.subjectGroupsService.remove(+id);
   }
 
-  @Public()
-  // todo: delete public
-  // @Role(Roles.TEACHER)
+  // @Public()
+  @Role(Roles.TEACHER)
   @Get('periods/:periodId/teachers/:teacherId/subject-groups')
   getTeacherSubjectGroups(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -90,9 +89,8 @@ export class SubjectGroupsController {
     );
   }
 
-  @Public()
-  // todo: remove public
-  // @Role(Roles.TEACHER)
+  // @Public()
+  @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students')
   getSubjectGroupStudents(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,

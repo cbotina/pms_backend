@@ -18,7 +18,14 @@ export class AuthService {
       throw new UnauthorizedException('Wrong Password');
     }
 
-    const payload = { id: user.id, role: user.role, entityId: user.entityId };
+    console.log(user);
+
+    const payload = {
+      id: user.id,
+      role: user.role,
+      entityId: user.entityId,
+      userId: user.id,
+    };
     const data = { token: this.jwtService.sign(payload) };
 
     return data;

@@ -8,8 +8,6 @@ export class TeacherIdGuard implements CanActivate {
     const { user } = request;
     const { teacherId } = request.params;
 
-    console.log(teacherId, user.entityId);
-
     if (user.role === Roles.ADMIN) {
       return true;
     }

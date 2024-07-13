@@ -13,6 +13,7 @@ import { Gender, Student } from 'src/students/entities/student.entity';
       .select('count(*)', 'absences')
       .addSelect(`concat(st.firstName, ' ', st.lastName)`, 'student')
       .addSelect(`st.gender`, 'studentGender')
+      .addSelect(`st.id`, 'studentId')
       .addSelect('sg.id', 'subjectGroupId')
       .from(DailyReport, 'dr')
       .innerJoin(Absence, 'a', 'a.dailyReportId = dr.id')
@@ -38,6 +39,12 @@ import { Gender, Student } from 'src/students/entities/student.entity';
 export class AbsenceCountView {
   @ViewColumn()
   absences: number;
+
+  @ViewColumn()
+  subjectGroupId: number;
+
+  @ViewColumn()
+  studentId: number;
 
   @ViewColumn()
   student: string;

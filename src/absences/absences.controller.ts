@@ -67,9 +67,8 @@ export class AbsencesController {
     return this.absencesService.getJustificableAbsences(periodId, studentId);
   }
 
-  @Public()
-  // todo: remove public
-  // @Role(Roles.TEACHER)
+  // @Public()
+  @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/absence-report')
   getSubjectGroupAbsenceReport(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
@@ -77,9 +76,8 @@ export class AbsencesController {
     return this.absencesService.getSubjectGroupAbsenceReport(subjectGroupId);
   }
 
-  @Public()
-  // todo: remove public
-  // @Role(Roles.TEACHER)
+  // @Public()
+  @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students/:studentId/absences')
   getSubjectGroupStudentAbsences(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,

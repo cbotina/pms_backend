@@ -7,7 +7,6 @@ import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subj
 import { Absence } from 'src/absences/entities/absence.entity';
 import { Student } from 'src/students/entities/student.entity';
 import { TeacherDailyReportView } from './entities/teacher-daily-reports.view';
-import { CreateAbsenceDto } from 'src/absences/dto/create-absence.dto';
 
 @Injectable()
 export class DailyReportsService {

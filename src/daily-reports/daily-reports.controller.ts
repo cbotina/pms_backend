@@ -26,9 +26,8 @@ export class DailyReportsController {
     private readonly drPermissionRepository: Repository<DailyReportPermissionView>,
   ) {}
 
-  @Public()
-  // todo: delete public
-  // @Role(Roles.TEACHER)
+  // @Public()
+  @Role(Roles.TEACHER)
   @Post('daily-reports')
   create(@Body() createDailyReportDto: CreateDailyReportDto) {
     return this.dailyReportsService.create(createDailyReportDto);
@@ -56,8 +55,7 @@ export class DailyReportsController {
     );
   }
 
-  @Public()
-  // todo: remove public
+  // @Public()
   @Get('daily-reports/:dailyReportId/permissions')
   getDailyReportPermissions(
     @Param('dailyReportId', ParseIntPipe) dailyReportId: number,

@@ -44,9 +44,8 @@ export class SchdulesController {
     );
   }
 
-  @Public()
-  // todo: remove public
-  // @Role(Roles.TEACHER)
+  // @Public()
+  @Role(Roles.TEACHER)
   @Get('teachers/:teacherId/schedule')
   getTeachersSchedule(
     @Param('periodId', ParseIntPipe) periodId: number,
