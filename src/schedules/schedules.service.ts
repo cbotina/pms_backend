@@ -11,6 +11,7 @@ import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-tim
 import { TeacherScheduleView } from './entities/teacher-schedule.view';
 import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
 import { DayTimeSlots } from './models/day-time-slots';
+import { AbsenceCountBySubjectView } from 'src/absences/entities/absence-count-by-subject.view';
 
 @Injectable()
 export class SchdulesService {
@@ -19,6 +20,8 @@ export class SchdulesService {
     private readonly studentScheduleRepository: Repository<StudentScheduleView>,
     @InjectRepository(TeacherScheduleView)
     private readonly teacherScheduleRepository: Repository<TeacherScheduleView>,
+    @InjectRepository(AbsenceCountBySubjectView)
+    private readonly studentAbsenceCountBySubjectRepository: Repository<AbsenceCountBySubjectView>,
   ) {}
 
   getStudentSchedule(
@@ -75,6 +78,16 @@ export class SchdulesService {
 
     const dayTimeSlotsList: DayTimeSlots[] = [];
 
+    const blockedSubjectGroups =
+      await this.studentAbsenceCountBySubjectRepository
+        .createQueryBuilder('ac')
+        .where('ac.studentId = :studentId', { studentId })
+        .andWhere('ac.periodId = :periodId', { periodId })
+        .andWhere('ac.absences >= ac.subjectGroupHours*3') // todo: para bloquear permisos
+        .getMany();
+
+    console.log(blockedSubjectGroups);
+
     while (nDate <= end) {
       if (
         !fairyDays.includes(nDate.toString()) &&
@@ -89,9 +102,31 @@ export class SchdulesService {
 
         const dayTimeSlots = await qb.getMany();
 
+        const nonBlockedDayTimeSlots: StudentScheduleView[] = [];
+
+        for (let i = 0; i < dayTimeSlots.length; i++) {
+          let isValid = true;
+          const dayTimeSlot = dayTimeSlots[i];
+
+          for (let j = 0; j < blockedSubjectGroups.length; j++) {
+            const blockedSubjectGroup = blockedSubjectGroups[j];
+
+            if (
+              blockedSubjectGroup.subjectGroupId === dayTimeSlot.subjectGroupId
+            ) {
+              isValid = false;
+              break;
+            }
+          }
+
+          if (isValid) {
+            nonBlockedDayTimeSlots.push(dayTimeSlot);
+          }
+        }
+
         dayTimeSlotsList.push({
           date: nDate.toISOString().slice(0, 10),
-          subjectGroupTimeSlots: dayTimeSlots,
+          subjectGroupTimeSlots: nonBlockedDayTimeSlots,
         });
       }
 

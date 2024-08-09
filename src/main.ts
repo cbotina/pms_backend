@@ -6,6 +6,8 @@ import { TypeORMExceptionFilter } from './exception-filter/typeorm-exception.fil
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { RolesGuard } from './common/guards/roles.guard';
+import helmet from 'helmet';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -19,6 +21,7 @@ async function bootstrap() {
   app.useGlobalFilters(new TypeORMExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalGuards(new RolesGuard(app.get(Reflector)));
+  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle('Sistema Gestor de Permisos')

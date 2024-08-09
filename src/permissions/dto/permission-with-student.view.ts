@@ -31,7 +31,7 @@ export class PermissionWithStudentView {
   studentId: number;
 
   @ViewColumn()
-  requestDate: number;
+  requestDate: Date;
 
   @ViewColumn()
   student: string;

@@ -13,6 +13,7 @@ import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
     dataSource
       .createQueryBuilder()
       .select('sgts.id', 'subjectGroupTimeSlotId')
+      .addSelect('sg.id', 'subjectGroupId')
       .addSelect('ts.startTime', 'startTime')
       .addSelect('ts.endTime', 'endTime')
       .addSelect('sub.name', 'subjectName')
@@ -32,6 +33,9 @@ import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 export class StudentScheduleView {
   @ViewColumn()
   subjectGroupTimeSlotId: number;
+
+  @ViewColumn()
+  subjectGroupId: number;
 
   @ViewColumn()
   startTime: Date;

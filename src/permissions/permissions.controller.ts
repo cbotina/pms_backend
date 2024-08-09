@@ -7,6 +7,7 @@ import {
   DefaultValuePipe,
   Patch,
   Body,
+  Delete,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
@@ -15,6 +16,8 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Public } from 'src/common/decorators/public.decorator';
+import { JustifyLeavingPermissionDto } from './dto/justify-permission.dto';
 
 @ApiTags('Permissions 🅿️')
 @Controller()
@@ -29,6 +32,7 @@ export class PermissionsController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
     @Query('search') search?: string,
+    @Query('status') status?: PermissionStatus,
   ) {
     const options: IPaginationOptions = {
       limit,
@@ -40,6 +44,7 @@ export class PermissionsController {
       studentId,
       options,
       search,
+      status,
     );
   }
 
@@ -78,9 +83,28 @@ export class PermissionsController {
     );
   }
 
+  @Public()
+  // todo : remove public
+  @Patch('permissions/:permissionId/justify')
+  justifyLeavingPermission(
+    @Param('permissionId', ParseIntPipe) permissionId: number,
+    @Body() justifyLeavingPermissionDto: JustifyLeavingPermissionDto,
+  ) {
+    return this.permissionsService.justifyLeavingPermission(
+      permissionId,
+      justifyLeavingPermissionDto,
+    );
+  }
+
   @Role(Roles.SECRETARY, Roles.STUDENT, Roles.TEACHER)
   @Get('permissions/:permissionId')
   getPermission(@Param('permissionId', ParseIntPipe) permissionId: number) {
     return this.permissionsService.getPermission(permissionId);
+  }
+
+  @Public()
+  @Delete('permissions/:permissionId')
+  deletePermission(@Param('permissionId', ParseIntPipe) permissionId: number) {
+    return this.permissionsService.deletePermission(permissionId);
   }
 }

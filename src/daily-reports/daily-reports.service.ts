@@ -44,7 +44,7 @@ export class DailyReportsService {
       let dailyReport = await this.dailyReportsRepository
         .createQueryBuilder('dr')
         .where('dr.reportDate LIKE :reportDate', {
-          reportDate: `${reportDate}%`,
+          reportDate: `${reportDate.split(' ')[0]}%`,
         })
         .andWhere('dr.subjectGroupTimeSlotId = :subjectGroupTimeSlotId', {
           subjectGroupTimeSlotId,
@@ -52,6 +52,7 @@ export class DailyReportsService {
         .getOne();
 
       if (!dailyReport) {
+        console.log('esto no deberia pasar');
         dailyReport = await this.dailyReportsRepository.save({
           subjectGroupTimeSlot,
           reportDate,

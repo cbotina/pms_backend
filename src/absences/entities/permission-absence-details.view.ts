@@ -19,6 +19,7 @@ import { Group } from 'src/groups/entities/group.entity';
       .addSelect('p.id', 'permissionId')
       .addSelect('p.status', 'permissionStatus')
       .addSelect('a.teacherNote', 'teacherNote')
+      .addSelect('a.id', 'absenceId')
       .addSelect('p.studentId', 'studentId')
       .addSelect('g.periodId', 'periodId')
       .from(Permission, 'p')
@@ -37,6 +38,9 @@ import { Group } from 'src/groups/entities/group.entity';
 export class PermissionAbsenceDetailsView {
   @ViewColumn()
   absenceDate: Date;
+
+  @ViewColumn()
+  absenceId: number;
 
   @ViewColumn()
   startTime: Date;

@@ -5,6 +5,8 @@ import { JustifyAbsencesRequestDto } from '../dto/justify-absences-request.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Public } from 'src/common/decorators/public.decorator';
+import { CreateLeavingPermissionDto } from '../dto/create-leaving-permission.dto';
 
 @ApiTags('Permission Requests 🅿️🙋‍♂️')
 @Controller()
@@ -22,6 +24,19 @@ export class PermissionRequestsController {
     return this.permissionRequestsService.createPermissionRequest(
       studentId,
       permissionRequestDto,
+    );
+  }
+  @Public()
+  // todo: remove public
+  // @Role(Roles.SECRETARY)
+  @Post('students/:studentId/leaving-permissions')
+  createLeavingPermissionRequest(
+    @Body() leavingPermissionRequestDto: CreateLeavingPermissionDto,
+    @Param('studentId', ParseIntPipe) studentId: number,
+  ) {
+    return this.permissionRequestsService.createLeavingPermissionRequest(
+      studentId,
+      leavingPermissionRequestDto,
     );
   }
 

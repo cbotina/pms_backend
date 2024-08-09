@@ -49,6 +49,12 @@ export class StudentsController {
     return this.studentsService.findOne(+id);
   }
 
+  @Role(Roles.STUDENT)
+  @Get(':cc')
+  findOneByCC(@Param('cc') cc: string) {
+    return this.studentsService.findOneByCC(cc);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
     return this.studentsService.update(+id, updateStudentDto);

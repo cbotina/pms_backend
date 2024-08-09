@@ -5,6 +5,7 @@ import {
   ParseIntPipe,
   Query,
   DefaultValuePipe,
+  Delete,
 } from '@nestjs/common';
 import { AbsencesService } from './absences.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
@@ -20,7 +21,7 @@ export class AbsencesController {
 
   @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('students/:studentId/permissions/:permissionId/absences')
-  getPermissionsAbsences(
+  getStudentPermissionAbsences(
     @Param('studentId', ParseIntPipe) studentId: number,
     @Param('permissionId', ParseIntPipe) permissionId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -36,6 +37,21 @@ export class AbsencesController {
       permissionId,
       options,
     );
+  }
+
+  @Role(Roles.SECRETARY)
+  @Get('permissions/:permissionId/absences')
+  getPermissionAbsences(
+    @Param('permissionId', ParseIntPipe) permissionId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.absencesService.getPermissionAbsences(permissionId, options);
   }
 
   @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
@@ -87,5 +103,39 @@ export class AbsencesController {
       subjectGroupId,
       studentId,
     );
+  }
+
+  @Public()
+  @Get('periods/:periodId/students/:studentId/absence-count-by-subject')
+  getStudentAbsencesCountBySubject(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('studentId', ParseIntPipe) studentId: number,
+  ) {
+    return this.absencesService.getStudentAbsencesCountBySubject(
+      periodId,
+      studentId,
+    );
+  }
+
+  @Public()
+  @Get('periods/:periodId/absences')
+  getPeriodAbsences(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('search') search?: string,
+  ) {
+    const options: IPaginationOptions = {
+      limit,
+      page,
+    };
+
+    return this.absencesService.getPeriodAbsences(periodId, options, search);
+  }
+
+  @Public()
+  @Delete('absences/:absenceId')
+  deleteAbsence(@Param('absenceId', ParseIntPipe) absenceId: number) {
+    return this.absencesService.deleteAbsence(absenceId);
   }
 }

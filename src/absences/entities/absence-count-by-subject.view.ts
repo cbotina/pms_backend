@@ -1,29 +1,25 @@
-import { Permission } from 'src/permissions/entities/permission.entity';
 import { Brackets, DataSource, ViewColumn, ViewEntity } from 'typeorm';
 import { Absence } from './absence.entity';
+import { Student } from 'src/students/entities/student.entity';
+import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
 import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { Subject } from 'src/subjects/entities/subject.entity';
-import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
 import { Group } from 'src/groups/entities/group.entity';
+import { Permission } from 'src/permissions/entities/permission.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>
     dataSource
       .createQueryBuilder()
-      .addSelect('a.id', 'absenceId')
-      .addSelect('dr.reportDate', 'absenceDate')
+      .select('COUNT(*)', 'absences')
+      .addSelect('s.name', 'subjectName')
       .addSelect('sg.id', 'subjectGroupId')
-      .addSelect('ts.startTime', 'startTime')
-      .addSelect('ts.endTime', 'endTime')
-      .addSelect('sub.name', 'subjectName')
-      .addSelect('p.id', 'permissionId')
-      .addSelect('p.status', 'permissionStatus')
-      .addSelect('a.teacherNote', 'teacherNote')
-      .addSelect('a.studentId', 'studentId')
       .addSelect('g.periodId', 'periodId')
+      .addSelect('sg.hours', 'subjectGroupHours')
+      .addSelect('st.id', 'studentId')
       .from(Absence, 'a')
+      .innerJoin(Student, 'st', 'st.id = a.studentId')
       .innerJoin(DailyReport, 'dr', 'dr.id = a.dailyReportId')
       .leftJoin(Permission, 'p', 'p.id = a.permissionId')
       .innerJoin(
@@ -31,38 +27,32 @@ import { Group } from 'src/groups/entities/group.entity';
         'sgts',
         'sgts.id = dr.subjectGroupTimeSlotId',
       )
-      .innerJoin(TimeSlot, 'ts', 'ts.id = sgts.timeSlotId')
       .innerJoin(SubjectGroup, 'sg', 'sg.id = sgts.subjectGroupId')
+      .innerJoin(Subject, 's', 's.id = sg.subjectId')
       .innerJoin(Group, 'g', 'g.id = sg.groupId')
-      .innerJoin(Subject, 'sub', 'sub.id = sg.subjectId')
       .where(
         new Brackets((qb) => {
-          qb.where('p.id is null');
+          qb.where("p.status != 'A'").orWhere('p.id is null');
         }),
-      ),
+      )
+      .groupBy('sg.id')
+      .addGroupBy('g.periodId')
+      .addGroupBy('st.id')
+      .orderBy('absences', 'DESC'),
 })
-export class UnjustifiedAbsenceDetailsView {
+export class AbsenceCountBySubjectView {
   @ViewColumn()
-  absenceId: number;
-
-  @ViewColumn()
-  subjectGroupId: number;
-
-  @ViewColumn()
-  absenceDate: Date;
-
-  @ViewColumn()
-  startTime: Date;
-
-  @ViewColumn()
-  endTime: Date;
-
-  @ViewColumn()
-  teacherNote: string;
+  absences: number;
 
   @ViewColumn()
   subjectName: string;
 
   @ViewColumn()
-  permissionStatus: string;
+  subjectGroupId: number;
+
+  @ViewColumn()
+  periodId: number;
+
+  @ViewColumn()
+  studentId: number;
 }

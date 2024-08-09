@@ -33,10 +33,13 @@ export class Permission {
   @Column({ nullable: true })
   approvalDate: Date;
 
+  @Column({ nullable: true })
+  justificationDeadline: Date;
+
   @Column()
   reason: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   evidenceUrl: string;
 
   @Column({ nullable: true })

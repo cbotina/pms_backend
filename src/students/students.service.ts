@@ -57,6 +57,12 @@ export class StudentsService {
     });
   }
 
+  findOneByCC(cc: string) {
+    return this.studentsRepository.findOne({
+      where: { cc },
+    });
+  }
+
   async update(id: number, updateStudentDto: UpdateStudentDto) {
     const existingStudent = await this.findOne(id);
 

@@ -11,12 +11,16 @@ import { Student } from 'src/students/entities/student.entity';
 import { Group } from 'src/groups/entities/group.entity';
 import { PermissionWithStudentView } from './dto/permission-with-student.view';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { JustifyLeavingPermissionDto } from './dto/justify-permission.dto';
+import { Absence } from 'src/absences/entities/absence.entity';
 
 @Injectable()
 export class PermissionsService {
   constructor(
     @InjectRepository(Permission)
     private readonly permissionsRepository: Repository<Permission>,
+    @InjectRepository(Absence)
+    private readonly absencesRepository: Repository<Absence>,
     @InjectRepository(PermissionWithStudentView)
     private readonly permissionsWithStudentRepository: Repository<PermissionWithStudentView>,
   ) {}
@@ -26,6 +30,7 @@ export class PermissionsService {
     studentId: number,
     options: IPaginationOptions,
     search?: string,
+    status?: PermissionStatus,
   ): Promise<Pagination<Permission>> {
     const qb = this.permissionsRepository
       .createQueryBuilder('p')
@@ -36,6 +41,10 @@ export class PermissionsService {
 
     if (search) {
       qb.andWhere('p.reason LIKE :search', { search: `%${search}%` });
+    }
+
+    if (status) {
+      qb.andWhere('p.status = :status', { status });
     }
 
     qb.orderBy('p.requestDate', 'DESC');
@@ -70,6 +79,25 @@ export class PermissionsService {
     return paginate<PermissionWithStudentView>(qb, options);
   }
 
+  async justifyLeavingPermission(
+    permissionId: number,
+    justifyLeavingPermissionDto: JustifyLeavingPermissionDto,
+  ) {
+    const existingPermission = await this.permissionsRepository.findOneByOrFail(
+      {
+        id: permissionId,
+      },
+    );
+
+    const permissionData = this.permissionsRepository.merge(
+      existingPermission,
+      justifyLeavingPermissionDto,
+      { status: PermissionStatus.PENDING },
+    );
+
+    return await this.permissionsRepository.save(permissionData);
+  }
+
   async updatePermission(
     permissionId: number,
     updatePermissionDto: UpdatePermissionDto,
@@ -97,5 +125,21 @@ export class PermissionsService {
         student: true,
       },
     });
+  }
+
+  async deletePermission(permissionId: number) {
+    const permission = await this.permissionsRepository.findOneOrFail({
+      where: { id: permissionId },
+      relations: { absences: true },
+    });
+
+    const absences = permission.absences;
+
+    for (let i = 0; i < absences.length; i++) {
+      const absence = absences[i];
+      await this.absencesRepository.delete({ id: absence.id });
+    }
+
+    return this.permissionsRepository.delete({ id: permissionId });
   }
 }

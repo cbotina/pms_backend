@@ -1,7 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { AbsenceCountBySubjectView } from 'src/absences/entities/absence-count-by-subject.view';
 import { AbsenceCountView } from 'src/absences/entities/absence-count.view';
 import { Absence } from 'src/absences/entities/absence.entity';
+import { AbsenceWithStudentView } from 'src/absences/entities/absence_with_student.view';
 import { PermissionAbsenceDetailsView } from 'src/absences/entities/permission-absence-details.view';
 import { SubjectGroupStudentAbsenceDetailsView } from 'src/absences/entities/student-absence-details.view';
 import { UnjustifiedAbsenceDetailsView } from 'src/absences/entities/unjustified-absences.view';
@@ -71,6 +73,8 @@ export const dbConfig = (
       SubjectsWithMostAbsencesView,
       DailyReportPermissionView,
       User,
+      AbsenceCountBySubjectView,
+      AbsenceWithStudentView,
     ],
     synchronize: configService.get('database.synchronize'),
   };

@@ -22,6 +22,9 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
 import configValidation from './config/validation/config.validation';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +38,12 @@ import configValidation from './config/validation/config.validation';
       useFactory: dbConfig,
       inject: [ConfigService],
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 5000,
+        limit: 100,
+      },
+    ]),
     PeriodsModule,
     TimeSlotsModule,
     SubjectsModule,
