@@ -57,5 +57,3 @@ networks:
 
 volumes: 
   data:
-
-
