@@ -5,7 +5,7 @@ export class LoginDto {
   @ApiProperty({
     description: 'User email address',
     example: 'user@example.com',
-    maxLength: 250
+    maxLength: 250,
   })
   @IsNotEmpty()
   @IsEmail()
@@ -16,7 +16,7 @@ export class LoginDto {
     description: 'User password',
     example: 'password',
     maxLength: 250,
-    minLength: 8
+    minLength: 8,
   })
   @IsNotEmpty()
   @MaxLength(250)

@@ -30,7 +30,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  
+
   // Custom tag ordering - Authentication first, then others alphabetically
   const customTagsSorter = (a: any, b: any) => {
     const priorityTags = [
@@ -45,21 +45,21 @@ async function bootstrap() {
       'Permissions',
       'Absences',
       'Daily Reports',
-      'Stats'
+      'Stats',
     ];
-    
-    const aIndex = priorityTags.findIndex(tag => tag === a);
-    const bIndex = priorityTags.findIndex(tag => tag === b);
-    
+
+    const aIndex = priorityTags.findIndex((tag) => tag === a);
+    const bIndex = priorityTags.findIndex((tag) => tag === b);
+
     // If both tags are in priority list, sort by priority
     if (aIndex !== -1 && bIndex !== -1) {
       return aIndex - bIndex;
     }
-    
+
     // If only one is in priority list, prioritize it
     if (aIndex !== -1) return -1;
     if (bIndex !== -1) return 1;
-    
+
     // Otherwise, sort alphabetically
     return a.localeCompare(b);
   };

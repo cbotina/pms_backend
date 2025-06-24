@@ -10,8 +10,12 @@ export default () => ({
     synchronize:
       process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'localProd',
   },
-  jwtSecret: process.env.JWT_SECRET,
-  jwtDuration: process.env.JWT_EXPIRES_IN,
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    accessTokenExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+    refreshSecret: process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+    refreshTokenExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '3d',
+  },
   email: {
     host: process.env.EMAIL_HOST,
     pass: process.env.EMAIL_PASS,

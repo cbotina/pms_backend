@@ -20,7 +20,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User email address (must be unique)',
     example: 'user@example.com',
-    maxLength: 150
+    maxLength: 150,
   })
   @MaxLength(150)
   @IsEmail()
@@ -32,7 +32,8 @@ export class CreateUserDto {
     maxLength: 30,
     minLength: 8,
     required: false,
-    pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
+    pattern:
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$',
   })
   @IsStrongPassword(passwordOptions)
   @MaxLength(30)
@@ -43,7 +44,7 @@ export class CreateUserDto {
     description: 'User role in the system',
     enum: Roles,
     example: Roles.STUDENT,
-    enumName: 'Roles'
+    enumName: 'Roles',
   })
   @IsEnum(Roles)
   role: Roles;
