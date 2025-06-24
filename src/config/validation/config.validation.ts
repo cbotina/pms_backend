@@ -13,6 +13,8 @@ const validationSchema = Joi.object({
   EMAIL_HOST: Joi.string().required(),
   EMAIL_PASS: Joi.string().required(),
   EMAIL_USER: Joi.string().required(),
+  ADMIN_EMAIL: Joi.string().email().required(),
+  ADMIN_PASSWORD: Joi.string().min(8).required(),
 });
 
 export default validationSchema;
