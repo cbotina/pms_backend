@@ -28,4 +28,8 @@ export class User {
     enum: Roles,
   })
   role: Roles;
+
+  @Exclude()
+  @Column({ nullable: true })
+  refreshToken?: string;
 }
