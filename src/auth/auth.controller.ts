@@ -28,11 +28,11 @@ export class AuthController {
     schema: {
       type: 'object',
       properties: {
-        accessToken: {
+        token: {
           type: 'string',
           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         },
-        refreshToken: {
+        refresh: {
           type: 'string',
           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         },
@@ -86,11 +86,11 @@ export class AuthController {
     schema: {
       type: 'object',
       properties: {
-        accessToken: {
+        token: {
           type: 'string',
           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         },
-        refreshToken: {
+        refresh: {
           type: 'string',
           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
         },
@@ -99,7 +99,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Invalid refresh token' })
   refresh(@Body() refreshTokenDto: RefreshTokenDto): Promise<TokenResponse> {
-    return this.authService.refreshToken(refreshTokenDto.refreshToken);
+    return this.authService.refreshToken(refreshTokenDto.refresh);
   }
 
   @HttpCode(200)

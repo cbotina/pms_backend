@@ -8,8 +8,8 @@ import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 
 export interface TokenResponse {
-  accessToken: string;
-  refreshToken: string;
+  token: string;
+  refresh: string;
 }
 
 @Injectable()
@@ -37,16 +37,16 @@ export class AuthService {
       userId: user.id,
     };
 
-    const accessToken = this.jwtService.sign(payload, {
+    const token = this.jwtService.sign(payload, {
       secret: this.configService.get('jwt.secret'),
       expiresIn: this.configService.get('jwt.accessTokenExpiresIn'),
     });
-    const refreshToken = this.jwtService.sign(payload, {
+    const refresh = this.jwtService.sign(payload, {
       secret: this.configService.get('jwt.refreshSecret'),
       expiresIn: this.configService.get('jwt.refreshTokenExpiresIn'),
     });
-    await this.setRefreshToken(user.id, refreshToken);
-    return { accessToken, refreshToken };
+    await this.setRefreshToken(user.id, refresh);
+    return { token, refresh };
   }
 
   async setRefreshToken(userId: number, refreshToken: string): Promise<void> {
@@ -71,16 +71,16 @@ export class AuthService {
         entityId: user.entityId,
         userId: user.id,
       };
-      const accessToken = this.jwtService.sign(newPayload, {
+      const token = this.jwtService.sign(newPayload, {
         secret: this.configService.get('jwt.secret'),
         expiresIn: this.configService.get('jwt.accessTokenExpiresIn'),
       });
-      const newRefreshToken = this.jwtService.sign(newPayload, {
+      const refresh = this.jwtService.sign(newPayload, {
         secret: this.configService.get('jwt.refreshSecret'),
         expiresIn: this.configService.get('jwt.refreshTokenExpiresIn'),
       });
-      await this.setRefreshToken(user.id, newRefreshToken);
-      return { accessToken, refreshToken: newRefreshToken };
+      await this.setRefreshToken(user.id, refresh);
+      return { token, refresh };
     } catch (e) {
       throw new UnauthorizedException('Invalid refresh token');
     }
