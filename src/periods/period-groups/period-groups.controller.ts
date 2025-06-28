@@ -14,6 +14,11 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import {
+  GetPeriodGroupsDocs,
+  AddGroupToPeriodDocs,
+} from './period-groups.controller.docs';
+
 @Role(Roles.SECRETARY)
 @ApiTags('Period Groups 🅿️👥')
 @Controller('periods/:periodId/groups')
@@ -21,6 +26,7 @@ export class PeriodGroupsController {
   constructor(private readonly periodGroupsService: PeriodGroupsService) {}
 
   @Get()
+  @GetPeriodGroupsDocs()
   async getPeriodGroups(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -40,6 +46,7 @@ export class PeriodGroupsController {
   }
 
   @Post()
+  @AddGroupToPeriodDocs()
   async addGroupToPeriod(
     @Body() createGroupDto: CreateGroupDto,
     @Param('periodId', ParseIntPipe) periodId: number,

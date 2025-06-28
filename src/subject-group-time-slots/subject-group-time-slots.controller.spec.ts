@@ -11,7 +11,9 @@ describe('SubjectGroupTimeSlotsController', () => {
       providers: [SubjectGroupTimeSlotsService],
     }).compile();
 
-    controller = module.get<SubjectGroupTimeSlotsController>(SubjectGroupTimeSlotsController);
+    controller = module.get<SubjectGroupTimeSlotsController>(
+      SubjectGroupTimeSlotsController,
+    );
   });
 
   it('should be defined', () => {

@@ -14,7 +14,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { StudentIdGuard } from 'src/common/guards/student_id.guard';
-import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Schedules 📜')
 @Controller('periods/:periodId')

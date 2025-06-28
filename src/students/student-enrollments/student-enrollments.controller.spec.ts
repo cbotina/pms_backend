@@ -11,7 +11,9 @@ describe('StudentEnrollmentsController', () => {
       providers: [StudentEnrollmentsService],
     }).compile();
 
-    controller = module.get<StudentEnrollmentsController>(StudentEnrollmentsController);
+    controller = module.get<StudentEnrollmentsController>(
+      StudentEnrollmentsController,
+    );
   });
 
   it('should be defined', () => {
