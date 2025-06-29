@@ -25,6 +25,7 @@ import {
   GetAllUsersDocs,
   DeleteUserDocs,
   ChangePasswordDocs,
+  RestorePasswordDocs,
 } from './users.controller.docs';
 import { Tags } from '../config/swagger/swagger.config';
 
@@ -71,5 +72,11 @@ export class UsersController {
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
     return this.usersService.changePassword(changePasswordDto, userId);
+  }
+
+  @Patch(':userId/restore-password')
+  @RestorePasswordDocs()
+  restorePassword(@Param('userId', ParseIntPipe) userId: number) {
+    return this.usersService.restorePassword(userId);
   }
 }

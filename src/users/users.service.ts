@@ -3,6 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
   OnModuleInit,
+  ForbiddenException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -211,5 +212,44 @@ export class UsersService implements OnModuleInit {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async restorePassword(userId: number) {
+    // Find the user
+    const user = await this.usersRepository.findOneByOrFail({ id: userId });
+
+    // Check if user is secretary or admin
+    if (user.role === Roles.SECRETARY || user.role === Roles.ADMIN) {
+      throw new ForbiddenException(
+        'Password restoration is only available for students and teachers',
+      );
+    }
+
+    let cc: string;
+
+    // Get the CC based on the role
+    if (user.role === Roles.STUDENT) {
+      const student = await this.studentsRepository.findOneByOrFail({
+        id: user.entityId,
+      });
+      cc = student.cc;
+    } else if (user.role === Roles.TEACHER) {
+      const teacher = await this.teachersRepository.findOneByOrFail({
+        id: user.entityId,
+      });
+      cc = teacher.cc;
+    } else {
+      throw new BadRequestException(
+        'Invalid user role for password restoration',
+      );
+    }
+
+    // Hash the CC and update the user's password
+    const hashedPassword = await hash(cc, 10);
+    user.password = hashedPassword;
+
+    await this.usersRepository.save(user);
+
+    return { message: 'Password restored successfully' };
   }
 }

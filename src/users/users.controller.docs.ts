@@ -283,3 +283,65 @@ export const ChangePasswordDocs = () => {
     }),
   );
 };
+
+export const RestorePasswordDocs = () => {
+  return applyDecorators(
+    ApiBearerAuth(),
+    ApiOperation({
+      summary: 'Restore user password',
+      description:
+        "Restore a user's password to their CC (identity document number). This operation is only available for STUDENT and TEACHER roles. For students and teachers, their password will be reset to their CC number.",
+    }),
+    ApiParam({
+      name: 'userId',
+      description: 'ID of the user whose password will be restored',
+      example: 1,
+    }),
+    ApiResponse({
+      status: 200,
+      description: 'Password restored successfully',
+      schema: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+            example: 'Password restored successfully',
+          },
+        },
+      },
+    }),
+    ApiResponse({
+      status: 401,
+      description: 'Unauthorized - Invalid or missing token',
+    }),
+    ApiResponse({
+      status: 403,
+      description:
+        'Forbidden - Password restoration is only available for students and teachers',
+      schema: {
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number', example: 403 },
+          message: {
+            type: 'string',
+            example:
+              'Password restoration is only available for students and teachers',
+          },
+          error: { type: 'string', example: 'Forbidden' },
+        },
+      },
+    }),
+    ApiResponse({
+      status: 404,
+      description: 'User not found',
+      schema: {
+        type: 'object',
+        properties: {
+          statusCode: { type: 'number', example: 404 },
+          message: { type: 'string', example: 'User not found' },
+          error: { type: 'string', example: 'Not Found' },
+        },
+      },
+    }),
+  );
+};
