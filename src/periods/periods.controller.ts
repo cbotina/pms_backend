@@ -18,10 +18,11 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
 @ApiBearerAuth()
-@ApiTags('Periods 🗓️')
+@ApiTags(Tags.PERIODS)
 @Controller('periods')
 export class PeriodsController {
   constructor(private readonly periodsService: PeriodsService) {}

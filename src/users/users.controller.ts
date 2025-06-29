@@ -26,9 +26,10 @@ import {
   DeleteUserDocs,
   ChangePasswordDocs,
 } from './users.controller.docs';
+import { Tags } from '../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY, Roles.ADMIN)
-@ApiTags('Users 👤')
+@ApiTags(Tags.USERS)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

@@ -13,9 +13,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Tags } from '../config/swagger/swagger.constants';
 
-@ApiTags('Absences 🚨')
-@Controller()
+@ApiTags(Tags.ABSENCES)
+@Controller('absences')
 export class AbsencesController {
   constructor(private readonly absencesService: AbsencesService) {}
 

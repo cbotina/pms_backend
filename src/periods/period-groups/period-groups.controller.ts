@@ -18,9 +18,10 @@ import {
   GetPeriodGroupsDocs,
   AddGroupToPeriodDocs,
 } from './period-groups.controller.docs';
+import { Tags } from '../../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Period Groups 🅿️👥')
+@ApiTags(Tags.PERIOD_GROUPS)
 @Controller('periods/:periodId/groups')
 export class PeriodGroupsController {
   constructor(private readonly periodGroupsService: PeriodGroupsService) {}

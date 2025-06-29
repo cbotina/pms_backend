@@ -14,9 +14,10 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Student enrollments 👦📚')
+@ApiTags(Tags.STUDENT_ENROLLMENTS)
 @Controller('students/:studentId/enrollments')
 export class StudentEnrollmentsController {
   constructor(

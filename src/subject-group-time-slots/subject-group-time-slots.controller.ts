@@ -17,9 +17,10 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
-@ApiTags('SubjectGroupTimeSlots ⌚📚')
+@ApiTags(Tags.SUBJECT_GROUP_TIME_SLOTS)
 @Controller()
 export class SubjectGroupTimeSlotsController {
   constructor(

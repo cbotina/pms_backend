@@ -14,9 +14,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Groups 👥')
+@ApiTags(Tags.GROUPS)
 @Controller('groups')
 export class GroupsController {
   constructor(

@@ -3,7 +3,9 @@ import { EnrollmentsService } from './enrollments.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-@ApiTags('Enrollments 🧑📚')
+import { Tags } from '../config/swagger/swagger.constants';
+
+@ApiTags(Tags.ENROLLMENTS)
 @Controller('enrollments')
 export class EnrollmentsController {
   constructor(private readonly enrollmentsService: EnrollmentsService) {}

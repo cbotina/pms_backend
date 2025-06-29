@@ -9,8 +9,9 @@ import {
   RefreshTokenDocs,
   LogoutDocs,
 } from './auth.controller.docs';
+import { Tags } from '../config/swagger/swagger.constants';
 
-@ApiTags('Authentication 🔐')
+@ApiTags(Tags.AUTHENTICATION)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

@@ -25,9 +25,10 @@ import {
   UpdateStudentDocs,
   DeleteStudentDocs,
 } from './students.controller.docs';
+import { Tags } from '../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Students 👦')
+@ApiTags(Tags.STUDENTS)
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}

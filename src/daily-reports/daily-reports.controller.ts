@@ -16,9 +16,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DailyReportPermissionView } from './dto/daily-reports-permission.view';
 import { Repository } from 'typeorm';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Tags } from '../config/swagger/swagger.constants';
 
-@ApiTags('Daily Reports 📃')
-@Controller()
+@ApiTags(Tags.DAILY_REPORTS)
+@Controller('daily-reports')
 export class DailyReportsController {
   constructor(
     private readonly dailyReportsService: DailyReportsService,

@@ -4,9 +4,10 @@ import { UpdateTimeSlotDto } from './dto/update-time-slot.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../config/swagger/swagger.constants';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Time Slots ⌚')
+@ApiTags(Tags.TIME_SLOTS)
 @Controller('time-slots')
 export class TimeSlotsController {
   constructor(private readonly timeSlotsService: TimeSlotsService) {}

@@ -14,8 +14,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { StudentIdGuard } from 'src/common/guards/student_id.guard';
+import { Tags } from '../config/swagger/swagger.constants';
 
-@ApiTags('Schedules 📜')
+@ApiTags(Tags.SCHEDULES)
 @Controller('periods/:periodId')
 export class SchdulesController {
   constructor(private readonly schdulesService: SchdulesService) {}
