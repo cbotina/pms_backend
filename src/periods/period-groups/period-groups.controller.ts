@@ -18,7 +18,7 @@ import {
   GetPeriodGroupsDocs,
   AddGroupToPeriodDocs,
 } from './period-groups.controller.docs';
-import { Tags } from '../../config/swagger/swagger.constants';
+import { Tags } from '../../config/swagger/swagger.config';
 
 @Role(Roles.SECRETARY)
 @ApiTags(Tags.PERIOD_GROUPS)

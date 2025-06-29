@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { StatsService } from './stats.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @ApiTags(Tags.STATS)
 @Controller('periods/:periodId/stats')

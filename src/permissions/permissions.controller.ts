@@ -18,7 +18,7 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { JustifyLeavingPermissionDto } from './dto/justify-permission.dto';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @ApiTags(Tags.PERMISSIONS)
 @Controller('permissions')

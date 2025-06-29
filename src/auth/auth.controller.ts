@@ -9,7 +9,7 @@ import {
   RefreshTokenDocs,
   LogoutDocs,
 } from './auth.controller.docs';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @ApiTags(Tags.AUTHENTICATION)
 @Controller('auth')

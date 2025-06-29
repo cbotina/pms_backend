@@ -14,7 +14,7 @@ import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/users/entities/user.entity';
 import { Role } from 'src/common/decorators/roles.decorator';
-import { Tags } from '../../config/swagger/swagger.constants';
+import { Tags } from '../../config/swagger/swagger.config';
 
 @Role(Roles.SECRETARY)
 @ApiTags(Tags.GROUP_STUDENTS)

@@ -25,7 +25,7 @@ import {
   UpdateStudentDocs,
   DeleteStudentDocs,
 } from './students.controller.docs';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @Role(Roles.SECRETARY)
 @ApiTags(Tags.STUDENTS)

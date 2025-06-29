@@ -26,7 +26,7 @@ import {
   DeleteUserDocs,
   ChangePasswordDocs,
 } from './users.controller.docs';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @Role(Roles.SECRETARY, Roles.ADMIN)
 @ApiTags(Tags.USERS)

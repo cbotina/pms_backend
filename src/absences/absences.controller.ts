@@ -13,7 +13,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @ApiTags(Tags.ABSENCES)
 @Controller('absences')

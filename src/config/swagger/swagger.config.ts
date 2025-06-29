@@ -1,5 +1,29 @@
 import { DocumentBuilder } from '@nestjs/swagger';
-import { Tags } from './swagger.constants';
+
+export enum Tags {
+  HEALTH = 'Health',
+  AUTHENTICATION = 'Authentication 🔐',
+  PERIODS = 'Periods 🗓️',
+  PERIOD_GROUPS = 'Period Groups 🅿️👥',
+  GROUPS = 'Groups 👥',
+  PERIOD_TIMESLOTS = 'Period timeslots 🗓️⌚',
+  TIME_SLOTS = 'Time Slots ⌚',
+  STUDENTS = 'Students 👦',
+  TEACHERS = 'Teachers 👩‍🏫',
+  GROUP_STUDENTS = 'Group Students 👥🎒',
+  ENROLLMENTS = 'Enrollments 🧑📚',
+  STUDENT_ENROLLMENTS = 'Student enrollments 👦📚',
+  SUBJECTS = 'Subjects 📚',
+  SUBJECT_GROUPS = 'Subject Groups 📚👥',
+  SUBJECT_GROUP_TIME_SLOTS = 'SubjectGroupTimeSlots ⌚📚',
+  ABSENCES = 'Absences 🚨',
+  PERMISSIONS = 'Permissions 🅿️',
+  PERMISSION_REQUESTS = 'Permission Requests 🅿️🙋‍♂️',
+  DAILY_REPORTS = 'Daily Reports 📃',
+  SCHEDULES = 'Schedules 📜',
+  USERS = 'Users 👤',
+  STATS = 'Stats 📊',
+}
 
 export const createSwaggerConfig = () => {
   return new DocumentBuilder()
@@ -11,30 +35,30 @@ export const createSwaggerConfig = () => {
 
 export const createSwaggerOptions = () => {
   // Custom tag ordering - Authentication first, then others alphabetically
-  const customTagsSorter = (a: any, b: any) => {
+  const TagsSorter = (a: any, b: any) => {
     const priorityTags = [
-      Tags.HEALTH,
-      Tags.AUTHENTICATION,
-      Tags.PERIODS,
-      Tags.PERIOD_GROUPS,
-      Tags.GROUPS,
-      Tags.PERIOD_TIMESLOTS,
-      Tags.TIME_SLOTS,
-      Tags.STUDENTS,
-      Tags.TEACHERS,
-      Tags.GROUP_STUDENTS,
-      Tags.ENROLLMENTS,
-      Tags.STUDENT_ENROLLMENTS,
-      Tags.SUBJECTS,
-      Tags.SUBJECT_GROUPS,
-      Tags.SUBJECT_GROUP_TIME_SLOTS,
-      Tags.ABSENCES,
-      Tags.PERMISSIONS,
-      Tags.PERMISSION_REQUESTS,
-      Tags.DAILY_REPORTS,
-      Tags.SCHEDULES,
-      Tags.USERS,
-      Tags.STATS,
+      'Health',
+      'Authentication 🔐',
+      'Periods 🗓️',
+      'Period Groups 🅿️👥',
+      'Groups 👥',
+      'Period timeslots 🗓️⌚',
+      'Time Slots ⌚',
+      'Students 👦',
+      'Teachers 👩‍🏫',
+      'Group Students 👥🎒',
+      'Enrollments 🧑📚',
+      'Student enrollments 👦📚',
+      'Subjects 📚',
+      'Subject Groups 📚👥',
+      'SubjectGroupTimeSlots ⌚📚',
+      'Absences 🚨',
+      'Permissions 🅿️',
+      'Permission Requests 🅿️🙋‍♂️',
+      'Daily Reports 📃',
+      'Schedules 📜',
+      'Users 👤',
+      'Stats 📊',
     ];
 
     const aIndex = priorityTags.findIndex((tag) => tag === a);
@@ -55,7 +79,7 @@ export const createSwaggerOptions = () => {
 
   return {
     swaggerOptions: {
-      tagsSorter: customTagsSorter,
+      tagsSorter: TagsSorter,
       operationsSorter: 'alpha',
       defaultModelsExpandDepth: -1,
       defaultModelExpandDepth: 0,

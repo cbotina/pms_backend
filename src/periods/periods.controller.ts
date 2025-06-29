@@ -18,7 +18,16 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
+import {
+  SetActivePeriodDocs,
+  GetActivePeriodDocs,
+  CreatePeriodDocs,
+  GetPeriodDocs,
+  UpdatePeriodDocs,
+  DeletePeriodDocs,
+  GetPaginatedPeriodsDocs,
+} from './periods.controller.docs';
 
 @Role(Roles.SECRETARY)
 @ApiBearerAuth()
@@ -28,27 +37,32 @@ export class PeriodsController {
   constructor(private readonly periodsService: PeriodsService) {}
 
   @Patch(':id/activate')
+  @SetActivePeriodDocs()
   setActivePeriod(@Param('id', ParseIntPipe) id: number) {
     return this.periodsService.setActivePeriod(id);
   }
 
   @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('active')
+  @GetActivePeriodDocs()
   getActivePeriod() {
     return this.periodsService.getActivePeriod();
   }
 
   @Post()
+  @CreatePeriodDocs()
   create(@Body() createPeriodDto: CreatePeriodDto) {
     return this.periodsService.create(createPeriodDto);
   }
 
   @Get(':id')
+  @GetPeriodDocs()
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.periodsService.findOne(id);
   }
 
   @Patch(':id')
+  @UpdatePeriodDocs()
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePeriodDto: UpdatePeriodDto,
@@ -58,11 +72,13 @@ export class PeriodsController {
 
   @Delete(':id')
   @HttpCode(204)
+  @DeletePeriodDocs()
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.periodsService.remove(id);
   }
 
   @Get()
+  @GetPaginatedPeriodsDocs()
   async getPaginatedPeriods(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,

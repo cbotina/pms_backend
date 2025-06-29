@@ -18,7 +18,7 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-import { Tags } from '../config/swagger/swagger.constants';
+import { Tags } from '../config/swagger/swagger.config';
 
 @Role(Roles.SECRETARY)
 @ApiTags(Tags.TEACHERS)
