@@ -33,53 +33,53 @@ export const createSwaggerConfig = () => {
     .build();
 };
 
+// Custom tag ordering function - defined outside to avoid serialization issues
+const customTagsSorter = (a: any, b: any) => {
+  const priorityTags = [
+    'Health',
+    'Authentication 🔐',
+    'Periods 🗓️',
+    'Period Groups 🅿️👥',
+    'Groups 👥',
+    'Period timeslots 🗓️⌚',
+    'Time Slots ⌚',
+    'Students 👦',
+    'Teachers 👩‍🏫',
+    'Group Students 👥🎒',
+    'Enrollments 🧑📚',
+    'Student enrollments 👦📚',
+    'Subjects 📚',
+    'Subject Groups 📚👥',
+    'SubjectGroupTimeSlots ⌚📚',
+    'Absences 🚨',
+    'Permissions 🅿️',
+    'Permission Requests 🅿️🙋‍♂️',
+    'Daily Reports 📃',
+    'Schedules 📜',
+    'Users 👤',
+    'Stats 📊',
+  ];
+
+  const aIndex = priorityTags.findIndex((tag) => tag === a);
+  const bIndex = priorityTags.findIndex((tag) => tag === b);
+
+  // If both tags are in priority list, sort by priority
+  if (aIndex !== -1 && bIndex !== -1) {
+    return aIndex - bIndex;
+  }
+
+  // If only one is in priority list, prioritize it
+  if (aIndex !== -1) return -1;
+  if (bIndex !== -1) return 1;
+
+  // Otherwise, sort alphabetically
+  return a.localeCompare(b);
+};
+
 export const createSwaggerOptions = () => {
-  // Custom tag ordering - Authentication first, then others alphabetically
-  const TagsSorter = (a: any, b: any) => {
-    const priorityTags = [
-      'Health',
-      'Authentication 🔐',
-      'Periods 🗓️',
-      'Period Groups 🅿️👥',
-      'Groups 👥',
-      'Period timeslots 🗓️⌚',
-      'Time Slots ⌚',
-      'Students 👦',
-      'Teachers 👩‍🏫',
-      'Group Students 👥🎒',
-      'Enrollments 🧑📚',
-      'Student enrollments 👦📚',
-      'Subjects 📚',
-      'Subject Groups 📚👥',
-      'SubjectGroupTimeSlots ⌚📚',
-      'Absences 🚨',
-      'Permissions 🅿️',
-      'Permission Requests 🅿️🙋‍♂️',
-      'Daily Reports 📃',
-      'Schedules 📜',
-      'Users 👤',
-      'Stats 📊',
-    ];
-
-    const aIndex = priorityTags.findIndex((tag) => tag === a);
-    const bIndex = priorityTags.findIndex((tag) => tag === b);
-
-    // If both tags are in priority list, sort by priority
-    if (aIndex !== -1 && bIndex !== -1) {
-      return aIndex - bIndex;
-    }
-
-    // If only one is in priority list, prioritize it
-    if (aIndex !== -1) return -1;
-    if (bIndex !== -1) return 1;
-
-    // Otherwise, sort alphabetically
-    return a.localeCompare(b);
-  };
-
   return {
     swaggerOptions: {
-      tagsSorter: TagsSorter,
+      tagsSorter: customTagsSorter,
       operationsSorter: 'alpha',
       defaultModelsExpandDepth: -1,
       defaultModelExpandDepth: 0,

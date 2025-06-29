@@ -15,6 +15,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Tags } from '../../config/swagger/swagger.config';
+import {
+  AddEnrollmentToStudentDocs,
+  GetStudentEnrollmentsDocs,
+} from './student-enrollments.controller.docs';
 
 @Role(Roles.SECRETARY)
 @ApiTags(Tags.STUDENT_ENROLLMENTS)
@@ -25,6 +29,7 @@ export class StudentEnrollmentsController {
   ) {}
 
   @Post()
+  @AddEnrollmentToStudentDocs()
   addEnrollmentToStudent(
     @Param('studentId', ParseIntPipe) studentId: number,
     @Body() createEnrollmentDto: CreateEnrollmentDto,
@@ -36,6 +41,7 @@ export class StudentEnrollmentsController {
   }
 
   @Get()
+  @GetStudentEnrollmentsDocs()
   getStudentEnrollments(
     @Param('studentId', ParseIntPipe) studentId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,

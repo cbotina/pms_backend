@@ -4,6 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Tags } from '../config/swagger/swagger.config';
+import { RemoveEnrollmentDocs } from './enrollments.controller.docs';
 
 @ApiTags(Tags.ENROLLMENTS)
 @Controller('enrollments')
@@ -12,6 +13,7 @@ export class EnrollmentsController {
 
   @Role(Roles.SECRETARY)
   @Delete(':id')
+  @RemoveEnrollmentDocs()
   remove(@Param('id') id: string) {
     return this.enrollmentsService.remove(+id);
   }

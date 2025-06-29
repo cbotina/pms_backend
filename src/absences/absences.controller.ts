@@ -14,7 +14,19 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Tags } from '../config/swagger/swagger.config';
+import {
+  GetStudentPermissionAbsencesDocs,
+  GetPermissionAbsencesDocs,
+  GetStudentUnjustifiedAbsencesDocs,
+  GetJustificableAbsencesDocs,
+  GetSubjectGroupAbsenceReportDocs,
+  GetSubjectGroupStudentAbsencesDocs,
+  GetStudentAbsencesCountBySubjectDocs,
+  GetPeriodAbsencesDocs,
+  DeleteAbsenceDocs,
+} from './absences.controller.docs';
 
+// TODO: Check if we can remove the @Public decorator from all endpoints
 @ApiTags(Tags.ABSENCES)
 @Controller('absences')
 export class AbsencesController {
@@ -22,6 +34,7 @@ export class AbsencesController {
 
   @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('students/:studentId/permissions/:permissionId/absences')
+  @GetStudentPermissionAbsencesDocs()
   getStudentPermissionAbsences(
     @Param('studentId', ParseIntPipe) studentId: number,
     @Param('permissionId', ParseIntPipe) permissionId: number,
@@ -42,6 +55,7 @@ export class AbsencesController {
 
   @Role(Roles.SECRETARY)
   @Get('permissions/:permissionId/absences')
+  @GetPermissionAbsencesDocs()
   getPermissionAbsences(
     @Param('permissionId', ParseIntPipe) permissionId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -57,6 +71,7 @@ export class AbsencesController {
 
   @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('periods/:periodId/students/:studentId/absences/unjustified')
+  @GetStudentUnjustifiedAbsencesDocs()
   getStudentUnjustifiedAbsences(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Param('studentId', ParseIntPipe) studentId: number,
@@ -77,6 +92,7 @@ export class AbsencesController {
 
   @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get('periods/:periodId/students/:studentId/absences/justificable')
+  @GetJustificableAbsencesDocs()
   getJustificableAbsences(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Param('studentId', ParseIntPipe) studentId: number,
@@ -87,6 +103,7 @@ export class AbsencesController {
   // @Public()
   @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/absence-report')
+  @GetSubjectGroupAbsenceReportDocs()
   getSubjectGroupAbsenceReport(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
   ) {
@@ -96,6 +113,7 @@ export class AbsencesController {
   // @Public()
   @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students/:studentId/absences')
+  @GetSubjectGroupStudentAbsencesDocs()
   getSubjectGroupStudentAbsences(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
     @Param('studentId', ParseIntPipe) studentId: number,
@@ -108,6 +126,7 @@ export class AbsencesController {
 
   @Public()
   @Get('periods/:periodId/students/:studentId/absence-count-by-subject')
+  @GetStudentAbsencesCountBySubjectDocs()
   getStudentAbsencesCountBySubject(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Param('studentId', ParseIntPipe) studentId: number,
@@ -120,6 +139,7 @@ export class AbsencesController {
 
   @Public()
   @Get('periods/:periodId/absences')
+  @GetPeriodAbsencesDocs()
   getPeriodAbsences(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -136,6 +156,7 @@ export class AbsencesController {
 
   @Public()
   @Delete('absences/:absenceId')
+  @DeleteAbsenceDocs()
   deleteAbsence(@Param('absenceId', ParseIntPipe) absenceId: number) {
     return this.absencesService.deleteAbsence(absenceId);
   }

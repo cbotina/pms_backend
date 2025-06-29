@@ -15,6 +15,13 @@ import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Tags } from '../config/swagger/swagger.config';
+import {
+  GetGroupDocs,
+  UpdateGroupDocs,
+  DeleteGroupDocs,
+  GenerateEnrollmentsDocs,
+  GenerateUsersDocs,
+} from './groups.controller.docs';
 
 @Role(Roles.SECRETARY)
 @ApiTags(Tags.GROUPS)
@@ -26,26 +33,31 @@ export class GroupsController {
   ) {}
 
   @Get(':id')
+  @GetGroupDocs()
   findOne(@Param('id') id: number) {
     return this.groupsService.findOne(id);
   }
 
   @Patch(':id')
+  @UpdateGroupDocs()
   update(@Param('id') id: number, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupsService.update(id, updateGroupDto);
   }
 
   @Delete(':id')
+  @DeleteGroupDocs()
   remove(@Param('id') id: number) {
     return this.groupsService.remove(id);
   }
 
   @Post(':id/generate-enrollments')
+  @GenerateEnrollmentsDocs()
   generateEnrollments(@Param('id', ParseIntPipe) id: number) {
     return this.groupsService.generateEnrollments(id);
   }
 
   @Post(':id/generate-users')
+  @GenerateUsersDocs()
   generateUsers(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.createGroupStudentsAccounts(id);
   }

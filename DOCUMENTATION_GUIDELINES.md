@@ -148,6 +148,69 @@ ApiBody({
 })
 ```
 
+### DTO Class Documentation
+When using DTO types in `ApiBody`, ensure the DTO class itself is properly documented with `@ApiProperty` decorators. This allows Swagger to automatically infer the schema:
+
+```typescript
+// create-module-name.dto.ts
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsEmail, MaxLength } from 'class-validator';
+
+export class CreateModuleNameDto {
+  @ApiProperty({
+    description: 'Name of the resource',
+    example: 'Example Name',
+    maxLength: 50,
+  })
+  @IsString()
+  @MaxLength(50)
+  name: string;
+
+  @ApiProperty({
+    description: 'Email address',
+    example: 'user@example.com',
+    format: 'email',
+  })
+  @IsEmail()
+  email: string;
+}
+```
+
+**Important**: Always add `@ApiProperty` decorators to DTO classes when they are referenced in `ApiBody` with `type: DtoClass`. This ensures Swagger can properly generate the schema and examples. This doesn't apply for PartialType (see below)
+
+### Request Body for PartialType DTOs (Update operations)
+When using `PartialType` for update DTOs, Swagger cannot properly infer the schema. Use manual schema definition instead:
+
+```typescript
+ApiBody({
+  description: 'Resource information to update (all fields are optional)',
+  schema: {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        description: 'Name of the resource',
+        example: 'Updated Name',
+        maxLength: 25,
+      },
+      email: {
+        type: 'string',
+        description: 'Email address',
+        example: 'updated@example.com',
+        format: 'email',
+      },
+      // ... other optional fields
+    },
+    example: {
+      name: 'Updated Name',
+      email: 'updated@example.com',
+    },
+  },
+})
+```
+
+**Important**: Always use manual schema definition for `PartialType` DTOs to ensure proper Swagger documentation.
+
 ### Path Parameters
 ```typescript
 ApiParam({
@@ -211,8 +274,11 @@ Follow the established naming conventions for decorators and files.
 ### 5. **Complete Schemas**
 Provide complete response schemas that match your actual API responses.
 
-### 6. **Role-Based Access**
-Document which roles can access each endpoint in the description.
-
-### 7. **Pagination Support**
+### 6. **Pagination Support**
 For list endpoints, include pagination parameters and metadata in the response schema.
+
+### 7. **PartialType DTOs**
+When documenting update endpoints that use `PartialType` DTOs, always use manual schema definition instead of the DTO type reference. Swagger cannot properly infer the schema for `PartialType` DTOs, which results in incomplete or incorrect documentation.
+
+### 8. **DTO Class Documentation**
+Always add `@ApiProperty` decorators to DTO classes that are referenced in `ApiBody` with `type: DtoClass`. This ensures Swagger can automatically infer the schema, examples, and validation rules from the DTO class itself, providing consistent and accurate documentation.
