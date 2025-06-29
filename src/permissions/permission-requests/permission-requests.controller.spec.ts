@@ -11,7 +11,9 @@ describe('PermissionRequestsController', () => {
       providers: [PermissionRequestsService],
     }).compile();
 
-    controller = module.get<PermissionRequestsController>(PermissionRequestsController);
+    controller = module.get<PermissionRequestsController>(
+      PermissionRequestsController,
+    );
   });
 
   it('should be defined', () => {

@@ -17,19 +17,29 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../config/swagger/swagger.config';
+import {
+  CreateSubjectDocs,
+  FindAllSubjectsDocs,
+  FindOneSubjectDocs,
+  UpdateSubjectDocs,
+  RemoveSubjectDocs,
+} from './subjects.controller.docs';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Subjects 📚')
+@ApiTags(Tags.SUBJECTS)
 @Controller('subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Post()
+  @CreateSubjectDocs()
   create(@Body() createSubjectDto: CreateSubjectDto) {
     return this.subjectsService.create(createSubjectDto);
   }
 
   @Get()
+  @FindAllSubjectsDocs()
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
@@ -44,16 +54,19 @@ export class SubjectsController {
   }
 
   @Get(':id')
+  @FindOneSubjectDocs()
   findOne(@Param('id') id: number) {
     return this.subjectsService.findOne(id);
   }
 
   @Patch(':id')
+  @UpdateSubjectDocs()
   update(@Param('id') id: number, @Body() updateSubjectDto: UpdateSubjectDto) {
     return this.subjectsService.update(id, updateSubjectDto);
   }
 
   @Delete(':id')
+  @RemoveSubjectDocs()
   remove(@Param('id') id: number) {
     return this.subjectsService.remove(id);
   }
