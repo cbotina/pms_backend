@@ -14,14 +14,20 @@ import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/users/entities/user.entity';
 import { Role } from 'src/common/decorators/roles.decorator';
+import { Tags } from '../../config/swagger/swagger.config';
+import {
+  GetAllGroupStudentsDocs,
+  PromoteStudentsDocs,
+} from './group-students.controller.docs';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Group Students 👥🎒')
+@ApiTags(Tags.GROUP_STUDENTS)
 @Controller('groups/:groupId/students')
 export class GroupStudentsController {
   constructor(private readonly groupStudentsService: GroupStudentsService) {}
 
   @Get()
+  @GetAllGroupStudentsDocs()
   async getAllGroupStudents(
     @Param('groupId', ParseIntPipe) groupId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -41,6 +47,7 @@ export class GroupStudentsController {
   }
 
   @Patch('promote')
+  @PromoteStudentsDocs()
   promoteStudents(
     @Param('groupId', ParseIntPipe) oldGroupId: number,
     @Body() promoteStudentsDto: PromoteStudentsDto,

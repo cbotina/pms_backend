@@ -17,19 +17,30 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import {
+  CreateStudentDocs,
+  GetAllStudentsDocs,
+  GetStudentByIdDocs,
+  GetStudentByCCDocs,
+  UpdateStudentDocs,
+  DeleteStudentDocs,
+} from './students.controller.docs';
+import { Tags } from '../config/swagger/swagger.config';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Students 👦')
+@ApiTags(Tags.STUDENTS)
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
+  @CreateStudentDocs()
   create(@Body() createStudentDto: CreateStudentDto) {
     return this.studentsService.create(createStudentDto);
   }
 
   @Get()
+  @GetAllStudentsDocs()
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
@@ -45,22 +56,26 @@ export class StudentsController {
 
   @Role(Roles.STUDENT)
   @Get(':id')
+  @GetStudentByIdDocs()
   findOne(@Param('id') id: string) {
     return this.studentsService.findOne(+id);
   }
 
   @Role(Roles.STUDENT)
   @Get(':cc')
+  @GetStudentByCCDocs()
   findOneByCC(@Param('cc') cc: string) {
     return this.studentsService.findOneByCC(cc);
   }
 
   @Patch(':id')
+  @UpdateStudentDocs()
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
     return this.studentsService.update(+id, updateStudentDto);
   }
 
   @Delete(':id')
+  @DeleteStudentDocs()
   remove(@Param('id') id: string) {
     return this.studentsService.remove(+id);
   }

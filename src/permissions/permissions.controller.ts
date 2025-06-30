@@ -18,9 +18,10 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { JustifyLeavingPermissionDto } from './dto/justify-permission.dto';
+import { Tags } from '../config/swagger/swagger.config';
 
-@ApiTags('Permissions 🅿️')
-@Controller()
+@ApiTags(Tags.PERMISSIONS)
+@Controller('permissions')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 

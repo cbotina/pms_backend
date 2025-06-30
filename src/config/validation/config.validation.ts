@@ -2,16 +2,21 @@ import * as Joi from 'joi';
 
 const validationSchema = Joi.object({
   NODE_ENV: Joi.string().valid('prod', 'dev', 'localProd').default('dev'),
-  PORT: Joi.number().port().default(3000).required(),
+  APP_DOCKER_PORT: Joi.number().port().default(3000).required(),
+  DB_DOCKER_PORT: Joi.number().port().default(3306).required(),
   DB_PASSWORD: Joi.string().required(),
   DB_HOST: Joi.string().required(),
-  DB_NAME: Joi.string().required(),
-  DB_PORT: Joi.string().required(),
+  DB_DATABASE: Joi.string().required(),
+  DB_USER: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
-  JWT_DURATION: Joi.string().required(),
+  JWT_ACCESS_EXPIRES_IN: Joi.string().default('15m'),
+  JWT_REFRESH_SECRET: Joi.string().optional(),
+  JWT_REFRESH_EXPIRES_IN: Joi.string().default('3d'),
   EMAIL_HOST: Joi.string().required(),
   EMAIL_PASS: Joi.string().required(),
   EMAIL_USER: Joi.string().required(),
+  ADMIN_EMAIL: Joi.string().email().required(),
+  ADMIN_PASSWORD: Joi.string().min(8).required(),
 });
 
 export default validationSchema;

@@ -17,7 +17,8 @@ export class StudentsService {
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
-    const { groupId, cc, firstName, lastName } = createStudentDto;
+    const { groupId, cc, firstName, lastName, email, gender } =
+      createStudentDto;
 
     const group = await this.groupsRepository.findOneByOrFail({ id: groupId });
 
@@ -25,6 +26,8 @@ export class StudentsService {
       cc,
       firstName,
       lastName,
+      email,
+      gender,
       group,
     });
   }

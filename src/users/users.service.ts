@@ -2,19 +2,27 @@ import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
+  OnModuleInit,
+  ForbiddenException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles, User } from './entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, Brackets } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { compareSync, hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ConfigService } from '@nestjs/config';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   constructor(
     private readonly dataSource: DataSource,
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
@@ -22,7 +30,57 @@ export class UsersService {
     private readonly studentsRepository: Repository<Student>,
     @InjectRepository(Teacher)
     private readonly teachersRepository: Repository<Teacher>,
+    private readonly configService: ConfigService,
   ) {}
+
+  async onModuleInit() {
+    await this.initializeAdminUser();
+  }
+
+  private async initializeAdminUser() {
+    try {
+      // Check if admin user already exists
+      const adminExists = await this.usersRepository.findOne({
+        where: { role: Roles.ADMIN },
+      });
+
+      if (!adminExists) {
+        await this.createAdminUser();
+      }
+    } catch (error) {
+      console.error('❌ Failed to initialize admin user:', error.message);
+    }
+  }
+
+  async createAdminUser(email?: string, password?: string) {
+    try {
+      const adminEmail = email || this.configService.get('admin.email');
+      const adminPassword =
+        password || this.configService.get('admin.password');
+
+      // Check if admin already exists
+      const existingAdmin = await this.usersRepository.findOne({
+        where: { email: adminEmail },
+      });
+
+      if (existingAdmin) {
+        throw new BadRequestException('Admin user already exists');
+      }
+
+      const adminUser = this.usersRepository.create({
+        email: adminEmail,
+        password: await hash(adminPassword, 10),
+        role: Roles.ADMIN,
+        entityId: null,
+      });
+
+      const savedAdmin = await this.usersRepository.save(adminUser);
+      return plainToInstance(User, savedAdmin);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(createUserDto: CreateUserDto) {
     const { email, role, password } = createUserDto;
     let pass;
@@ -124,8 +182,24 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(
+    options: IPaginationOptions,
+    search?: string,
+  ): Promise<Pagination<User>> {
+    const queryBuilder = this.usersRepository.createQueryBuilder('user');
+    queryBuilder.orderBy('user.id', 'DESC');
+
+    if (search) {
+      queryBuilder.where(
+        new Brackets((qb) => {
+          qb.where('user.email LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('user.role LIKE :search', { search: `%${search}%` });
+        }),
+      );
+    }
+
+    return paginate<User>(queryBuilder, options);
   }
 
   findOne(id: number) {
@@ -138,5 +212,44 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async restorePassword(userId: number) {
+    // Find the user
+    const user = await this.usersRepository.findOneByOrFail({ id: userId });
+
+    // Check if user is secretary or admin
+    if (user.role === Roles.SECRETARY || user.role === Roles.ADMIN) {
+      throw new ForbiddenException(
+        'Password restoration is only available for students and teachers',
+      );
+    }
+
+    let cc: string;
+
+    // Get the CC based on the role
+    if (user.role === Roles.STUDENT) {
+      const student = await this.studentsRepository.findOneByOrFail({
+        id: user.entityId,
+      });
+      cc = student.cc;
+    } else if (user.role === Roles.TEACHER) {
+      const teacher = await this.teachersRepository.findOneByOrFail({
+        id: user.entityId,
+      });
+      cc = teacher.cc;
+    } else {
+      throw new BadRequestException(
+        'Invalid user role for password restoration',
+      );
+    }
+
+    // Hash the CC and update the user's password
+    const hashedPassword = await hash(cc, 10);
+    user.password = hashedPassword;
+
+    await this.usersRepository.save(user);
+
+    return { message: 'Password restored successfully' };
   }
 }

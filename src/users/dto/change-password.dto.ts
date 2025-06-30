@@ -9,7 +9,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ChangePasswordDto {
   @ApiProperty({
-    description: `User's previous password`,
+    description: "User's current password for verification",
+    example: 'CurrentPass123!',
+    maxLength: 30,
   })
   @MaxLength(30)
   @IsString()
@@ -17,7 +19,12 @@ export class ChangePasswordDto {
   oldPassword: string;
 
   @ApiProperty({
-    description: `User's new password`,
+    description: "User's new password (must meet security requirements)",
+    example: 'NewSecurePass123!',
+    maxLength: 30,
+    minLength: 8,
+    pattern:
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$',
   })
   @IsStrongPassword(passwordOptions)
   @MaxLength(30)

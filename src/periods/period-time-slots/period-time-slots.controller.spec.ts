@@ -11,7 +11,9 @@ describe('PeriodTimeSlotsController', () => {
       providers: [PeriodTimeSlotsService],
     }).compile();
 
-    controller = module.get<PeriodTimeSlotsController>(PeriodTimeSlotsController);
+    controller = module.get<PeriodTimeSlotsController>(
+      PeriodTimeSlotsController,
+    );
   });
 
   it('should be defined', () => {

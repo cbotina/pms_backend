@@ -9,7 +9,6 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { SetActivePeriodDto } from './dto/set-active-period.dto';
 
 @Injectable()
 export class PeriodsService {

@@ -17,9 +17,17 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { Tags } from '../config/swagger/swagger.config';
+import {
+  CreateSubjectGroupTimeSlotDocs,
+  GetSubjectGroupTimeSlotsDocs,
+  GetSubjectGroupTimeSlotDocs,
+  UpdateSubjectGroupTimeSlotDocs,
+  DeleteSubjectGroupTimeSlotDocs,
+} from './subject-group-time-slots.controller.docs';
 
 @Role(Roles.SECRETARY)
-@ApiTags('SubjectGroupTimeSlots ⌚📚')
+@ApiTags(Tags.SUBJECT_GROUP_TIME_SLOTS)
 @Controller()
 export class SubjectGroupTimeSlotsController {
   constructor(
@@ -27,6 +35,7 @@ export class SubjectGroupTimeSlotsController {
   ) {}
 
   @Post('subject-groups/:subjectGroupId/time-slots')
+  @CreateSubjectGroupTimeSlotDocs()
   create(
     @Body() createSubjectGroupTimeSlotDto: CreateSubjectGroupTimeSlotDto,
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
@@ -38,6 +47,7 @@ export class SubjectGroupTimeSlotsController {
   }
 
   @Get('subject-groups/:subjectGroupId/time-slots')
+  @GetSubjectGroupTimeSlotsDocs()
   findAll(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -51,11 +61,13 @@ export class SubjectGroupTimeSlotsController {
   }
 
   @Get('subject-group-time-slots/:subjetcGroupTimeSlotId')
+  @GetSubjectGroupTimeSlotDocs()
   findOne(@Param('subjetcGroupTimeSlotId') id: string) {
     return this.subjectGroupTimeSlotsService.findOne(+id);
   }
 
   @Patch('subject-group-time-slots/:subjetcGroupTimeSlotId')
+  @UpdateSubjectGroupTimeSlotDocs()
   update(
     @Param('subjetcGroupTimeSlotId') id: string,
     @Body() updateSubjectGroupTimeSlotDto: UpdateSubjectGroupTimeSlotDto,
@@ -67,6 +79,7 @@ export class SubjectGroupTimeSlotsController {
   }
 
   @Delete('subject-group-time-slots/:subjetcGroupTimeSlotId')
+  @DeleteSubjectGroupTimeSlotDocs()
   remove(@Param('subjetcGroupTimeSlotId') id: string) {
     return this.subjectGroupTimeSlotsService.remove(+id);
   }

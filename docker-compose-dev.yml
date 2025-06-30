@@ -1,0 +1,59 @@
+name: pms_dev
+services: 
+  mysql:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: $DB_DATABASE
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+    ports:
+      - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    volumes:
+      - data:/var/lib/mysql:rw
+      - ./database/init:/docker-entrypoint-initdb.d/
+    networks:
+      - net
+  
+  pms_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file: .env.development.local
+    environment:
+      - DB_HOST=mysql
+    networks:
+      - net
+    depends_on:
+      - mysql
+    ports: 
+      - $APP_LOCAL_PORT:$APP_DOCKER_PORT
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules
+            - dist
+  nginx:
+    image: nginx:latest
+    environment:
+      - VIRTUAL_HOST=pms.docker
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - pms_backend
+    restart: always
+    networks:
+      - net
+
+networks: 
+  net:
+
+volumes: 
+  data:

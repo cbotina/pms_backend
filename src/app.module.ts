@@ -21,9 +21,9 @@ import { StatsModule } from './stats/stats.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { HealthModule } from './common/health/health.module';
 import configValidation from './config/validation/config.validation';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -44,6 +44,7 @@ import { APP_GUARD } from '@nestjs/core';
         limit: 100,
       },
     ]),
+    HealthModule,
     PeriodsModule,
     TimeSlotsModule,
     SubjectsModule,

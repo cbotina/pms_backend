@@ -7,9 +7,10 @@ import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CreateLeavingPermissionDto } from '../dto/create-leaving-permission.dto';
+import { Tags } from '../../config/swagger/swagger.config';
 
-@ApiTags('Permission Requests 🅿️🙋‍♂️')
-@Controller()
+@ApiTags(Tags.PERMISSION_REQUESTS)
+@Controller('permission-requests')
 export class PermissionRequestsController {
   constructor(
     private readonly permissionRequestsService: PermissionRequestsService,

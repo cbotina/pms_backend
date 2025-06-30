@@ -15,9 +15,15 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Tags } from '../../config/swagger/swagger.config';
+import {
+  GetPeriodTimeSlotsDocs,
+  AddTimeSlotToPeriodDocs,
+  ImportTimeSlotsFromPeriodDocs,
+} from './period-time-slots.controller.docs';
+
 @Role(Roles.SECRETARY)
-@ApiTags('Period timeslots 🗓️⌚')
+@ApiTags(Tags.PERIOD_TIMESLOTS)
 @Controller('periods/:periodId/time-slots')
 export class PeriodTimeSlotsController {
   constructor(
@@ -26,6 +32,7 @@ export class PeriodTimeSlotsController {
 
   @Role(Roles.STUDENT, Roles.TEACHER)
   @Get()
+  @GetPeriodTimeSlotsDocs()
   async getPeriodTimeSlots(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -45,6 +52,7 @@ export class PeriodTimeSlotsController {
   }
 
   @Post()
+  @AddTimeSlotToPeriodDocs()
   addTimeSlotToPeriod(
     @Body() createTimeSlotDto: CreateTimeSlotDto,
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -56,6 +64,7 @@ export class PeriodTimeSlotsController {
   }
 
   @Post('import')
+  @ImportTimeSlotsFromPeriodDocs()
   importTimeSlotsFromPeriod(
     @Body() createMultipleTimeslotsDto: CopyTimeSlotsDto,
     @Param('periodId', ParseIntPipe) periodId: number,

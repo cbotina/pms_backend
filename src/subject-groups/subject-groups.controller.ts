@@ -17,15 +17,25 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Tags } from '../config/swagger/swagger.config';
+import {
+  CreateSubjectGroupDocs,
+  FindAllSubjectGroupsDocs,
+  FindOneSubjectGroupDocs,
+  UpdateSubjectGroupDocs,
+  RemoveSubjectGroupDocs,
+  GetTeacherSubjectGroupsDocs,
+  GetSubjectGroupStudentsDocs,
+} from './subject-groups.controller.docs';
 
 @Role(Roles.SECRETARY)
-@ApiTags('Subject Groups 📚👥')
+@ApiTags(Tags.SUBJECT_GROUPS)
 @Controller()
 export class SubjectGroupsController {
   constructor(private readonly subjectGroupsService: SubjectGroupsService) {}
 
   @Post('groups/:groupId/subjects')
+  @CreateSubjectGroupDocs()
   create(
     @Param('groupId', ParseIntPipe) groupId: number,
     @Body() createSubjectGroupDto: CreateSubjectGroupDto,
@@ -37,6 +47,7 @@ export class SubjectGroupsController {
   }
 
   @Get('groups/:groupId/subjects')
+  @FindAllSubjectGroupsDocs()
   findAll(
     @Param('groupId', ParseIntPipe) groupId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -51,11 +62,13 @@ export class SubjectGroupsController {
   }
 
   @Get('subject-groups/:subjectGroupId')
+  @FindOneSubjectGroupDocs()
   findOne(@Param('subjectGroupId', ParseIntPipe) id: number) {
     return this.subjectGroupsService.findOne(+id);
   }
 
   @Patch('subject-groups/:subjectGroupId')
+  @UpdateSubjectGroupDocs()
   update(
     @Param('subjectGroupId', ParseIntPipe) id: number,
     @Body() updateSubjectGroupDto: UpdateSubjectGroupDto,
@@ -64,6 +77,7 @@ export class SubjectGroupsController {
   }
 
   @Delete('subject-groups/:subjectGroupId')
+  @RemoveSubjectGroupDocs()
   remove(@Param('subjectGroupId', ParseIntPipe) id: number) {
     return this.subjectGroupsService.remove(+id);
   }
@@ -71,6 +85,7 @@ export class SubjectGroupsController {
   // @Public()
   @Role(Roles.TEACHER)
   @Get('periods/:periodId/teachers/:teacherId/subject-groups')
+  @GetTeacherSubjectGroupsDocs()
   getTeacherSubjectGroups(
     @Param('periodId', ParseIntPipe) periodId: number,
     @Param('teacherId', ParseIntPipe) teacherId: number,
@@ -92,6 +107,7 @@ export class SubjectGroupsController {
   // @Public()
   @Role(Roles.TEACHER)
   @Get('subject-groups/:subjectGroupId/students')
+  @GetSubjectGroupStudentsDocs()
   getSubjectGroupStudents(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,
   ) {
