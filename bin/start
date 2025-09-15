@@ -15,7 +15,7 @@ if [ ! -f ".env.development.local" ]; then
 fi
 
 # Start the application
-docker compose -f docker-compose-dev.yml --env-file .env.development.local up -d
+docker compose -f docker-compose-dev.yml --env-file .env.development.local up --watch
 
 echo "✅ PMS Backend started successfully!"
 echo "🌐 Application is available at: http://localhost"
