@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Build script for PMS Backend
+# This script builds the application using docker-compose
+
+set -e
+
+echo "🔨 Building PMS Backend with Docker Compose..."
+
+# Check if .env.development.local exists
+if [ ! -f ".env.development.local" ]; then
+    echo "❌ Error: .env.development.local file not found!"
+    echo "Please create .env.development.local based on .env.example"
+    exit 1
+fi
+
+# Build the application
+docker compose -f docker-compose-dev.yml --env-file .env.development.local build
+
+echo "✅ Build completed successfully!"

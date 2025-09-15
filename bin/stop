@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Stop script for PMS Backend
+# This script stops the application using docker-compose
+
+set -e
+
+echo "🛑 Stopping PMS Backend..."
+
+# Stop the application
+docker compose -f docker-compose-dev.yml down
+
+echo "✅ PMS Backend stopped successfully!"
