@@ -1,12 +1,12 @@
-import { Permission } from 'src/permissions/entities/permission.entity';
+import { Permission } from '@permissions/entities/permission.entity';
 import { Brackets, DataSource, ViewColumn, ViewEntity } from 'typeorm';
 import { Absence } from './absence.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
-import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { TimeSlot } from '@time-slots/entities/time-slot.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
+import { DailyReport } from '@daily-reports/entities/daily-report.entity';
+import { Student } from '@students/entities/student.entity';
+import { Subject } from '@subjects/entities/subject.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>

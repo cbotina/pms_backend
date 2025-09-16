@@ -1,5 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Roles } from 'src/users/entities/user.entity';
+import { Roles } from '@users/entities/user.entity';
 
 @Injectable()
 export class TeacherIdGuard implements CanActivate {

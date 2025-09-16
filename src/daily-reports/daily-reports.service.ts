@@ -3,9 +3,9 @@ import { CreateDailyReportDto } from './dto/create-daily-report.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DailyReport } from './entities/daily-report.entity';
 import { DataSource, Repository } from 'typeorm';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
-import { Absence } from 'src/absences/entities/absence.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { Student } from '@students/entities/student.entity';
 import { TeacherDailyReportView } from './entities/teacher-daily-reports.view';
 
 @Injectable()

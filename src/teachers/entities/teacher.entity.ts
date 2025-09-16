@@ -1,5 +1,5 @@
-import { Group } from 'src/groups/entities/group.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { Group } from '@groups/entities/group.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
 import {
   Column,
   Entity,

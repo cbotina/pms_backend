@@ -15,9 +15,9 @@ import { CreateSubjectGroupDto } from './dto/create-subject-group.dto';
 import { UpdateSubjectGroupDto } from './dto/update-subject-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { Public } from '@common/decorators/public.decorator';
 
 @Role(Roles.SECRETARY)
 @ApiTags('Subject Groups 📚👥')

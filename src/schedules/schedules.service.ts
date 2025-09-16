@@ -7,11 +7,11 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { WeekDay } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { TeacherScheduleView } from './entities/teacher-schedule.view';
 import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
 import { DayTimeSlots } from './models/day-time-slots';
-import { AbsenceCountBySubjectView } from 'src/absences/entities/absence-count-by-subject.view';
+import { AbsenceCountBySubjectView } from '@absences/entities/absence-count-by-subject.view';
 
 @Injectable()
 export class SchdulesService {

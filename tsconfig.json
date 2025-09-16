@@ -16,6 +16,31 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@absences/*": ["src/absences/*"],
+      "@auth/*": ["src/auth/*"],
+      "@common/*": ["src/common/*"],
+      "@config/*": ["src/config/*"],
+      "@daily-reports/*": ["src/daily-reports/*"],
+      "@enrollments/*": ["src/enrollments/*"],
+      "@exception-filter/*": ["src/exception-filter/*"],
+      "@groups/*": ["src/groups/*"],
+      "@health/*": ["src/health/*"],
+      "@interceptors/*": ["src/interceptors/*"],
+      "@mail/*": ["src/mail/*"],
+      "@periods/*": ["src/periods/*"],
+      "@permissions/*": ["src/permissions/*"],
+      "@schedules/*": ["src/schedules/*"],
+      "@seed/*": ["src/seed/*"],
+      "@stats/*": ["src/stats/*"],
+      "@students/*": ["src/students/*"],
+      "@subject-group-time-slots/*": ["src/subject-group-time-slots/*"],
+      "@subject-groups/*": ["src/subject-groups/*"],
+      "@subjects/*": ["src/subjects/*"],
+      "@teachers/*": ["src/teachers/*"],
+      "@time-slots/*": ["src/time-slots/*"],
+      "@users/*": ["src/users/*"]
+    }
   }
 }

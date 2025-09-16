@@ -17,9 +17,9 @@ import { CreatePeriodDto } from './dto/create-period.dto';
 import { UpdatePeriodDto } from './dto/update-period.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { StudentIdGuard } from 'src/common/guards/student_id.guard';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { StudentIdGuard } from '@common/guards/student_id.guard';
 
 @Role(Roles.SECRETARY)
 @ApiBearerAuth()

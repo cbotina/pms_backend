@@ -1,11 +1,11 @@
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Student } from '@students/entities/student.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
+import { Subject } from '@subjects/entities/subject.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
+import { TimeSlot } from '@time-slots/entities/time-slot.entity';
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({

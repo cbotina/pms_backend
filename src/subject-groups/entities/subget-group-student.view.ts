@@ -1,7 +1,7 @@
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Gender, Student } from 'src/students/entities/student.entity';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
+import { Gender, Student } from '@students/entities/student.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>

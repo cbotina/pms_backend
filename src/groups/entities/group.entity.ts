@@ -1,7 +1,7 @@
-import { Period } from 'src/periods/entities/period.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
+import { Period } from '../../../src/periods/entities/period.entity';
+import { Student } from '../../../src/students/entities/student.entity';
+import { SubjectGroup } from '../../../src/subject-groups/entities/subject-group.entity';
+import { Teacher } from '../../../src/teachers/entities/teacher.entity';
 import {
   Column,
   Entity,

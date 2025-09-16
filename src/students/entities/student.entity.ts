@@ -1,7 +1,7 @@
-import { Absence } from 'src/absences/entities/absence.entity';
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { Permission } from 'src/permissions/entities/permission.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Permission } from '@permissions/entities/permission.entity';
 import {
   Column,
   Entity,

@@ -1,6 +1,6 @@
-import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
+import { DailyReport } from '@daily-reports/entities/daily-report.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
+import { TimeSlot } from '@time-slots/entities/time-slot.entity';
 import {
   Column,
   Entity,

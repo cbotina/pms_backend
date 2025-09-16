@@ -5,8 +5,8 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { Group } from 'src/groups/entities/group.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Student } from '@students/entities/student.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

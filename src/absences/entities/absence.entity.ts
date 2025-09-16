@@ -1,6 +1,6 @@
-import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { Permission } from 'src/permissions/entities/permission.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { DailyReport } from '@daily-reports/entities/daily-report.entity';
+import { Permission } from '@permissions/entities/permission.entity';
+import { Student } from '@students/entities/student.entity';
 import {
   Column,
   Entity,

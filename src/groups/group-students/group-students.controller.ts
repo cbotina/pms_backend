@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { GroupStudentsService } from './group-students.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { PromoteStudentsDto } from 'src/groups/dto/promote-students.dto';
+import { PromoteStudentsDto } from '@groups/dto/promote-students.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/users/entities/user.entity';
-import { Role } from 'src/common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { Role } from '@common/decorators/roles.decorator';
 
 @Role(Roles.SECRETARY)
 @ApiTags('Group Students 👥🎒')

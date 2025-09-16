@@ -1,6 +1,6 @@
-import { Absence } from 'src/absences/entities/absence.entity';
-import { Permission } from 'src/permissions/entities/permission.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { Permission } from '@permissions/entities/permission.entity';
+import { Student } from '@students/entities/student.entity';
 import { ViewEntity, ViewColumn, DataSource } from 'typeorm';
 import { DailyReport } from '../entities/daily-report.entity';
 

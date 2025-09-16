@@ -15,8 +15,8 @@ import { CreateSubjectGroupTimeSlotDto } from './dto/create-subject-group-time-s
 import { UpdateSubjectGroupTimeSlotDto } from './dto/update-subject-group-time-slot.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
 
 @Role(Roles.SECRETARY)
 @ApiTags('SubjectGroupTimeSlots ⌚📚')

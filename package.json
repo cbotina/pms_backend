@@ -92,6 +92,31 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@absences/(.*)$": "<rootDir>/absences/$1",
+      "^@auth/(.*)$": "<rootDir>/auth/$1",
+      "^@common/(.*)$": "<rootDir>/common/$1",
+      "^@config/(.*)$": "<rootDir>/config/$1",
+      "^@daily-reports/(.*)$": "<rootDir>/daily-reports/$1",
+      "^@enrollments/(.*)$": "<rootDir>/enrollments/$1",
+      "^@exception-filter/(.*)$": "<rootDir>/exception-filter/$1",
+      "^@groups/(.*)$": "<rootDir>/groups/$1",
+      "^@health/(.*)$": "<rootDir>/health/$1",
+      "^@interceptors/(.*)$": "<rootDir>/interceptors/$1",
+      "^@mail/(.*)$": "<rootDir>/mail/$1",
+      "^@periods/(.*)$": "<rootDir>/periods/$1",
+      "^@permissions/(.*)$": "<rootDir>/permissions/$1",
+      "^@schedules/(.*)$": "<rootDir>/schedules/$1",
+      "^@seed/(.*)$": "<rootDir>/seed/$1",
+      "^@stats/(.*)$": "<rootDir>/stats/$1",
+      "^@students/(.*)$": "<rootDir>/students/$1",
+      "^@subject-group-time-slots/(.*)$": "<rootDir>/subject-group-time-slots/$1",
+      "^@subject-groups/(.*)$": "<rootDir>/subject-groups/$1",
+      "^@subjects/(.*)$": "<rootDir>/subjects/$1",
+      "^@teachers/(.*)$": "<rootDir>/teachers/$1",
+      "^@time-slots/(.*)$": "<rootDir>/time-slots/$1",
+      "^@users/(.*)$": "<rootDir>/users/$1"
+    }
   }
 }

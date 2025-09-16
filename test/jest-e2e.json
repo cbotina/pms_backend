@@ -5,5 +5,30 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapping": {
+    "^@absences/(.*)$": "<rootDir>/../src/absences/$1",
+    "^@auth/(.*)$": "<rootDir>/../src/auth/$1",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@config/(.*)$": "<rootDir>/../src/config/$1",
+    "^@daily-reports/(.*)$": "<rootDir>/../src/daily-reports/$1",
+    "^@enrollments/(.*)$": "<rootDir>/../src/enrollments/$1",
+    "^@exception-filter/(.*)$": "<rootDir>/../src/exception-filter/$1",
+    "^@groups/(.*)$": "<rootDir>/../src/groups/$1",
+    "^@health/(.*)$": "<rootDir>/../src/health/$1",
+    "^@interceptors/(.*)$": "<rootDir>/../src/interceptors/$1",
+    "^@mail/(.*)$": "<rootDir>/../src/mail/$1",
+    "^@periods/(.*)$": "<rootDir>/../src/periods/$1",
+    "^@permissions/(.*)$": "<rootDir>/../src/permissions/$1",
+    "^@schedules/(.*)$": "<rootDir>/../src/schedules/$1",
+    "^@seed/(.*)$": "<rootDir>/../src/seed/$1",
+    "^@stats/(.*)$": "<rootDir>/../src/stats/$1",
+    "^@students/(.*)$": "<rootDir>/../src/students/$1",
+    "^@subject-group-time-slots/(.*)$": "<rootDir>/../src/subject-group-time-slots/$1",
+    "^@subject-groups/(.*)$": "<rootDir>/../src/subject-groups/$1",
+    "^@subjects/(.*)$": "<rootDir>/../src/subjects/$1",
+    "^@teachers/(.*)$": "<rootDir>/../src/teachers/$1",
+    "^@time-slots/(.*)$": "<rootDir>/../src/time-slots/$1",
+    "^@users/(.*)$": "<rootDir>/../src/users/$1"
   }
 }

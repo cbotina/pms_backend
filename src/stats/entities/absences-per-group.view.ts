@@ -1,9 +1,9 @@
-import { Absence } from 'src/absences/entities/absence.entity';
-import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { Permission } from 'src/permissions/entities/permission.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { DailyReport } from '@daily-reports/entities/daily-report.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Permission } from '@permissions/entities/permission.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
 import { Brackets, DataSource, ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({

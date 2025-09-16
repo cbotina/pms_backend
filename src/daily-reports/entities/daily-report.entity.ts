@@ -1,5 +1,5 @@
-import { Absence } from 'src/absences/entities/absence.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
 import {
   Column,
   Entity,

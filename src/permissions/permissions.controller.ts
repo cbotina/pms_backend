@@ -14,9 +14,9 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PermissionStatus } from './entities/permission.entity';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { Public } from '@common/decorators/public.decorator';
 import { JustifyLeavingPermissionDto } from './dto/justify-permission.dto';
 
 @ApiTags('Permissions 🅿️')

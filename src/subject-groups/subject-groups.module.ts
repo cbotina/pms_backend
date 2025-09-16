@@ -3,9 +3,9 @@ import { SubjectGroupsService } from './subject-groups.service';
 import { SubjectGroupsController } from './subject-groups.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SubjectGroup } from './entities/subject-group.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Subject } from '@subjects/entities/subject.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
 import { TeacherSubjectsView } from './entities/teacher-subject-groups.view';
 import { SubjectGroupStudentsView } from './entities/subget-group-student.view';
 

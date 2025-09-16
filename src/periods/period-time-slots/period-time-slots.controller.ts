@@ -9,13 +9,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { PeriodTimeSlotsService } from './period-time-slots.service';
-import { CreateTimeSlotDto } from 'src/time-slots/dto/create-time-slot.dto';
-import { CopyTimeSlotsDto } from 'src/time-slots/dto/copy-time-slots.dto';
+import { CreateTimeSlotDto } from '@time-slots/dto/create-time-slot.dto';
+import { CopyTimeSlotsDto } from '@time-slots/dto/copy-time-slots.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { Public } from '@common/decorators/public.decorator';
 @Role(Roles.SECRETARY)
 @ApiTags('Period timeslots 🗓️⌚')
 @Controller('periods/:periodId/time-slots')

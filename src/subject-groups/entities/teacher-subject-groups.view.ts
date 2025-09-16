@@ -1,8 +1,8 @@
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 import { SubjectGroup } from './subject-group.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
+import { Subject } from '@subjects/entities/subject.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>

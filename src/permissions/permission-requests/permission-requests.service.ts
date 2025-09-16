@@ -5,11 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   Permission,
   PermissionStatus,
-} from 'src/permissions/entities/permission.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { DailyReport } from 'src/daily-reports/entities/daily-report.entity';
-import { Absence } from 'src/absences/entities/absence.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+} from '@permissions/entities/permission.entity';
+import { Student } from '@students/entities/student.entity';
+import { DailyReport } from '@daily-reports/entities/daily-report.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { JustifyAbsencesRequestDto } from '../dto/justify-absences-request.dto';
 import { CreateLeavingPermissionDto } from '../dto/create-leaving-permission.dto';
 

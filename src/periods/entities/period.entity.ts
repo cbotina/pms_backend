@@ -1,5 +1,5 @@
-import { Group } from 'src/groups/entities/group.entity';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
+import { Group } from '@groups/entities/group.entity';
+import { TimeSlot } from '@time-slots/entities/time-slot.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

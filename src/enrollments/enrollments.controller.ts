@@ -1,8 +1,8 @@
 import { Controller, Param, Delete } from '@nestjs/common';
 import { EnrollmentsService } from './enrollments.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
 @ApiTags('Enrollments 🧑📚')
 @Controller('enrollments')
 export class EnrollmentsController {

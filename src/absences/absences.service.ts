@@ -10,7 +10,7 @@ import {
 import { UnjustifiedAbsenceDetailsView } from './entities/unjustified-absences.view';
 import { AbsenceCountView } from './entities/absence-count.view';
 import { SubjectGroupStudentAbsenceDetailsView } from './entities/student-absence-details.view';
-import { fairyDates, fairyDays } from 'src/schedules/schedules.service';
+import { fairyDays } from '@schedules/schedules.service';
 import { AbsenceCountBySubjectView } from './entities/absence-count-by-subject.view';
 import { AbsenceWithStudentView } from './entities/absence_with_student.view';
 import { Absence } from './entities/absence.entity';

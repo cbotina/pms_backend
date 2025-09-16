@@ -1,11 +1,11 @@
 import {
   Permission,
   PermissionStatus,
-} from 'src/permissions/entities/permission.entity';
+} from '@permissions/entities/permission.entity';
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 
-import { Student } from 'src/students/entities/student.entity';
-import { Group } from 'src/groups/entities/group.entity';
+import { Student } from '@students/entities/student.entity';
+import { Group } from '@groups/entities/group.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>

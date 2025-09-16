@@ -4,7 +4,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { Brackets, Repository } from 'typeorm';
-import { Group } from 'src/groups/entities/group.entity';
+import { Group } from '@groups/entities/group.entity';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()

@@ -5,10 +5,10 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
-import { Group } from 'src/groups/entities/group.entity';
-import { Period } from 'src/periods/entities/period.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
+import { CreateGroupDto } from '@groups/dto/create-group.dto';
+import { Group } from '@groups/entities/group.entity';
+import { Period } from '@periods/entities/period.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

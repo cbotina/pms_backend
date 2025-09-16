@@ -3,9 +3,9 @@ import { PermissionRequestsService } from './permission-requests.service';
 import { PermissionRequestDto } from '../dto/permission-request.dto';
 import { JustifyAbsencesRequestDto } from '../dto/justify-absences-request.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { Public } from '@common/decorators/public.decorator';
 import { CreateLeavingPermissionDto } from '../dto/create-leaving-permission.dto';
 
 @ApiTags('Permission Requests 🅿️🙋‍♂️')

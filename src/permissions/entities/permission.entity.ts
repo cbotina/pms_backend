@@ -1,5 +1,5 @@
-import { Absence } from 'src/absences/entities/absence.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { Absence } from '@absences/entities/absence.entity';
+import { Student } from '@students/entities/student.entity';
 import {
   Column,
   Entity,

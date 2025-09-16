@@ -1,4 +1,4 @@
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

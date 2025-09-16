@@ -1,6 +1,6 @@
-import { Group } from 'src/groups/entities/group.entity';
-import { Permission } from 'src/permissions/entities/permission.entity';
-import { Student } from 'src/students/entities/student.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Permission } from '@permissions/entities/permission.entity';
+import { Student } from '@students/entities/student.entity';
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({

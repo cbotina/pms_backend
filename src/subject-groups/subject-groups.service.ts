@@ -3,10 +3,10 @@ import { CreateSubjectGroupDto } from './dto/create-subject-group.dto';
 import { UpdateSubjectGroupDto } from './dto/update-subject-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubjectGroup } from './entities/subject-group.entity';
-import { Group } from 'src/groups/entities/group.entity';
+import { Group } from '@groups/entities/group.entity';
 import { Repository } from 'typeorm';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
+import { Subject } from '@subjects/entities/subject.entity';
 import {
   IPaginationOptions,
   Pagination,

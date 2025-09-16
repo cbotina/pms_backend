@@ -10,12 +10,12 @@ import {
 import { DailyReportsService } from './daily-reports.service';
 import { CreateDailyReportDto } from './dto/create-daily-report.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DailyReportPermissionView } from './dto/daily-reports-permission.view';
 import { Repository } from 'typeorm';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Public } from '@common/decorators/public.decorator';
 
 @ApiTags('Daily Reports 📃')
 @Controller()

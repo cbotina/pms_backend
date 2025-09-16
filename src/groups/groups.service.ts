@@ -3,8 +3,8 @@ import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
 import { Repository } from 'typeorm';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
 
 @Injectable()
 export class GroupsService {

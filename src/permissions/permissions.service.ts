@@ -7,12 +7,12 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { Student } from 'src/students/entities/student.entity';
-import { Group } from 'src/groups/entities/group.entity';
+import { Student } from '@students/entities/student.entity';
+import { Group } from '@groups/entities/group.entity';
 import { PermissionWithStudentView } from './dto/permission-with-student.view';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { JustifyLeavingPermissionDto } from './dto/justify-permission.dto';
-import { Absence } from 'src/absences/entities/absence.entity';
+import { Absence } from '@absences/entities/absence.entity';
 
 @Injectable()
 export class PermissionsService {

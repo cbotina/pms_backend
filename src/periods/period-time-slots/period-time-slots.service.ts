@@ -5,10 +5,10 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { Period } from 'src/periods/entities/period.entity';
-import { CopyTimeSlotsDto } from 'src/time-slots/dto/copy-time-slots.dto';
-import { CreateTimeSlotDto } from 'src/time-slots/dto/create-time-slot.dto';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
+import { Period } from '@periods/entities/period.entity';
+import { CopyTimeSlotsDto } from '@time-slots/dto/copy-time-slots.dto';
+import { CreateTimeSlotDto } from '@time-slots/dto/create-time-slot.dto';
+import { TimeSlot } from '@time-slots/entities/time-slot.entity';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()

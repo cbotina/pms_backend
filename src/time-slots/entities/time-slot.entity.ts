@@ -1,5 +1,5 @@
-import { Period } from 'src/periods/entities/period.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { Period } from '@periods/entities/period.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
 import {
   Column,
   Entity,

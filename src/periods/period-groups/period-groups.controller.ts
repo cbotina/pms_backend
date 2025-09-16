@@ -9,11 +9,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { PeriodGroupsService } from './period-groups.service';
-import { CreateGroupDto } from 'src/groups/dto/create-group.dto';
+import { CreateGroupDto } from '@groups/dto/create-group.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
 @Role(Roles.SECRETARY)
 @ApiTags('Period Groups 🅿️👥')
 @Controller('periods/:periodId/groups')

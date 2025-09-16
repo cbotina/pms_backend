@@ -12,10 +12,10 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { Role } from 'src/common/decorators/roles.decorator';
+import { Role } from '@common/decorators/roles.decorator';
 import { Roles } from './entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
-import { UserIdGuard } from 'src/common/guards/user_id.guard';
+import { Public } from '@common/decorators/public.decorator';
+import { UserIdGuard } from '@common/guards/user_id.guard';
 
 // @Role(Roles.SECRETARY)
 @Controller('users')

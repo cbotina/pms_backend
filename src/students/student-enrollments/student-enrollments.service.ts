@@ -5,10 +5,10 @@ import {
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { CreateEnrollmentDto } from 'src/enrollments/dto/create-enrollment.dto';
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { CreateEnrollmentDto } from '@enrollments/dto/create-enrollment.dto';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
+import { Student } from '@students/entities/student.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

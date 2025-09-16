@@ -8,13 +8,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { SchdulesService } from './schedules.service';
-import { WeekDay } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { WeekDay } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { StudentIdGuard } from 'src/common/guards/student_id.guard';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { StudentIdGuard } from '@common/guards/student_id.guard';
+import { Public } from '@common/decorators/public.decorator';
 
 @ApiTags('Schedules 📜')
 @Controller('periods/:periodId')

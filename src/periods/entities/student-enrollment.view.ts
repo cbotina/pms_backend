@@ -1,11 +1,11 @@
 import { DataSource, ViewColumn, ViewEntity } from 'typeorm';
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Student } from 'src/students/entities/student.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { Period } from 'src/periods/entities/period.entity';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
+import { Student } from '@students/entities/student.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
+import { Subject } from '@subjects/entities/subject.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
+import { Group } from '@groups/entities/group.entity';
+import { Period } from '@periods/entities/period.entity';
 
 @ViewEntity({
   expression: (dataSource: DataSource) =>

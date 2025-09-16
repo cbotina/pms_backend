@@ -1,5 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Roles } from 'src/users/entities/user.entity';
+import { Roles } from '@users/entities/user.entity';
 
 @Injectable()
 export class StudentIdGuard implements CanActivate {
@@ -7,8 +7,6 @@ export class StudentIdGuard implements CanActivate {
     const request: any = context.switchToHttp().getRequest();
     const { user } = request;
     const { studentId } = request.params;
-
-    console.log(studentId, user.entityId);
 
     if (user.role === Roles.ADMIN) {
       return true;

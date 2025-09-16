@@ -1,8 +1,8 @@
-import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
-import { Group } from 'src/groups/entities/group.entity';
-import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
-import { Subject } from 'src/subjects/entities/subject.entity';
-import { Teacher } from 'src/teachers/entities/teacher.entity';
+import { Enrollment } from '@enrollments/entities/enrollment.entity';
+import { Group } from '@groups/entities/group.entity';
+import { SubjectGroupTimeSlot } from '@subject-group-time-slots/entities/subject-group-time-slot.entity';
+import { Subject } from '@subjects/entities/subject.entity';
+import { Teacher } from '@teachers/entities/teacher.entity';
 import {
   Column,
   Entity,

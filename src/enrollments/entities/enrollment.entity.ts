@@ -1,5 +1,5 @@
-import { Student } from 'src/students/entities/student.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { Student } from '@students/entities/student.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

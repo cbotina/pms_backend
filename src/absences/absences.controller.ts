@@ -10,9 +10,9 @@ import {
 import { AbsencesService } from './absences.service';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/common/decorators/roles.decorator';
-import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Role } from '@common/decorators/roles.decorator';
+import { Roles } from '@users/entities/user.entity';
+import { Public } from '@common/decorators/public.decorator';
 
 @ApiTags('Absences 🚨')
 @Controller()

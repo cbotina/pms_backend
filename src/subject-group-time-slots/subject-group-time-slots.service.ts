@@ -3,8 +3,8 @@ import { CreateSubjectGroupTimeSlotDto } from './dto/create-subject-group-time-s
 import { UpdateSubjectGroupTimeSlotDto } from './dto/update-subject-group-time-slot.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubjectGroupTimeSlot } from './entities/subject-group-time-slot.entity';
-import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
-import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { TimeSlot } from '@time-slots/entities/time-slot.entity';
+import { SubjectGroup } from '@subject-groups/entities/subject-group.entity';
 import { Repository } from 'typeorm';
 import {
   IPaginationOptions,
