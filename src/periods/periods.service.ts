@@ -1,21 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePeriodDto } from './dto/create-period.dto';
 import { UpdatePeriodDto } from './dto/update-period.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Period } from './entities/period.entity';
+import { StudentEnrollmentView } from './entities/student-enrollment.view';
 import { Repository } from 'typeorm';
 import {
   IPaginationOptions,
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
-import { SetActivePeriodDto } from './dto/set-active-period.dto';
 
 @Injectable()
 export class PeriodsService {
   constructor(
     @InjectRepository(Period)
     private readonly periodsRepository: Repository<Period>,
+    @InjectRepository(StudentEnrollmentView)
+    private readonly studentEnrollmentViewRepository: Repository<StudentEnrollmentView>,
   ) {}
 
   create(createPeriodDto: CreatePeriodDto): Promise<Period> {
@@ -79,5 +81,26 @@ export class PeriodsService {
 
   getActivePeriod() {
     return this.periodsRepository.findOneBy({ active: true });
+  }
+
+  async getStudentEnrollmentsForPeriod(
+    periodId: number,
+    studentId: number,
+  ): Promise<StudentEnrollmentView[]> {
+    // Validate that the period exists
+    const period = await this.periodsRepository.findOneBy({ id: periodId });
+    if (!period) {
+      throw new NotFoundException(`Period with ID ${periodId} not found`);
+    }
+
+    // Query the view entity with filters
+    const enrollments = await this.studentEnrollmentViewRepository.find({
+      where: {
+        periodId,
+        studentId,
+      },
+    });
+
+    return enrollments;
   }
 }

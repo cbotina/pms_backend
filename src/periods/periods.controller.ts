@@ -10,6 +10,7 @@ import {
   HttpCode,
   Query,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
 import { PeriodsService } from './periods.service';
 import { CreatePeriodDto } from './dto/create-period.dto';
@@ -18,6 +19,7 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
+import { StudentIdGuard } from 'src/common/guards/student_id.guard';
 
 @Role(Roles.SECRETARY)
 @ApiBearerAuth()
@@ -73,5 +75,15 @@ export class PeriodsController {
     };
 
     return await this.periodsService.getPaginatedPeriods(options, search);
+  }
+
+  @Role(Roles.STUDENT)
+  @UseGuards(StudentIdGuard)
+  @Get(':periodId/students/:studentId/enrollments')
+  getStudentEnrollmentsForPeriod(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('studentId', ParseIntPipe) studentId: number,
+  ) {
+    return this.periodsService.getStudentEnrollmentsForPeriod(periodId, studentId);
   }
 }

@@ -13,6 +13,7 @@ import { TeacherDailyReportView } from 'src/daily-reports/entities/teacher-daily
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { Group } from 'src/groups/entities/group.entity';
 import { Period } from 'src/periods/entities/period.entity';
+import { StudentEnrollmentView } from 'src/periods/entities/student-enrollment.view';
 import { PermissionWithStudentView } from 'src/permissions/dto/permission-with-student.view';
 import { Permission } from 'src/permissions/entities/permission.entity';
 import { StudentScheduleView } from 'src/schedules/entities/student-schedule.view';
@@ -44,6 +45,7 @@ export const dbConfig = (
     database: configService.get('database.database'),
     entities: [
       Period,
+      StudentEnrollmentView,
       TimeSlot,
       Subject,
       Teacher,

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -12,9 +13,10 @@ import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { compareSync, hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit{
   constructor(
     private readonly dataSource: DataSource,
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
@@ -22,7 +24,56 @@ export class UsersService {
     private readonly studentsRepository: Repository<Student>,
     @InjectRepository(Teacher)
     private readonly teachersRepository: Repository<Teacher>,
+    private readonly configService: ConfigService,
   ) {}
+
+  async onModuleInit() {
+    await this.initializeAdminUser();
+  }
+
+  private async initializeAdminUser() {
+    try {
+      // Check if admin user already exists
+      const adminExists = await this.usersRepository.findOne({
+        where: { role: Roles.ADMIN }
+      });
+
+      if (!adminExists) {
+        await this.createAdminUser();
+      }
+    } catch (error) {
+      console.error('❌ Failed to initialize admin user:', error.message);
+    }
+  }
+
+  async createAdminUser(email?: string, password?: string) {
+    try {
+      const adminEmail = email || this.configService.get('admin.email');
+      const adminPassword = password || this.configService.get('admin.password');
+      
+      // Check if admin already exists
+      const existingAdmin = await this.usersRepository.findOne({
+        where: { email: adminEmail }
+      });
+
+      if (existingAdmin) {
+        throw new BadRequestException('Admin user already exists');
+      }
+
+      const adminUser = this.usersRepository.create({
+        email: adminEmail,
+        password: await hash(adminPassword, 10),
+        role: Roles.ADMIN,
+        entityId: null,
+      });
+
+      const savedAdmin = await this.usersRepository.save(adminUser);
+      return plainToInstance(User, savedAdmin);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(createUserDto: CreateUserDto) {
     const { email, role, password } = createUserDto;
     let pass;
