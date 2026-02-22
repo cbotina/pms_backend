@@ -51,7 +51,7 @@ async function bootstrap() {
     await dataSource.dropDatabase();
 
     logger.log('✅ Database reset complete. All tables have been dropped.');
-    logger.log('💡 Run the seeder to repopulate: npm run seed:prod');
+    logger.log('💡 Run the seeder to repopulate: npm run seed:compiled');
   } catch (error) {
     logger.error('❌ Failed to reset database:', error);
     await app.close();
