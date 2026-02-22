@@ -12,6 +12,9 @@ const validationSchema = Joi.object({
   EMAIL_HOST: Joi.string().required(),
   EMAIL_PASS: Joi.string().required(),
   EMAIL_USER: Joi.string().required(),
-});
+  SEED_ON_START: Joi.string().valid('true', 'false').optional(),
+  ADMIN_EMAIL: Joi.string().email().optional(),
+  ADMIN_PASSWORD: Joi.string().optional(),
+}).options({ allowUnknown: true });
 
 export default validationSchema;

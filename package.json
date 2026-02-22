@@ -18,7 +18,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "seed": "cross-env NODE_ENV=dev ts-node -r tsconfig-paths/register src/seeder/seed.ts",
+    "docker:dev": "bash scripts/dev.sh",
+    "docker:stop": "bash scripts/stop.sh",
+    "docker:seed": "bash scripts/seed.sh",
+    "docker:reset": "bash scripts/reset-db.sh"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",

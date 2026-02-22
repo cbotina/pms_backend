@@ -21,6 +21,7 @@ import { StatsModule } from './stats/stats.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { SeederModule } from './seeder/seeder.module';
 import configValidation from './config/validation/config.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
@@ -61,6 +62,7 @@ import { APP_GUARD } from '@nestjs/core';
     UsersModule,
     AuthModule,
     MailModule,
+    SeederModule,
   ],
 })
 export class AppModule {}
