@@ -50,8 +50,17 @@ export class SeederService implements OnModuleInit {
 
   async seed() {
     const nodeEnv = this.configService.get('NODE_ENV');
-    if (nodeEnv === 'prod') {
-      this.logger.warn('Seeder is disabled in production. Aborting.');
+    
+    // Allow seeding in development and staging environments
+    // Block seeding in production
+    const allowedEnvironments = ['development', 'dev', 'staging', 'stage'];
+    const isProduction = nodeEnv === 'production' || nodeEnv === 'prod';
+    
+    if (isProduction) {
+      this.logger.warn(
+        `Seeder is disabled in production (NODE_ENV=${nodeEnv}). ` +
+        `Allowed environments: ${allowedEnvironments.join(', ')}`
+      );
       return;
     }
 
