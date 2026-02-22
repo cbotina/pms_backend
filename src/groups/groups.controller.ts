@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   Post,
+  Query,
+  DefaultValuePipe,
   ParseIntPipe,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
@@ -23,6 +25,15 @@ export class GroupsController {
     private readonly groupsService: GroupsService,
     private readonly usersService: UsersService,
   ) {}
+
+  @Get()
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('search') search?: string,
+  ) {
+    return this.groupsService.findAll({ page, limit }, search);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: number) {

@@ -11,6 +11,7 @@ import { Teacher } from 'src/teachers/entities/teacher.entity';
       .select('sg.id', 'subjectGroupId')
       .addSelect('sub.name', 'subjectName')
       .addSelect('g.name', 'groupName')
+      .addSelect('sg.hours', 'hours')
       .addSelect('t.id', 'teacherId')
       .addSelect('g.periodId', 'periodId')
       .from(SubjectGroup, 'sg')
@@ -27,4 +28,7 @@ export class TeacherSubjectsView {
 
   @ViewColumn()
   groupName: string;
+
+  @ViewColumn()
+  hours: number;
 }

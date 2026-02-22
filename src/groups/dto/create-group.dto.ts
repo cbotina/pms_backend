@@ -1,4 +1,11 @@
-import { IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { Modality } from '../entities/group.entity';
 
 export class CreateGroupDto {
@@ -15,5 +22,7 @@ export class CreateGroupDto {
   @IsEnum(Modality)
   modality: Modality;
 
+  @IsOptional()
+  @IsInt()
   teacherId?: number;
 }

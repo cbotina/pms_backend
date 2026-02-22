@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateSubjectGroupTimeSlotDto } from './dto/create-subject-group-time-slot.dto';
 import { UpdateSubjectGroupTimeSlotDto } from './dto/update-subject-group-time-slot.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -29,13 +29,27 @@ export class SubjectGroupTimeSlotsService {
   ) {
     const { timeSlotId, day } = createSubjectGroupTimeSlotDto;
 
-    const timeSlot = await this.timeSlotsRepository.findOneByOrFail({
-      id: timeSlotId,
+    const timeSlot = await this.timeSlotsRepository.findOneOrFail({
+      where: { id: timeSlotId },
+      relations: { period: true },
     });
 
-    const subjectGroup = await this.subjectGroupsRepositor.findOneByOrFail({
-      id: subjectGroupId,
+    const subjectGroup = await this.subjectGroupsRepositor.findOneOrFail({
+      where: { id: subjectGroupId },
+      relations: { group: { period: true } },
     });
+
+    if (!timeSlot.isAcademic) {
+      throw new BadRequestException(
+        'No se pueden asignar unidades de formación a franjas no académicas',
+      );
+    }
+
+    if (timeSlot.period.id !== subjectGroup.group.period.id) {
+      throw new BadRequestException(
+        'La franja horaria no pertenece al periodo del grupo',
+      );
+    }
 
     return this.sgtsRepository.save({
       day,
@@ -84,9 +98,27 @@ export class SubjectGroupTimeSlotsService {
     let timeSlot: TimeSlot = undefined;
 
     if (timeSlotId) {
-      timeSlot = await this.timeSlotsRepository.findOneByOrFail({
-        id: timeSlotId,
+      timeSlot = await this.timeSlotsRepository.findOneOrFail({
+        where: { id: timeSlotId },
+        relations: { period: true },
       });
+
+      if (!timeSlot.isAcademic) {
+        throw new BadRequestException(
+          'No se pueden asignar unidades de formación a franjas no académicas',
+        );
+      }
+
+      const subjectGroup = await this.subjectGroupsRepositor.findOneOrFail({
+        where: { id: existingSgts.subjectGroup.id },
+        relations: { group: { period: true } },
+      });
+
+      if (timeSlot.period.id !== subjectGroup.group.period.id) {
+        throw new BadRequestException(
+          'La franja horaria no pertenece al periodo del grupo',
+        );
+      }
     }
 
     const sgtsData = this.sgtsRepository.merge({

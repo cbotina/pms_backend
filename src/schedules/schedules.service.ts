@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentScheduleView } from './entities/student-schedule.view';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import {
   IPaginationOptions,
   Pagination,
@@ -12,6 +12,7 @@ import { TeacherScheduleView } from './entities/teacher-schedule.view';
 import { ScheduleRangeDatesDto } from './dto/schedule-range-dates.dto';
 import { DayTimeSlots } from './models/day-time-slots';
 import { AbsenceCountBySubjectView } from 'src/absences/entities/absence-count-by-subject.view';
+import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 
 @Injectable()
 export class SchdulesService {
@@ -22,7 +23,65 @@ export class SchdulesService {
     private readonly teacherScheduleRepository: Repository<TeacherScheduleView>,
     @InjectRepository(AbsenceCountBySubjectView)
     private readonly studentAbsenceCountBySubjectRepository: Repository<AbsenceCountBySubjectView>,
+    @InjectRepository(SubjectGroupTimeSlot)
+    private readonly subjectGroupTimeSlotRepository: Repository<SubjectGroupTimeSlot>,
   ) {}
+
+  async getGroupWeeklySchedule(periodId: number, groupId: number) {
+    const qb = this.subjectGroupTimeSlotRepository
+      .createQueryBuilder('sgts')
+      .innerJoin('sgts.timeSlot', 'ts')
+      .innerJoin('sgts.subjectGroup', 'sg')
+      .innerJoin('sg.group', 'g')
+      .innerJoin('sg.subject', 'sub')
+      .leftJoin('sg.teacher', 't')
+      .where('g.periodId = :periodId', { periodId })
+      .andWhere('g.id = :groupId', { groupId })
+      .select('sgts.id', 'subjectGroupTimeSlotId')
+      .addSelect('sg.id', 'subjectGroupId')
+      .addSelect('sgts.day', 'day')
+      .addSelect('ts.id', 'timeSlotId')
+      .addSelect('ts.label', 'timeSlotLabel')
+      .addSelect('ts.startTime', 'startTime')
+      .addSelect('ts.endTime', 'endTime')
+      .addSelect('ts.isAcademic', 'isAcademic')
+      .addSelect('sub.name', 'subjectName')
+      .addSelect('g.name', 'groupName')
+      .addSelect("concat(t.firstName, ' ', t.lastName)", 'teacherName');
+
+    this.applyWeekOrder(qb, 'sgts.day');
+    qb.addOrderBy('ts.startTime', 'ASC');
+
+    return qb.getRawMany();
+  }
+
+  async getTeacherWeeklySchedule(periodId: number, teacherId: number) {
+    const qb = this.subjectGroupTimeSlotRepository
+      .createQueryBuilder('sgts')
+      .innerJoin('sgts.timeSlot', 'ts')
+      .innerJoin('sgts.subjectGroup', 'sg')
+      .innerJoin('sg.group', 'g')
+      .innerJoin('sg.subject', 'sub')
+      .innerJoin('sg.teacher', 't')
+      .where('g.periodId = :periodId', { periodId })
+      .andWhere('t.id = :teacherId', { teacherId })
+      .select('sgts.id', 'subjectGroupTimeSlotId')
+      .addSelect('sg.id', 'subjectGroupId')
+      .addSelect('sgts.day', 'day')
+      .addSelect('ts.id', 'timeSlotId')
+      .addSelect('ts.label', 'timeSlotLabel')
+      .addSelect('ts.startTime', 'startTime')
+      .addSelect('ts.endTime', 'endTime')
+      .addSelect('ts.isAcademic', 'isAcademic')
+      .addSelect('sub.name', 'subjectName')
+      .addSelect('g.name', 'groupName')
+      .addSelect("concat(t.firstName, ' ', t.lastName)", 'teacherName');
+
+    this.applyWeekOrder(qb, 'sgts.day');
+    qb.addOrderBy('ts.startTime', 'ASC');
+
+    return qb.getRawMany();
+  }
 
   getStudentSchedule(
     periodId: number,
@@ -134,6 +193,25 @@ export class SchdulesService {
     }
 
     return dayTimeSlotsList;
+  }
+
+  private applyWeekOrder(
+    qb: SelectQueryBuilder<SubjectGroupTimeSlot>,
+    dayColumn: string,
+  ) {
+    qb.orderBy(
+      `CASE
+        WHEN ${dayColumn} = '${WeekDay.MONDAY}' THEN 1
+        WHEN ${dayColumn} = '${WeekDay.TUESDAY}' THEN 2
+        WHEN ${dayColumn} = '${WeekDay.WEDNESDAY}' THEN 3
+        WHEN ${dayColumn} = '${WeekDay.THURSDAY}' THEN 4
+        WHEN ${dayColumn} = '${WeekDay.FRIDAY}' THEN 5
+        WHEN ${dayColumn} = '${WeekDay.SATURDAY}' THEN 6
+        WHEN ${dayColumn} = '${WeekDay.SUNDAY}' THEN 7
+        ELSE 8
+      END`,
+      'ASC',
+    );
   }
 }
 

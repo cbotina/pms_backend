@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentScheduleView } from './entities/student-schedule.view';
 import { TeacherScheduleView } from './entities/teacher-schedule.view';
 import { AbsenceCountBySubjectView } from 'src/absences/entities/absence-count-by-subject.view';
+import { SubjectGroupTimeSlot } from 'src/subject-group-time-slots/entities/subject-group-time-slot.entity';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AbsenceCountBySubjectView } from 'src/absences/entities/absence-count-b
       StudentScheduleView,
       TeacherScheduleView,
       AbsenceCountBySubjectView,
+      SubjectGroupTimeSlot,
     ]),
   ],
   controllers: [SchdulesController],
