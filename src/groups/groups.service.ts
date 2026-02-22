@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from './entities/group.entity';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class GroupsService {
@@ -17,30 +18,53 @@ export class GroupsService {
     private readonly enrollmentsRepository: Repository<Enrollment>,
   ) {}
 
+  findAll(options: IPaginationOptions, search?: string) {
+    const qb = this.groupsRepository
+      .createQueryBuilder('g')
+      .leftJoinAndSelect('g.period', 'period')
+      .orderBy('period.name', 'DESC')
+      .addOrderBy('g.name', 'ASC');
+
+    if (search) {
+      qb.where(
+        new Brackets((q) => {
+          q.where('g.name LIKE :s', { s: `%${search}%` }).orWhere(
+            'period.name LIKE :s',
+            { s: `%${search}%` },
+          );
+        }),
+      );
+    }
+
+    return paginate<Group>(qb, options);
+  }
+
   findOne(id: number) {
     return this.groupsRepository
       .createQueryBuilder('group')
       .where('group.id = :id', { id })
+      .leftJoinAndSelect('group.period', 'period')
       .leftJoin('group.tutor', 'tutor')
-      .addSelect(['tutor.id', 'tutor.firstName', 'tutor.lastName']) // Select specific properties of the tutor relation
+      .addSelect(['tutor.id', 'tutor.firstName', 'tutor.lastName'])
       .getOneOrFail();
   }
 
   async update(id: number, updateGroupDto: UpdateGroupDto) {
     const existingGroup = await this.findOne(id);
 
-    let teacher: Teacher = null;
+    let tutor: Teacher = undefined;
     if (updateGroupDto.teacherId) {
-      teacher = await this.teachersRepository.findOneByOrFail({
+      tutor = await this.teachersRepository.findOneByOrFail({
         id: updateGroupDto.teacherId,
       });
+    } else if (updateGroupDto.teacherId === null) {
+      tutor = null;
     }
 
-    const groupData = this.groupsRepository.merge(
-      existingGroup,
-      updateGroupDto,
-      teacher,
-    );
+    const groupData = this.groupsRepository.merge(existingGroup, {
+      ...updateGroupDto,
+      ...(tutor !== undefined ? { tutor } : {}),
+    });
 
     return await this.groupsRepository.save(groupData);
   }
@@ -56,13 +80,15 @@ export class GroupsService {
         relations: { students: true, subjectGroups: true },
       });
 
-    subjectGroups.forEach((subjectGroup) => {
-      students.forEach(async (student) => {
-        await this.enrollmentsRepository.save({
-          student,
-          subjectGroup,
+    for (const subjectGroup of subjectGroups) {
+      for (const student of students) {
+        const exists = await this.enrollmentsRepository.findOne({
+          where: { student: { id: student.id }, subjectGroup: { id: subjectGroup.id } },
         });
-      });
-    });
+        if (!exists) {
+          await this.enrollmentsRepository.save({ student, subjectGroup });
+        }
+      }
+    }
   }
 }

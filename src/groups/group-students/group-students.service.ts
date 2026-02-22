@@ -7,7 +7,7 @@ import {
 } from 'nestjs-typeorm-paginate';
 import { Group } from 'src/groups/entities/group.entity';
 import { Student } from 'src/students/entities/student.entity';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 
 @Injectable()
 export class GroupStudentsService {
@@ -28,13 +28,15 @@ export class GroupStudentsService {
     queryBuilder.orderBy('student.lastName', 'ASC');
 
     if (search) {
-      queryBuilder
-        .where('student.firstName LIKE :search', {
-          search: `%${search}%`,
-        })
-        .orWhere('student.lastName LIKE :search', {
-          search: `%${search}%`,
-        });
+      queryBuilder.andWhere(
+        new Brackets((qb) => {
+          qb.where('student.firstName LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('student.lastName LIKE :search', {
+            search: `%${search}%`,
+          });
+        }),
+      );
     }
     return paginate(queryBuilder, options);
   }

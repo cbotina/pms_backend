@@ -6,6 +6,8 @@ import { Student } from './entities/student.entity';
 import { Brackets, Repository } from 'typeorm';
 import { Group } from 'src/groups/entities/group.entity';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { UsersService } from 'src/users/users.service';
+import { Roles } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class StudentsService {
@@ -14,26 +16,45 @@ export class StudentsService {
     private readonly studentsRepository: Repository<Student>,
     @InjectRepository(Group)
     private readonly groupsRepository: Repository<Group>,
+    private readonly usersService: UsersService,
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
-    const { groupId, cc, firstName, lastName } = createStudentDto;
+    const { groupId, cc, firstName, lastName, email, gender } =
+      createStudentDto;
 
     const group = await this.groupsRepository.findOneByOrFail({ id: groupId });
 
-    return await this.studentsRepository.save({
+    const student = await this.studentsRepository.save({
       cc,
       firstName,
       lastName,
+      email,
+      gender,
       group,
     });
+
+    const existingUser = await this.usersService.findByEmail(email);
+    if (!existingUser) {
+      await this.usersService.create({ email, role: Roles.STUDENT });
+    }
+
+    return student;
   }
 
-  findAll(options: IPaginationOptions, search?: string) {
+  findAll(options: IPaginationOptions, search?: string, periodId?: number) {
     const queryBuilder = this.studentsRepository.createQueryBuilder('student');
-    queryBuilder.orderBy('student.lastName', 'ASC');
+    queryBuilder
+      .leftJoinAndSelect('student.group', 'group')
+      .leftJoinAndSelect('group.period', 'period')
+      .orderBy('student.lastName', 'ASC');
+
+    if (periodId) {
+      queryBuilder.andWhere('period.id = :periodId', { periodId });
+    }
+
     if (search) {
-      queryBuilder.where(
+      queryBuilder.andWhere(
         new Brackets((qb) => {
           qb.where('student.firstName LIKE :search', {
             search: `%${search}%`,
@@ -53,7 +74,7 @@ export class StudentsService {
   findOne(id: number) {
     return this.studentsRepository.findOneOrFail({
       where: { id },
-      relations: { group: true },
+      relations: { group: { period: true } },
     });
   }
 

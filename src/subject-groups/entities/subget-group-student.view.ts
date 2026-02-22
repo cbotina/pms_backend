@@ -7,7 +7,8 @@ import { Gender, Student } from 'src/students/entities/student.entity';
   expression: (dataSource: DataSource) =>
     dataSource
       .createQueryBuilder()
-      .select('st.id', 'studentId')
+      .select('en.id', 'enrollmentId')
+      .addSelect('st.id', 'studentId')
       .addSelect('en.subjectGroupId', 'subjectGroupId')
       .addSelect('st.gender', 'studentGender')
       .addSelect(`st.firstName`, 'studentFirstName')
@@ -17,7 +18,13 @@ import { Gender, Student } from 'src/students/entities/student.entity';
 })
 export class SubjectGroupStudentsView {
   @ViewColumn()
+  enrollmentId: number;
+
+  @ViewColumn()
   studentId: number;
+
+  @ViewColumn()
+  subjectGroupId: number;
 
   @ViewColumn()
   studentFirstName: string;

@@ -6,12 +6,13 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles, User } from './entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { Brackets, DataSource, Repository } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
 import { Teacher } from 'src/teachers/entities/teacher.entity';
 import { compareSync, hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UsersService {
@@ -124,19 +125,65 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findAll(options: IPaginationOptions, search?: string) {
+    const qb = this.usersRepository.createQueryBuilder('user');
+    qb.orderBy('user.email', 'ASC');
+
+    if (search) {
+      qb.where(
+        new Brackets((sub) => {
+          sub
+            .where('user.email LIKE :search', { search: `%${search}%` })
+            .orWhere('user.role LIKE :search', { search: `%${search}%` });
+        }),
+      );
+    }
+
+    return paginate<User>(qb, options);
   }
 
   findOne(id: number) {
     return this.usersRepository.findOneByOrFail({ id });
   }
 
+  findByEmail(email: string) {
+    return this.usersRepository.findOneBy({ email });
+  }
+
   findOneByEmail(email: string) {
     return this.usersRepository.findOneByOrFail({ email });
   }
 
+  async resetPassword(userId: number) {
+    const user = await this.usersRepository.findOneByOrFail({ id: userId });
+    let defaultPassword: string;
+
+    switch (user.role) {
+      case Roles.STUDENT:
+        const student = await this.studentsRepository.findOneByOrFail({
+          id: user.entityId,
+        });
+        defaultPassword = student.cc;
+        break;
+      case Roles.TEACHER:
+        const teacher = await this.teachersRepository.findOneByOrFail({
+          id: user.entityId,
+        });
+        defaultPassword = teacher.cc;
+        break;
+      default:
+        throw new BadRequestException(
+          'Cannot reset password for this user role',
+        );
+    }
+
+    user.password = await hash(defaultPassword, 10);
+    await this.usersRepository.save(user);
+
+    return { message: 'Password reset successfully' };
+  }
+
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.usersRepository.delete({ id });
   }
 }

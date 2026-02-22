@@ -49,8 +49,13 @@ export class StudentEnrollmentsService {
     const qb = this.enrollmentsRepository.createQueryBuilder('e');
     qb.where('e.studentId = :studentId', { studentId })
       .leftJoin('e.subjectGroup', 'sg')
+      .addSelect(['sg.id', 'sg.hours'])
       .leftJoin('sg.subject', 's')
-      .addSelect(['sg.id', 's.name']);
+      .addSelect(['s.id', 's.name'])
+      .leftJoin('sg.group', 'g')
+      .addSelect(['g.id', 'g.name'])
+      .leftJoin('sg.teacher', 't')
+      .addSelect(['t.id', 't.firstName', 't.lastName']);
 
     return paginate<Enrollment>(qb, options);
   }

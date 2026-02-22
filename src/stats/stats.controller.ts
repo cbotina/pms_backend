@@ -37,5 +37,19 @@ export class StatsController {
   ) {
     return this.statsService.getSubjectsWithMostAbsences(periodId);
   }
-  s;
+
+  @Get('summary')
+  getSummary(@Param('periodId', ParseIntPipe) periodId: number) {
+    return this.statsService.getSummary(periodId);
+  }
+
+  @Get('trends')
+  getTrends(@Param('periodId', ParseIntPipe) periodId: number) {
+    return this.statsService.getTrends(periodId);
+  }
+
+  @Get('distribution')
+  getDistribution(@Param('periodId', ParseIntPipe) periodId: number) {
+    return this.statsService.getDistribution(periodId);
+  }
 }

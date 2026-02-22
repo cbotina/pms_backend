@@ -87,4 +87,22 @@ export class SchdulesController {
 
     return scheduleMap;
   }
+
+  @Role(Roles.SECRETARY)
+  @Get('groups/:groupId/schedule-week')
+  getGroupWeeklySchedule(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('groupId', ParseIntPipe) groupId: number,
+  ) {
+    return this.schdulesService.getGroupWeeklySchedule(periodId, groupId);
+  }
+
+  @Role(Roles.SECRETARY)
+  @Get('teachers/:teacherId/schedule-week')
+  getTeacherWeeklySchedule(
+    @Param('periodId', ParseIntPipe) periodId: number,
+    @Param('teacherId', ParseIntPipe) teacherId: number,
+  ) {
+    return this.schdulesService.getTeacherWeeklySchedule(periodId, teacherId);
+  }
 }

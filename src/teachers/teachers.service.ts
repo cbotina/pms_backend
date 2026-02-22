@@ -5,16 +5,31 @@ import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from './entities/teacher.entity';
 import { Repository } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
+import { Roles } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class TeachersService {
   constructor(
     @InjectRepository(Teacher)
     private readonly teachersRepository: Repository<Teacher>,
+    private readonly usersService: UsersService,
   ) {}
 
-  create(createTeacherDto: CreateTeacherDto) {
-    return this.teachersRepository.save(createTeacherDto);
+  async create(createTeacherDto: CreateTeacherDto) {
+    const teacher = await this.teachersRepository.save(createTeacherDto);
+
+    const existingUser = await this.usersService.findByEmail(
+      createTeacherDto.email,
+    );
+    if (!existingUser) {
+      await this.usersService.create({
+        email: createTeacherDto.email,
+        role: Roles.TEACHER,
+      });
+    }
+
+    return teacher;
   }
 
   findAll(options: IPaginationOptions, search?: string) {

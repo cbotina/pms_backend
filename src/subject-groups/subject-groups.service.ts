@@ -125,6 +125,32 @@ export class SubjectGroupsService {
     return await this.subjectGroupsRepository.delete({ id });
   }
 
+  getPeriodSubjectGroups(
+    periodId: number,
+    options: IPaginationOptions,
+    search?: string,
+  ): Promise<Pagination<SubjectGroup>> {
+    const qb = this.subjectGroupsRepository
+      .createQueryBuilder('sg')
+      .leftJoin('sg.subject', 's')
+      .addSelect(['s.id', 's.name'])
+      .leftJoin('sg.group', 'g')
+      .addSelect(['g.id', 'g.name'])
+      .leftJoin('sg.teacher', 't')
+      .addSelect(['t.id', 't.firstName', 't.lastName'])
+      .where('g.periodId = :periodId', { periodId })
+      .orderBy('s.name', 'ASC')
+      .addOrderBy('g.name', 'ASC');
+
+    if (search) {
+      qb.andWhere('(s.name LIKE :s OR g.name LIKE :s)', {
+        s: `%${search}%`,
+      });
+    }
+
+    return paginate<SubjectGroup>(qb, options);
+  }
+
   getTeacherSubjectGroups(
     periodId: number,
     teacherId: number,

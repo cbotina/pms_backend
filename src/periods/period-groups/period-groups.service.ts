@@ -28,10 +28,13 @@ export class PeriodGroupsService {
     search?: string,
   ): Promise<Pagination<Group>> {
     const queryBuilder = this.groupsRepository.createQueryBuilder('g');
-    queryBuilder.where('g.periodId = :periodId', { periodId });
-    queryBuilder.orderBy('g.name', 'ASC');
+    queryBuilder
+      .leftJoin('g.tutor', 'tutor')
+      .addSelect(['tutor.id', 'tutor.firstName', 'tutor.lastName'])
+      .where('g.periodId = :periodId', { periodId })
+      .orderBy('g.name', 'ASC');
     if (search) {
-      queryBuilder.where('g.name LIKE :search', { search: `%${search}%` });
+      queryBuilder.andWhere('g.name LIKE :search', { search: `%${search}%` });
     }
 
     return paginate<Group>(queryBuilder, options);
@@ -53,7 +56,7 @@ export class PeriodGroupsService {
     return this.groupsRepository.save({
       ...createGroupDto,
       period: period,
-      teacher: teacher,
+      tutor: teacher,
     });
   }
 }

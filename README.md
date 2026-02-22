@@ -1,73 +1,111 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# PMS Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend for the Permission Management System (Sistema Gestor de Permisos) — a platform used by an educational institution to manage student permissions, absences, schedules, and daily reports.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Built with [NestJS](https://nestjs.com/), TypeORM, and MySQL.
 
-## Description
+## Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Docker](https://www.docker.com/) and Docker Compose
+- [Node.js 20+](https://nodejs.org/) (only if running outside Docker)
 
-## Installation
+## Quick Start
 
 ```bash
-$ npm install
+# 1. Clone the repo and switch to the development branch
+git clone <repo-url>
+cd pms_backend
+git checkout development
+
+# 2. Create your environment file
+cp .env.example .env.development.local
+# Edit .env.development.local with your values (JWT secret, email credentials, etc.)
+
+# 3. Start the development environment
+npm run docker:dev
 ```
 
-## Running the app
+The API will be available at `http://localhost:3000` and Swagger docs at `http://localhost:3000/api`.
 
-```bash
-# development
-$ npm run start
+The MySQL database is accessible at `localhost:3306` with the credentials from your `.env.development.local`.
 
-# watch mode
-$ npm run start:dev
+## Scripts
 
-# production mode
-$ npm run start:prod
+### Docker
+
+| Command              | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `npm run docker:dev` | Start dev environment (app + database)             |
+| `npm run docker:stop`| Stop all containers                                |
+| `npm run docker:seed`| Run the database seeder inside the app container   |
+| `npm run docker:reset`| Reset database (removes volume, restarts fresh)   |
+
+### Shell helpers (`scripts/`)
+
+| Script               | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `scripts/dev.sh`     | Start dev environment with `docker compose up`     |
+| `scripts/stop.sh`    | Stop all containers                                |
+| `scripts/logs.sh`    | Tail logs (`scripts/logs.sh [service]`)             |
+| `scripts/seed.sh`    | Run the NestJS seeder                              |
+| `scripts/reset-db.sh`| Wipe database volume and restart                   |
+| `scripts/shell.sh`   | Open a shell inside the app container              |
+| `scripts/db-shell.sh`| Open a MySQL CLI session                           |
+
+### NestJS
+
+| Command              | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `npm run start:dev`  | Start in watch mode (without Docker)               |
+| `npm run build`      | Compile TypeScript                                 |
+| `npm run start:prod` | Run compiled production build                      |
+| `npm run lint`       | Lint and auto-fix                                  |
+| `npm run test`       | Run unit tests                                     |
+| `npm run seed`       | Run the database seeder locally (without Docker)   |
+
+## Database Seeding
+
+The seeder populates the database with mock data for local development: periods, time slots, subjects, teachers, groups, students, enrollments, and users.
+
+It runs automatically on app start when `SEED_ON_START=true` is set in your environment file. It is **idempotent** — if data already exists, it skips seeding.
+
+To seed manually: `npm run docker:seed`
+
+To get a completely fresh database: `npm run docker:reset`
+
+Default credentials after seeding:
+- **Admin**: see `ADMIN_EMAIL` / `ADMIN_PASSWORD` in your `.env.development.local`
+- **Teachers & Students**: password is `Password123!`
+
+## Project Structure
+
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+├── src/
+│   ├── absences/          # Absence tracking
+│   ├── auth/              # JWT authentication
+│   ├── common/            # Shared decorators, guards, interfaces
+│   ├── config/            # Configuration (database, JWT, mail, validation)
+│   ├── daily-reports/     # Daily report management
+│   ├── enrollments/       # Student enrollments
+│   ├── groups/            # Student groups
+│   ├── mail/              # Email service with Handlebars templates
+│   ├── periods/           # Academic periods
+│   ├── permissions/       # Permission requests
+│   ├── schedules/         # Schedule views
+│   ├── seeder/            # Database seeder for dev
+│   ├── stats/             # Statistics and reporting views
+│   ├── students/          # Student management
+│   ├── subject-groups/    # Subject-group assignments
+│   ├── subject-group-time-slots/  # Schedule slots
+│   ├── subjects/          # Subjects
+│   ├── teachers/          # Teacher management
+│   ├── time-slots/        # Time slot definitions
+│   ├── users/             # User accounts and roles
+│   ├── app.module.ts
+│   └── main.ts
+├── database/              # Reference SQL scripts
+├── scripts/               # Docker helper scripts
+├── docker-compose.yml
+├── Dockerfile
+└── .env.example
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

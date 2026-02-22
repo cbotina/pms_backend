@@ -34,13 +34,18 @@ export class StudentsController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
     @Query('search') search?: string,
+    @Query('periodId') periodId?: string,
   ) {
     const options: IPaginationOptions = {
       limit,
       page,
     };
 
-    return this.studentsService.findAll(options, search);
+    return this.studentsService.findAll(
+      options,
+      search,
+      periodId ? +periodId : undefined,
+    );
   }
 
   @Role(Roles.STUDENT)
