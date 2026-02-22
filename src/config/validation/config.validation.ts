@@ -15,6 +15,7 @@ const validationSchema = Joi.object({
   SEED_ON_START: Joi.string().valid('true', 'false').optional(),
   ADMIN_EMAIL: Joi.string().email().optional(),
   ADMIN_PASSWORD: Joi.string().optional(),
+  CORS_ORIGINS: Joi.string().optional(),
 }).options({ allowUnknown: true });
 
 export default validationSchema;
