@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { environments } from './config/environments';
+import { getEnvFilePath } from './config/environments';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './config/database/database.config';
@@ -29,7 +29,7 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: environments[process.env.NODE_ENV],
+      envFilePath: getEnvFilePath(),
       load: [configuration],
       validationSchema: configValidation,
       isGlobal: true,

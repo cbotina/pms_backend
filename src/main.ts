@@ -10,52 +10,20 @@ import helmet from 'helmet';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 async function bootstrap() {
-  // Configure CORS based on environment
   const nodeEnv = process.env.NODE_ENV;
   const isDev = nodeEnv === 'dev' || nodeEnv === 'development';
-  const isStaging = nodeEnv === 'staging' || nodeEnv === 'stage';
-  
-  let corsOptions: boolean | { origin: string | string[] | boolean; credentials: boolean } = false;
-  
-  if (isDev) {
-    // Development: allow all origins
-    corsOptions = true;
-  } else if (isStaging) {
-    // Staging: use allowed origins from environment, or allow all if not set
-    const allowedOrigins = process.env.CORS_ORIGINS 
-      ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-      : [];
-    
-    if (allowedOrigins.length > 0) {
-      corsOptions = {
-        origin: allowedOrigins,
-        credentials: true,
-      };
-    } else {
-      // Allow all origins if CORS_ORIGINS not set
-      corsOptions = true;
-    }
-  } else {
-    // Production: use allowed origins from environment (required)
-    const allowedOrigins = process.env.CORS_ORIGINS 
-      ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-      : [];
-    
-    if (allowedOrigins.length > 0) {
-      corsOptions = {
-        origin: allowedOrigins,
-        credentials: true,
-      };
-    }
-    // If CORS_ORIGINS not set in production, CORS will be disabled (more secure)
-  }
-  
+  const allowedOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',').map(o => o.trim())
+    : [];
+
   const app = await NestFactory.create(AppModule, {
-    cors: corsOptions,
+    cors: isDev || allowedOrigins.length === 0
+      ? true
+      : { origin: allowedOrigins, credentials: true },
   });
 
   const configService = app.get(ConfigService);
-  const port = configService.get('PORT');
+  const port = configService.get('PORT') || process.env.PORT || 3000;
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(new TypeORMExceptionFilter());
@@ -73,7 +41,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
+  console.log(`Application running on port ${port}`);
 }
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('Failed to start:', err);
+  process.exit(1);
+});
