@@ -83,7 +83,7 @@ export class SubjectGroupsController {
   }
 
   // @Public()
-  @Role(Roles.TEACHER)
+  @Role(Roles.TEACHER, Roles.SECRETARY)
   @Get('periods/:periodId/teachers/:teacherId/subject-groups')
   getTeacherSubjectGroups(
     @Param('periodId', ParseIntPipe) periodId: number,
@@ -104,7 +104,7 @@ export class SubjectGroupsController {
   }
 
   // @Public()
-  @Role(Roles.TEACHER)
+  @Role(Roles.TEACHER, Roles.SECRETARY)
   @Get('subject-groups/:subjectGroupId/students')
   getSubjectGroupStudents(
     @Param('subjectGroupId', ParseIntPipe) subjectGroupId: number,

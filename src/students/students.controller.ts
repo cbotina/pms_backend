@@ -48,13 +48,13 @@ export class StudentsController {
     );
   }
 
-  @Role(Roles.STUDENT)
+  @Role(Roles.STUDENT, Roles.SECRETARY)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentsService.findOne(+id);
   }
 
-  @Role(Roles.STUDENT)
+  @Role(Roles.STUDENT, Roles.SECRETARY)
   @Get(':cc')
   findOneByCC(@Param('cc') cc: string) {
     return this.studentsService.findOneByCC(cc);

@@ -24,7 +24,7 @@ export class PeriodTimeSlotsController {
     private readonly periodTimeSlotsService: PeriodTimeSlotsService,
   ) {}
 
-  @Role(Roles.STUDENT, Roles.TEACHER)
+  @Role(Roles.STUDENT, Roles.TEACHER, Roles.SECRETARY)
   @Get()
   async getPeriodTimeSlots(
     @Param('periodId', ParseIntPipe) periodId: number,
