@@ -18,7 +18,6 @@ import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/common/decorators/roles.decorator';
 import { Roles } from 'src/users/entities/user.entity';
-import { Public } from 'src/common/decorators/public.decorator';
 
 @Role(Roles.SECRETARY)
 @ApiTags('Teachers 👩‍🏫')
@@ -45,7 +44,7 @@ export class TeachersController {
     return await this.teachersService.findAll(options, search);
   }
 
-  @Role(Roles.TEACHER)
+  @Role(Roles.TEACHER, Roles.SECRETARY)
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.teachersService.findOne(id);
