@@ -39,6 +39,7 @@ export class StudentEnrollmentsController {
     @Param('studentId', ParseIntPipe) studentId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 1,
+    @Query('periodId') periodId?: string,
   ) {
     const options: IPaginationOptions = {
       limit,
@@ -48,6 +49,7 @@ export class StudentEnrollmentsController {
     return this.studentEnrollmentsService.getStudentEnrollments(
       studentId,
       options,
+      periodId ? +periodId : undefined,
     );
   }
 }

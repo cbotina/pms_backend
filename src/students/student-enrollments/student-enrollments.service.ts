@@ -45,6 +45,7 @@ export class StudentEnrollmentsService {
   async getStudentEnrollments(
     studentId: number,
     options: IPaginationOptions,
+    periodId?: number,
   ): Promise<Pagination<Enrollment>> {
     const qb = this.enrollmentsRepository.createQueryBuilder('e');
     qb.where('e.studentId = :studentId', { studentId })
@@ -56,6 +57,10 @@ export class StudentEnrollmentsService {
       .addSelect(['g.id', 'g.name'])
       .leftJoin('sg.teacher', 't')
       .addSelect(['t.id', 't.firstName', 't.lastName']);
+
+    if (periodId) {
+      qb.andWhere('g.periodId = :periodId', { periodId });
+    }
 
     return paginate<Enrollment>(qb, options);
   }
