@@ -55,8 +55,7 @@ export class StudentEnrollmentsService {
       .leftJoin('sg.group', 'g')
       .addSelect(['g.id', 'g.name'])
       .leftJoin('sg.teacher', 't')
-      .addSelect(['t.id', 't.firstName', 't.lastName'])
-      .innerJoin('g.period', 'p', 'p.active = :active', { active: true });
+      .addSelect(['t.id', 't.firstName', 't.lastName']);
 
     return paginate<Enrollment>(qb, options);
   }
