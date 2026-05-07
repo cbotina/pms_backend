@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { FirebaseModule } from 'src/firebase/firebase.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
     UsersModule,
     PassportModule,
     ConfigModule,
+    FirebaseModule,
   ],
   controllers: [AuthController],
   providers: [
