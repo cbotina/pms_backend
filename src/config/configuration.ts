@@ -13,6 +13,10 @@ export default () => ({
   jwtSecret: process.env.JWT_SECRET,
   jwtDuration: process.env.JWT_DURATION,
   firebaseServiceAccountJson: process.env.FIREBASE_SERVICE_ACCOUNT_JSON,
+  openai: {
+    apiKey: process.env.OPENAI_API_KEY ?? '',
+    model: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
+  },
   email: {
     host: process.env.EMAIL_HOST,
     pass: process.env.EMAIL_PASS,

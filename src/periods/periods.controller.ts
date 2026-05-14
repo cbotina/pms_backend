@@ -61,6 +61,7 @@ export class PeriodsController {
     return this.periodsService.remove(id);
   }
 
+  @Role(Roles.SECRETARY, Roles.TEACHER, Roles.STUDENT)
   @Get()
   async getPaginatedPeriods(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
