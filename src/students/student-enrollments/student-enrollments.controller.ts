@@ -34,6 +34,7 @@ export class StudentEnrollmentsController {
     );
   }
 
+  @Role(Roles.SECRETARY, Roles.TEACHER, Roles.STUDENT)
   @Get()
   getStudentEnrollments(
     @Param('studentId', ParseIntPipe) studentId: number,
