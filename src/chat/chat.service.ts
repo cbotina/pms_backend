@@ -102,13 +102,15 @@ export class ChatService {
     if (ragChunks && ragChunks.length > 0) {
       lines.push(
         '',
-        'A continuación se incluyen fragmentos relevantes del material oficial del curso. Úsalos para fundamentar tu respuesta y cita la fuente cuando corresponda.',
+        'A continuación hay extractos del material oficial del curso. Cada extracto empieza con un encabezado del tipo "--- [N] ---" donde N es el número de cita.',
+        'Obligatorio: si usas información de un extracto, cita en el texto únicamente con [N] (el mismo número del encabezado). Ejemplo: "...según la definición [2]."',
+        'Prohibido en tu redacción: no escribas "Fragmento", "fragmento", "página", "pág." ni frases del tipo "(Fragmento 3, página 21)" para citar; el estudiante verá el PDF y la página en el panel de fuentes al hacer clic en [N].',
+        'Puedes repetir la misma cita varias veces si hace falta. No inventes números [N] que no correspondan a un encabezado del material.',
         '',
       );
       for (const [i, chunk] of ragChunks.entries()) {
-        const pageInfo = chunk.pageNumber ? ` (página ${chunk.pageNumber})` : '';
-        const sectionInfo = chunk.section ? ` [${chunk.section}]` : '';
-        lines.push(`--- Fragmento ${i + 1}${pageInfo}${sectionInfo} ---`);
+        const sectionInfo = chunk.section ? ` · ${chunk.section}` : '';
+        lines.push(`--- [${i + 1}]${sectionInfo} ---`);
         lines.push(chunk.content);
         lines.push('');
       }
@@ -119,6 +121,7 @@ export class ChatService {
     }
 
     lines.push('Responde en español salvo que el estudiante pida otro idioma.');
+    lines.push('Si necesitas escribir fórmulas matemáticas, usa la notación LaTeX con delimitadores: $...$ para fórmulas en línea y $$...$$ para fórmulas en bloque.');
     return lines.join('\n');
   }
 
@@ -362,16 +365,34 @@ export class ChatService {
       return;
     }
 
-    // Emit citations for each RAG chunk that was used
-    for (const chunk of ragChunks) {
+    const docMeta = await this.documentsService.getCitationMetadataBySubjectGroup(
+      conv.subjectGroup.id,
+      ragChunks.map((c) => c.documentId),
+    );
+
+    const referencedIndices = new Set(
+      [...assistantText.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])),
+    );
+
+    const citationsPayload = ragChunks
+      .map((chunk, i) => {
+        const meta = docMeta.get(chunk.documentId);
+        return {
+          index: i + 1,
+          documentId: chunk.documentId,
+          filename: meta?.filename ?? null,
+          storagePath: meta?.storagePath ?? null,
+          pageNumber: chunk.pageNumber ?? undefined,
+          section: chunk.section ?? undefined,
+          snippet: chunk.content.slice(0, 200),
+        };
+      })
+      .filter((c) => referencedIndices.has(c.index));
+
+    for (const c of citationsPayload) {
       writeSse({
         type: 'citation',
-        data: {
-          documentId: chunk.documentId,
-          pageNumber: chunk.pageNumber,
-          section: chunk.section,
-          snippet: chunk.content.slice(0, 200),
-        },
+        data: c,
       });
     }
 
@@ -380,6 +401,7 @@ export class ChatService {
       completionTokens: tokenUsage.completionTokens,
       model: tokenUsage.model,
       ragChunkCount: ragChunks.length,
+      citations: citationsPayload,
     };
 
     const assistantMessage = this.messageRepo.create({

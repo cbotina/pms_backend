@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { randomUUID } from 'crypto';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
 import { AiServiceClient } from 'src/ai-service/ai-service.client';
@@ -203,6 +203,39 @@ export class DocumentsService {
         status: DocumentStatus.READY,
       },
     });
+  }
+
+  /**
+   * Filename + storage path for chat citations, scoped to a subject group (RAG chunks).
+   */
+  async getCitationMetadataBySubjectGroup(
+    subjectGroupId: number,
+    documentIds: string[],
+  ): Promise<Map<string, { filename: string | null; storagePath: string | null }>> {
+    const unique = [...new Set(documentIds)].filter(Boolean);
+    if (unique.length === 0) {
+      return new Map();
+    }
+
+    const rows = await this.documentRepo.find({
+      where: {
+        id: In(unique),
+        subjectGroup: { id: subjectGroupId },
+      },
+      select: ['id', 'filename', 'storagePath'],
+    });
+
+    const map = new Map<
+      string,
+      { filename: string | null; storagePath: string | null }
+    >();
+    for (const row of rows) {
+      map.set(row.id, {
+        filename: row.filename ?? null,
+        storagePath: row.storagePath ?? null,
+      });
+    }
+    return map;
   }
 
   private async lazySyncFromAi(doc: Document): Promise<void> {
