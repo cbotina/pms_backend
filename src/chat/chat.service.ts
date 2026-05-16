@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +10,8 @@ import type { ChatCompletionMessageParam } from 'openai/resources/chat/completio
 import { Repository } from 'typeorm';
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { SubjectGroup } from 'src/subject-groups/entities/subject-group.entity';
+import { AiServiceClient, RetrievedChunk } from 'src/ai-service/ai-service.client';
+import { DocumentsService } from 'src/documents/documents.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 import { ChatMode, Conversation } from './entities/conversation.entity';
@@ -24,6 +27,8 @@ type JwtUser = {
 
 @Injectable()
 export class ChatService {
+  private readonly logger = new Logger(ChatService.name);
+
   constructor(
     @InjectRepository(Conversation)
     private readonly conversationRepo: Repository<Conversation>,
@@ -34,6 +39,8 @@ export class ChatService {
     @InjectRepository(SubjectGroup)
     private readonly subjectGroupRepo: Repository<SubjectGroup>,
     private readonly openaiService: OpenaiService,
+    private readonly aiClient: AiServiceClient,
+    private readonly documentsService: DocumentsService,
   ) {}
 
   private requireStudentId(user: JwtUser): number {
@@ -79,18 +86,43 @@ export class ChatService {
   buildSystemPrompt(
     ctx: Awaited<ReturnType<ChatService['getSubjectGroupContext']>>,
     mode: ChatMode,
+    ragChunks?: RetrievedChunk[],
   ): string {
     const modeLine =
       mode === ChatMode.PRACTICE
         ? 'Modo práctica (aún en construcción): orienta al estudiante hacia ejercicios y autoevaluación cuando sea posible.'
         : 'Modo consulta: responde dudas del curso con claridad y pasos cuando aplique.';
-    return [
+
+    const lines = [
       `Eres un asistente académico para la asignatura "${ctx.subjectName}" del grupo "${ctx.groupName}".`,
       `Docente: ${ctx.teacherName}. Carga lectiva: ${ctx.hours} horas.`,
       modeLine,
-      'Aún no hay material oficial indexado en el sistema (RAG); si no estás seguro, dilo y ofrece orientación general sin inventar contenidos del programa.',
-      'Responde en español salvo que el estudiante pida otro idioma.',
-    ].join('\n');
+    ];
+
+    if (ragChunks && ragChunks.length > 0) {
+      lines.push(
+        '',
+        'A continuación hay extractos del material oficial del curso. Cada extracto empieza con un encabezado del tipo "--- [N] ---" donde N es el número de cita.',
+        'Obligatorio: si usas información de un extracto, cita en el texto únicamente con [N] (el mismo número del encabezado). Ejemplo: "...según la definición [2]."',
+        'Prohibido en tu redacción: no escribas "Fragmento", "fragmento", "página", "pág." ni frases del tipo "(Fragmento 3, página 21)" para citar; el estudiante verá el PDF y la página en el panel de fuentes al hacer clic en [N].',
+        'Puedes repetir la misma cita varias veces si hace falta. No inventes números [N] que no correspondan a un encabezado del material.',
+        '',
+      );
+      for (const [i, chunk] of ragChunks.entries()) {
+        const sectionInfo = chunk.section ? ` · ${chunk.section}` : '';
+        lines.push(`--- [${i + 1}]${sectionInfo} ---`);
+        lines.push(chunk.content);
+        lines.push('');
+      }
+    } else {
+      lines.push(
+        'No hay material oficial indexado en el sistema para esta asignatura; si no estás seguro, dilo y ofrece orientación general sin inventar contenidos del programa.',
+      );
+    }
+
+    lines.push('Responde en español salvo que el estudiante pida otro idioma.');
+    lines.push('Si necesitas escribir fórmulas matemáticas, usa la notación LaTeX con delimitadores: $...$ para fórmulas en línea y $$...$$ para fórmulas en bloque.');
+    return lines.join('\n');
   }
 
   messageToOpenAI(m: Message): ChatCompletionMessageParam {
@@ -278,14 +310,6 @@ export class ChatService {
     const history = historyBatch.reverse();
 
     const ctx = await this.getSubjectGroupContext(conv.subjectGroup.id);
-    const system: ChatCompletionMessageParam = {
-      role: 'system',
-      content: this.buildSystemPrompt(ctx, conv.mode),
-    };
-    const openaiMessages: ChatCompletionMessageParam[] = [
-      system,
-      ...history.map((m) => this.messageToOpenAI(m)),
-    ];
 
     res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
     res.setHeader('Cache-Control', 'no-cache, no-transform');
@@ -297,7 +321,33 @@ export class ChatService {
       res.write(`data: ${JSON.stringify(obj)}\n\n`);
     };
 
+    // RAG retrieve
+    writeSse({ type: 'status', data: { step: 'searching' } });
+    let ragChunks: RetrievedChunk[] = [];
+    try {
+      ragChunks = await this.aiClient.retrieve(
+        conv.subjectGroup.id,
+        textContent || '(imagen)',
+      );
+    } catch (e) {
+      this.logger.warn(`RAG retrieve failed: ${e}`);
+      writeSse({
+        type: 'warning',
+        data: { message: 'No se pudo consultar el material del curso — respondiendo con conocimiento general.' },
+      });
+    }
+
+    const system: ChatCompletionMessageParam = {
+      role: 'system',
+      content: this.buildSystemPrompt(ctx, conv.mode, ragChunks),
+    };
+    const openaiMessages: ChatCompletionMessageParam[] = [
+      system,
+      ...history.map((m) => this.messageToOpenAI(m)),
+    ];
+
     let assistantText = '';
+    let tokenUsage: { promptTokens?: number; completionTokens?: number; model?: string } = {};
     try {
       for await (const delta of this.openaiService.streamChatCompletion(
         openaiMessages,
@@ -305,6 +355,7 @@ export class ChatService {
         assistantText += delta;
         writeSse({ type: 'delta', data: { content: delta } });
       }
+      tokenUsage = this.openaiService.lastUsage ?? {};
     } catch (e) {
       writeSse({
         type: 'error',
@@ -314,12 +365,51 @@ export class ChatService {
       return;
     }
 
+    const docMeta = await this.documentsService.getCitationMetadataBySubjectGroup(
+      conv.subjectGroup.id,
+      ragChunks.map((c) => c.documentId),
+    );
+
+    const referencedIndices = new Set(
+      [...assistantText.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1])),
+    );
+
+    const citationsPayload = ragChunks
+      .map((chunk, i) => {
+        const meta = docMeta.get(chunk.documentId);
+        return {
+          index: i + 1,
+          documentId: chunk.documentId,
+          filename: meta?.filename ?? null,
+          storagePath: meta?.storagePath ?? null,
+          pageNumber: chunk.pageNumber ?? undefined,
+          section: chunk.section ?? undefined,
+          snippet: chunk.content.slice(0, 200),
+        };
+      })
+      .filter((c) => referencedIndices.has(c.index));
+
+    for (const c of citationsPayload) {
+      writeSse({
+        type: 'citation',
+        data: c,
+      });
+    }
+
+    const metadata = {
+      promptTokens: tokenUsage.promptTokens,
+      completionTokens: tokenUsage.completionTokens,
+      model: tokenUsage.model,
+      ragChunkCount: ragChunks.length,
+      citations: citationsPayload,
+    };
+
     const assistantMessage = this.messageRepo.create({
       conversation: conv,
       role: ChatMessageRole.ASSISTANT,
       content: assistantText,
       imageUrl: null,
-      metadata: null,
+      metadata,
     });
     await this.messageRepo.save(assistantMessage);
 
@@ -352,6 +442,7 @@ export class ChatService {
       data: {
         messageId: assistantMessage.id,
         userMessageId: userMessage.id,
+        ...metadata,
       },
     });
     res.end();
