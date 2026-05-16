@@ -12,6 +12,7 @@ export class OpenaiService {
   private readonly logger = new Logger(OpenaiService.name);
   private readonly client: OpenAI | null;
   private readonly model: string;
+  lastUsage: { promptTokens?: number; completionTokens?: number; model?: string } | null = null;
 
   constructor(private readonly configService: ConfigService) {
     const apiKey =
@@ -41,15 +42,24 @@ export class OpenaiService {
     messages: ChatCompletionMessageParam[],
   ): AsyncGenerator<string> {
     this.assertConfigured();
+    this.lastUsage = null;
     const stream = await this.client!.chat.completions.create({
       model: this.model,
       messages,
       stream: true,
+      stream_options: { include_usage: true },
     });
     for await (const chunk of stream) {
       const piece = chunk.choices[0]?.delta?.content;
       if (piece) {
         yield piece;
+      }
+      if (chunk.usage) {
+        this.lastUsage = {
+          promptTokens: chunk.usage.prompt_tokens,
+          completionTokens: chunk.usage.completion_tokens,
+          model: this.model,
+        };
       }
     }
   }

@@ -68,6 +68,7 @@ export class SubjectGroupsController {
     return this.subjectGroupsService.remove(+id);
   }
 
+  @Role(Roles.SECRETARY, Roles.TEACHER)
   @Get('periods/:periodId/subject-groups')
   getPeriodSubjectGroups(
     @Param('periodId', ParseIntPipe) periodId: number,

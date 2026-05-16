@@ -33,6 +33,7 @@ import { TimeSlot } from 'src/time-slots/entities/time-slot.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Conversation } from 'src/chat/entities/conversation.entity';
 import { Message } from 'src/chat/entities/message.entity';
+import { Document } from 'src/documents/entities/document.entity';
 
 export const dbConfig = (
   configService: ConfigService,
@@ -79,6 +80,7 @@ export const dbConfig = (
       AbsenceWithStudentView,
       Conversation,
       Message,
+      Document,
     ],
     synchronize: configService.get('database.synchronize'),
   };
