@@ -447,4 +447,103 @@ export class ChatService {
     });
     res.end();
   }
+
+  async generatePracticeFeedback(
+    conversationId: string,
+    studentId: number,
+    data: {
+      testId: string;
+      attemptId: string;
+      score: number;
+      maxScore: number;
+      perQuestion: Array<Record<string, unknown>>;
+      weakTopics: string[];
+      subjectName: string;
+    },
+  ): Promise<Message> {
+    const conv = await this.conversationRepo.findOne({
+      where: { id: conversationId, student: { id: studentId } },
+    });
+    if (!conv) {
+      throw new NotFoundException('Conversación no encontrada.');
+    }
+
+    this.openaiService.assertConfigured();
+
+    const historyBatch = await this.messageRepo.find({
+      where: { conversation: { id: conversationId } },
+      order: { createdAt: 'DESC' },
+      take: 24,
+    });
+    const history = historyBatch.reverse();
+
+    const gradeSummary = JSON.stringify({
+      subject: data.subjectName,
+      score: data.score,
+      maxScore: data.maxScore,
+      weakTopics: data.weakTopics,
+      perQuestion: data.perQuestion.map((p) => ({
+        id: p.id,
+        type: p.type,
+        score: p.score,
+        maxScore: p.maxScore,
+        correct: p.correct,
+        feedback: p.feedback,
+      })),
+    });
+
+    const contextSummary = history
+      .slice(-8)
+      .map((m) => `${m.role}: ${(m.content ?? '').slice(0, 400)}`)
+      .join('\n');
+
+    const system: ChatCompletionMessageParam = {
+      role: 'system',
+      content: [
+        'Eres un asistente académico en español.',
+        'Acabas de calificar una práctica del estudiante en la asignatura indicada.',
+        'Da un mensaje breve y alentador que:',
+        '1) comente el resultado global y los puntos fuertes;',
+        '2) explique con detalle los errores en preguntas abiertas o con imagen (usa el feedback técnico que recibes);',
+        '3) sugiera temas del curso a repasar según los temas débiles;',
+        'No menciones numeración interna de opciones correctas de test tipo test (correctIndex).',
+        'No inventes contenidos del programa si no los conoces; puedes sugerir repasar los temas listados.',
+      ].join('\n'),
+    };
+
+    const userMsg: ChatCompletionMessageParam = {
+      role: 'user',
+      content: `Resumen de la práctica:\n${gradeSummary}\n\nÚltimos mensajes de la conversación (contexto):\n${contextSummary}`,
+    };
+
+    const text = await this.openaiService.chatCompletion([system, userMsg], {
+      maxTokens: 900,
+      temperature: 0.5,
+    });
+
+    const meta: Record<string, unknown> = {
+      type: 'practice_result',
+      testId: data.testId,
+      attemptId: data.attemptId,
+      score: data.score,
+      maxScore: data.maxScore,
+      weakTopics: data.weakTopics,
+      subjectName: data.subjectName,
+    };
+
+    const assistantMessage = this.messageRepo.create({
+      conversation: conv,
+      role: ChatMessageRole.ASSISTANT,
+      content:
+        text || 'Bien hecho. Revisa los detalles en el panel Estudio.',
+      imageUrl: null,
+      metadata: meta,
+    });
+    await this.messageRepo.save(assistantMessage);
+    await this.conversationRepo.update(
+      { id: conv.id },
+      { updatedAt: new Date() },
+    );
+    return assistantMessage;
+  }
 }
