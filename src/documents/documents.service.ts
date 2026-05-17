@@ -124,13 +124,20 @@ export class DocumentsService {
 
     const signedReadUrl = await this.firebase.getSignedReadUrl(doc.storagePath, 30);
     if (!signedReadUrl) {
-      this.logger.warn(`Could not generate signed URL for ${doc.storagePath} — using storage path as fallback`);
+      this.logger.warn(
+        `Could not generate signed URL for ${doc.storagePath} — check FIREBASE_SERVICE_ACCOUNT_JSON and FIREBASE_STORAGE_BUCKET`,
+      );
+      doc.status = DocumentStatus.FAILED;
+      doc.errorMessage =
+        'No se pudo generar la URL de descarga (Firebase). Configura FIREBASE_SERVICE_ACCOUNT_JSON y FIREBASE_STORAGE_BUCKET en el backend.';
+      await this.documentRepo.save(doc);
+      return this.serialize(doc, subjectGroupId);
     }
 
     const accepted = await this.aiClient.triggerIngest({
       documentId,
       subjectGroupId,
-      signedReadUrl: signedReadUrl ?? doc.storagePath,
+      signedReadUrl,
     });
     if (!accepted) {
       doc.status = DocumentStatus.FAILED;

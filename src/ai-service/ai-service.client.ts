@@ -26,6 +26,26 @@ export interface RetrieveResponse {
   chunks: RetrievedChunk[];
 }
 
+export interface PracticeGenerateRequest {
+  jobId: string;
+  subjectGroupId: number;
+  questionCount: number;
+  topicHints?: string;
+  hasDocuments: boolean;
+}
+
+export interface PracticeGenerationStatusResponse {
+  status: 'processing' | 'ready' | 'failed';
+  questions?: Record<string, unknown>;
+  error?: string;
+}
+
+export interface PracticeGradeResponse {
+  perQuestion: Array<Record<string, unknown>>;
+  totalScore: number;
+  maxScore: number;
+}
+
 @Injectable()
 export class AiServiceClient {
   private readonly logger = new Logger(AiServiceClient.name);
@@ -129,6 +149,52 @@ export class AiServiceClient {
       await this.request('DELETE', `/internal/documents/${documentId}`);
     } catch (e) {
       this.logger.error(`Delete failed for ${documentId}: ${e.message}`);
+    }
+  }
+
+  async triggerPracticeGenerate(req: PracticeGenerateRequest): Promise<boolean> {
+    if (!this.isConfigured) {
+      this.logger.warn('AI service not configured — skipping practice generate');
+      return false;
+    }
+    try {
+      await this.request('POST', '/internal/practice/generate', req, 15_000);
+      return true;
+    } catch (e) {
+      this.logger.error(`Practice generate trigger failed: ${(e as Error).message}`);
+      return false;
+    }
+  }
+
+  async getPracticeGenerationStatus(
+    jobId: string,
+  ): Promise<PracticeGenerationStatusResponse | null> {
+    if (!this.isConfigured) return null;
+    try {
+      return await this.request<PracticeGenerationStatusResponse>(
+        'GET',
+        `/internal/practice/generation/${jobId}`,
+        undefined,
+        15_000,
+      );
+    } catch (e) {
+      this.logger.error(`Practice generation status failed: ${(e as Error).message}`);
+      return null;
+    }
+  }
+
+  async gradePractice(body: unknown): Promise<PracticeGradeResponse | null> {
+    if (!this.isConfigured) return null;
+    try {
+      return await this.request<PracticeGradeResponse>(
+        'POST',
+        '/internal/practice/grade',
+        body,
+        60_000,
+      );
+    } catch (e) {
+      this.logger.error(`Practice grade failed: ${(e as Error).message}`);
+      return null;
     }
   }
 }

@@ -34,6 +34,8 @@ import { User } from 'src/users/entities/user.entity';
 import { Conversation } from 'src/chat/entities/conversation.entity';
 import { Message } from 'src/chat/entities/message.entity';
 import { Document } from 'src/documents/entities/document.entity';
+import { PracticeAttempt } from 'src/practice/entities/practice-attempt.entity';
+import { PracticeTest } from 'src/practice/entities/practice-test.entity';
 
 export const dbConfig = (
   configService: ConfigService,
@@ -81,6 +83,8 @@ export const dbConfig = (
       Conversation,
       Message,
       Document,
+      PracticeTest,
+      PracticeAttempt,
     ],
     synchronize: configService.get('database.synchronize'),
   };

@@ -64,6 +64,28 @@ export class OpenaiService {
     }
   }
 
+  async chatCompletion(
+    messages: ChatCompletionMessageParam[],
+    options?: { maxTokens?: number; temperature?: number },
+  ): Promise<string> {
+    this.assertConfigured();
+    const res = await this.client!.chat.completions.create({
+      model: this.model,
+      messages,
+      max_tokens: options?.maxTokens ?? 900,
+      temperature: options?.temperature ?? 0.5,
+    });
+    const text = res.choices[0]?.message?.content?.trim() ?? '';
+    if (res.usage) {
+      this.lastUsage = {
+        promptTokens: res.usage.prompt_tokens,
+        completionTokens: res.usage.completion_tokens,
+        model: this.model,
+      };
+    }
+    return text;
+  }
+
   async generateConversationTitle(
     userText: string,
     assistantPreview: string,

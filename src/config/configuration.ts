@@ -18,6 +18,13 @@ export default () => ({
     apiKey: process.env.OPENAI_API_KEY ?? '',
     model: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
   },
+  practice: {
+    generationsPerDay: parseInt(
+      process.env.PRACTICE_GENERATIONS_PER_DAY ?? '10',
+      10,
+    ),
+    maxQuestions: parseInt(process.env.PRACTICE_MAX_QUESTIONS ?? '15', 10),
+  },
   email: {
     host: process.env.EMAIL_HOST,
     pass: process.env.EMAIL_PASS,

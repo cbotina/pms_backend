@@ -21,5 +21,6 @@ import { OpenaiService } from './openai.service';
   ],
   controllers: [ChatController],
   providers: [ChatService, OpenaiService],
+  exports: [ChatService],
 })
 export class ChatModule {}
