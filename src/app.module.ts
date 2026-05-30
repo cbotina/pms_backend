@@ -25,9 +25,11 @@ import { ChatModule } from './chat/chat.module';
 import { DocumentsModule } from './documents/documents.module';
 import { AiServiceModule } from './ai-service/ai-service.module';
 import { PracticeModule } from './practice/practice.module';
+import { ClusteringModule } from './clustering/clustering.module';
 import { SeederModule } from './seeder/seeder.module';
 import configValidation from './config/validation/config.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
@@ -49,6 +51,7 @@ import { APP_GUARD } from '@nestjs/core';
         limit: 100,
       },
     ]),
+    ScheduleModule.forRoot(),
     PeriodsModule,
     TimeSlotsModule,
     SubjectsModule,
@@ -71,6 +74,7 @@ import { APP_GUARD } from '@nestjs/core';
     DocumentsModule,
     AiServiceModule,
     PracticeModule,
+    ClusteringModule,
   ],
 })
 export class AppModule {}

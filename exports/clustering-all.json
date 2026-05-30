@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-05-22T23:45:22.206Z",
+  "groups": [
+    {
+      "subjectGroupId": 15,
+      "eligible": false,
+      "skipReason": "Fewer than 8 students with at least 2 graded attempts each."
+    }
+  ]
+}

@@ -198,6 +198,7 @@ export class PracticeService {
       questionCount,
       topicHints: dto.topicHints,
       hasDocuments,
+      studentId,
     });
     if (!accepted) {
       test.status = PracticeTestStatus.FAILED;

@@ -25,6 +25,10 @@ export default () => ({
     ),
     maxQuestions: parseInt(process.env.PRACTICE_MAX_QUESTIONS ?? '15', 10),
   },
+  clustering: {
+    enabled: process.env.CLUSTERING_ENABLED !== 'false',
+    cron: process.env.CLUSTERING_CRON ?? '0 3 * * 0',
+  },
   email: {
     host: process.env.EMAIL_HOST,
     pass: process.env.EMAIL_PASS,
