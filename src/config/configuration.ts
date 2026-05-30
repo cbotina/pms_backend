@@ -28,7 +28,6 @@ export default () => ({
   clustering: {
     enabled: process.env.CLUSTERING_ENABLED !== 'false',
     cron: process.env.CLUSTERING_CRON ?? '0 3 * * 0',
-    aiMock: process.env.CLUSTERING_AI_MOCK !== 'false',
   },
   email: {
     host: process.env.EMAIL_HOST,
