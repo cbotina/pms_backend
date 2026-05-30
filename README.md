@@ -62,6 +62,28 @@ The MySQL database is accessible at `localhost:3306` with the credentials from y
 | `npm run lint`       | Lint and auto-fix                                  |
 | `npm run test`       | Run unit tests                                     |
 | `npm run seed`       | Run the database seeder locally (without Docker)   |
+| `npm run clustering:export` | Export clustering snapshot + run + results to JSON (see below) |
+
+## Clustering export (Phase 4B)
+
+Writes a JSON report via `ClusteringService` (snapshot, AI run response, results, teacher DTO per subject group). The script sets `CLUSTERING_ENABLED=false` so the weekly cron does not start.
+
+**Inside Docker** (DB host `db` works):
+
+```bash
+docker compose exec app npm run clustering:export -- --out /tmp/clustering-report.json 15
+```
+
+**On the host** (after `npm run docker:dev`): use `DB_HOST=127.0.0.1` and the mapped MySQL port in `.env.development.local`, then:
+
+```bash
+cd pms_backend
+npm run clustering:export -- --out ./exports/report.json 15
+# All groups with at least one graded attempt (omit ids):
+npm run clustering:export -- --out ./exports/all.json
+```
+
+After `npm run build`: `npm run clustering:export:compiled` (same args, `node` runs `dist/`).
 
 ## Database Seeding
 
@@ -93,6 +115,7 @@ Default credentials after seeding:
 │   ├── permissions/       # Permission requests
 │   ├── schedules/         # Schedule views
 │   ├── seeder/            # Database seeder for dev
+│   ├── clustering/      # Phase 4B clustering (export script, teacher API)
 │   ├── stats/             # Statistics and reporting views
 │   ├── students/          # Student management
 │   ├── subject-groups/    # Subject-group assignments

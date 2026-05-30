@@ -1,5 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import type {
+  ClusteringResultsResponse,
+  ClusteringRunRequest,
+  ClusteringRunResponse,
+} from 'src/clustering/dto/clustering-snapshot.dto';
 
 export interface IngestRequest {
   documentId: string;
@@ -32,6 +37,7 @@ export interface PracticeGenerateRequest {
   questionCount: number;
   topicHints?: string;
   hasDocuments: boolean;
+  studentId?: number;
 }
 
 export interface PracticeGenerationStatusResponse {
@@ -195,6 +201,64 @@ export class AiServiceClient {
     } catch (e) {
       this.logger.error(`Practice grade failed: ${(e as Error).message}`);
       return null;
+    }
+  }
+
+  async runClustering(
+    body: ClusteringRunRequest,
+  ): Promise<ClusteringRunResponse | null> {
+    if (!this.isConfigured) {
+      this.logger.warn('AI service not configured — skipping clustering run');
+      return null;
+    }
+    try {
+      return await this.request<ClusteringRunResponse>(
+        'POST',
+        '/internal/clustering/run',
+        body,
+        120_000,
+      );
+    } catch (e) {
+      this.logger.error(`Clustering run failed: ${(e as Error).message}`);
+      return null;
+    }
+  }
+
+  async getClusteringResults(
+    subjectGroupId: number,
+  ): Promise<ClusteringResultsResponse | null> {
+    if (!this.isConfigured) return null;
+    const path = `/internal/clustering/results/${subjectGroupId}`;
+    const url = `${this.baseUrl}${path}`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15_000);
+    try {
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PMS-AI-Key': this.secret,
+        },
+        signal: controller.signal,
+      });
+      if (res.status === 404) {
+        return null;
+      }
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        this.logger.error(
+          `AI service GET ${path} returned ${res.status}: ${text}`,
+        );
+        return null;
+      }
+      return (await res.json()) as ClusteringResultsResponse;
+    } catch (e) {
+      this.logger.error(
+        `Clustering results failed: ${(e as Error).message}`,
+      );
+      return null;
+    } finally {
+      clearTimeout(timer);
     }
   }
 }
