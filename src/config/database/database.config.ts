@@ -36,6 +36,7 @@ import { Message } from 'src/chat/entities/message.entity';
 import { Document } from 'src/documents/entities/document.entity';
 import { PracticeAttempt } from 'src/practice/entities/practice-attempt.entity';
 import { PracticeTest } from 'src/practice/entities/practice-test.entity';
+import { SusResponse } from 'src/sus/entities/sus-response.entity';
 
 export const dbConfig = (
   configService: ConfigService,
@@ -85,6 +86,7 @@ export const dbConfig = (
       Document,
       PracticeTest,
       PracticeAttempt,
+      SusResponse,
     ],
     synchronize: configService.get('database.synchronize'),
   };
