@@ -225,6 +225,20 @@ export class ChatService {
     return messages.map((m) => this.serializeMessage(m));
   }
 
+  async renameConversation(user: JwtUser, id: string, title: string) {
+    const studentId = this.requireStudentId(user);
+    const conv = await this.conversationRepo.findOne({
+      where: { id, student: { id: studentId } },
+      relations: ['subjectGroup'],
+    });
+    if (!conv) {
+      throw new NotFoundException('Conversación no encontrada.');
+    }
+    conv.title = title.trim();
+    const saved = await this.conversationRepo.save(conv);
+    return this.serializeConversation(saved);
+  }
+
   async deleteConversation(user: JwtUser, id: string) {
     const studentId = this.requireStudentId(user);
     const res = await this.conversationRepo.delete({
