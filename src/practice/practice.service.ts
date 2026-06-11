@@ -26,6 +26,9 @@ import {
 } from './entities/practice-test.entity';
 import { stripAnswerKeys } from './strip-questions';
 
+// TODO: Re-enable when photo upload UX is stable (temporary — must match ai service + admin web).
+const PHOTO_SOLUTION_ENABLED = false;
+
 type JwtUser = {
   id: number;
   role: string;
@@ -556,8 +559,18 @@ export class PracticeService {
           correct: ok,
         });
       } else if (type === 'open' || type === 'photo_solution') {
-        openPhotoQuestions[id] = q as Record<string, unknown>;
-        openPhotoAnswers[id] = answers[id];
+        let qForGrade = q as Record<string, unknown>;
+        const ans = answers[id];
+        if (
+          type === 'photo_solution' &&
+          !PHOTO_SOLUTION_ENABLED &&
+          typeof (ans as { text?: unknown })?.text === 'string' &&
+          String((ans as { text?: unknown }).text).trim()
+        ) {
+          qForGrade = { ...q, type: 'open' };
+        }
+        openPhotoQuestions[id] = qForGrade;
+        openPhotoAnswers[id] = ans;
       }
     }
 
@@ -599,6 +612,14 @@ export class PracticeService {
           throw new BadRequestException(`Respuesta de texto requerida para ${id}.`);
         }
       } else if (type === 'photo_solution') {
+        const text = (a as { text?: unknown }).text;
+        if (
+          !PHOTO_SOLUTION_ENABLED &&
+          typeof text === 'string' &&
+          text.trim()
+        ) {
+          continue;
+        }
         const urls = (a as { imageUrls?: unknown }).imageUrls;
         if (!Array.isArray(urls) || urls.length === 0) {
           throw new BadRequestException(`Se requiere al menos una imagen para ${id}.`);
