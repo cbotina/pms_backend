@@ -434,6 +434,7 @@ export class PracticeService {
       .createQueryBuilder('a')
       .innerJoinAndSelect('a.practiceTest', 't')
       .leftJoinAndSelect('t.subjectGroup', 'sg')
+      .leftJoinAndSelect('sg.subject', 'subj')
       .where('a.studentId = :sid', { sid: studentId })
       .andWhere('a.gradeStatus = :gs', { gs: PracticeGradeStatus.GRADED })
       .orderBy('a.gradedAt', 'DESC')
@@ -451,6 +452,7 @@ export class PracticeService {
       questionCount: a.practiceTest.questionCount,
       createdAt: a.gradedAt?.toISOString() ?? a.submittedAt.toISOString(),
       subjectGroupId: a.practiceTest.subjectGroup?.id ?? 0,
+      subjectName: a.practiceTest.subjectGroup?.subject?.name ?? null,
     }));
     const totalPages = Math.max(1, Math.ceil(total / limit));
     return {

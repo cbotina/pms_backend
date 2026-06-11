@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   ParseUUIDPipe,
+  Patch,
   Post,
   Query,
   Req,
@@ -19,6 +20,7 @@ import { Roles } from 'src/users/entities/user.entity';
 import { ChatService } from './chat.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { SendMessageDto } from './dto/send-message.dto';
+import { UpdateConversationDto } from './dto/update-conversation.dto';
 
 type JwtUser = {
   id: number;
@@ -74,6 +76,15 @@ export class ChatController {
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     return this.chatService.getMessages(req.user, id);
+  }
+
+  @Patch('conversations/:id')
+  renameConversation(
+    @Req() req: Request & { user: JwtUser },
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateConversationDto,
+  ) {
+    return this.chatService.renameConversation(req.user, id, dto.title);
   }
 
   @Delete('conversations/:id')
