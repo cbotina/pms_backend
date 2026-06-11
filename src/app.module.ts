@@ -26,6 +26,7 @@ import { DocumentsModule } from './documents/documents.module';
 import { AiServiceModule } from './ai-service/ai-service.module';
 import { PracticeModule } from './practice/practice.module';
 import { ClusteringModule } from './clustering/clustering.module';
+import { SusModule } from './sus/sus.module';
 import { SeederModule } from './seeder/seeder.module';
 import configValidation from './config/validation/config.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -75,6 +76,7 @@ import { APP_GUARD } from '@nestjs/core';
     AiServiceModule,
     PracticeModule,
     ClusteringModule,
+    SusModule,
   ],
 })
 export class AppModule {}
