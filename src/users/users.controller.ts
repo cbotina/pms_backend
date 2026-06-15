@@ -30,6 +30,11 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('sync-accounts')
+  syncAccounts() {
+    return this.usersService.syncAccounts();
+  }
+
   @Get()
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
