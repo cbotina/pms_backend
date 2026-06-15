@@ -125,6 +125,79 @@ export class UsersService {
     }
   }
 
+  async syncAccounts() {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const [students, teachers, existingUsers] = await Promise.all([
+        this.studentsRepository.find(),
+        this.teachersRepository.find(),
+        this.usersRepository.find({ select: ['email'] }),
+      ]);
+
+      const knownEmails = new Set(
+        existingUsers.map((user) => user.email.toLowerCase()),
+      );
+
+      let created = 0;
+
+      const candidates: {
+        email: string;
+        cc: string;
+        entityId: number;
+        role: Roles;
+      }[] = [
+        ...students.map((s) => ({
+          email: s.email,
+          cc: s.cc,
+          entityId: s.id,
+          role: Roles.STUDENT,
+        })),
+        ...teachers.map((t) => ({
+          email: t.email,
+          cc: t.cc,
+          entityId: t.id,
+          role: Roles.TEACHER,
+        })),
+      ];
+
+      for (const candidate of candidates) {
+        if (!candidate.email) {
+          continue;
+        }
+
+        const normalizedEmail = candidate.email.toLowerCase();
+
+        if (knownEmails.has(normalizedEmail)) {
+          continue;
+        }
+
+        const user = this.usersRepository.create({
+          email: candidate.email,
+          role: candidate.role,
+        });
+        user.password = await hash(candidate.cc, 10);
+        user.entityId = candidate.entityId;
+
+        await queryRunner.manager.save(user);
+
+        knownEmails.add(normalizedEmail);
+        created += 1;
+      }
+
+      await queryRunner.commitTransaction();
+
+      return { created };
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
   findAll(options: IPaginationOptions, search?: string) {
     const qb = this.usersRepository.createQueryBuilder('user');
     qb.orderBy('user.email', 'ASC');
