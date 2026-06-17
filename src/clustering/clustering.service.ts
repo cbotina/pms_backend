@@ -37,7 +37,7 @@ import type {
 } from './dto/teacher-clustering-response.dto';
 
 const MIN_STUDENTS = 8;
-const MIN_ATTEMPTS_PER_STUDENT = 2;
+const MIN_ATTEMPTS_PER_STUDENT = 1;
 
 type JwtUser = {
   id: number;
@@ -296,7 +296,7 @@ export class ClusteringService implements OnModuleInit, OnModuleDestroy {
       return {
         status: 'no_data',
         message:
-          'Aún no hay resultados de clustering para este grupo. Necesitas al menos 8 estudiantes con 2 prácticas calificadas, o espera a que se ejecute un cálculo.',
+          'Aún no hay resultados de clustering para este grupo. Necesitas al menos 8 estudiantes con al menos 1 práctica calificada, o espera a que se ejecute un cálculo.',
       };
     }
     return this.buildTeacherInsightsDto(raw);
@@ -314,7 +314,7 @@ export class ClusteringService implements OnModuleInit, OnModuleDestroy {
       return {
         status: 'skipped',
         message:
-          'No hay suficientes datos: se requieren al menos 8 estudiantes con al menos 2 prácticas calificadas cada uno.',
+          'No hay suficientes datos: se requieren al menos 8 estudiantes con al menos 1 práctica calificada cada uno.',
       };
     }
 
